@@ -15,7 +15,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
-			ConnexionStyle form2 = new ConnexionStyle(root,80,180);
+			ConnexionStyle2 form2 = new ConnexionStyle2(root,80,180);
 			
 			
 			primaryStage.setResizable(false);
