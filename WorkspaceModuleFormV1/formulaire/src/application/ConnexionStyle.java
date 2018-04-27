@@ -1,13 +1,11 @@
 package application;
 
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-
-public class ConnexionStyle extends Parent{
+public class ConnexionStyle extends Formulaire{
 	private Group form;
 	private Label l_id;
 	private Label l_mdp;
@@ -19,15 +17,7 @@ public class ConnexionStyle extends Parent{
 	 */
 	public ConnexionStyle(){
 		/*generation de notre formulaire*/
-		this.form = new Group();
-		this.l_id = new Label("id");
-		this.id = new TextField();
-		this.l_mdp = new Label("pass");
-		this.mdp = new PasswordField();
-		
-		
-		
-		
+		genererSousComposant();
 		layoutDefaultParametre();
 		ecouteurDefaultAction();
 		
@@ -46,9 +36,16 @@ public class ConnexionStyle extends Parent{
 	
 	}
 	
+	protected void genererSousComposant(){
+		this.form = new Group();
+		this.l_id = new Label("id");
+		this.id = new TextField();
+		this.l_mdp = new Label("pass");
+		this.mdp = new PasswordField();
+	}
 	
 	/*Definie le comportement par defaut de notre interface*/
-	private void ecouteurDefaultAction(){
+	protected void ecouteurDefaultAction(){
 		this.mdp.setOnAction(event ->{
 			
 			/*Traitement de l'appli*/
@@ -63,7 +60,7 @@ public class ConnexionStyle extends Parent{
 	
 	
 	/* Permet de parametrer les valeurs par defauts du layout (peut etre a externaliser)*/
-	private void layoutDefaultParametre(){
+	protected void layoutDefaultParametre(){
 		/*petite mise en page de notre box*/
 		//l_id
 		this.l_id.setLayoutX(10);
