@@ -1,0 +1,57 @@
+package application;
+	
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
+
+public class Main extends Application {
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			Group root = new Group();
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
+			/*generation de notre formulaire*/
+			Group form = new Group();
+			Label l_id = new Label("id");
+			TextField id = new TextField();
+			Label l_mdp = new Label("mdp");
+			PasswordField mdp = new PasswordField();
+			
+			/*petite mise en page de notre box*/
+			//l_id
+			l_id.setLayoutX(10);
+			l_id.setLayoutY(5);
+			//id
+			id.setLayoutX(50);
+			//l_mdp
+			l_mdp.setLayoutX(10);
+			l_mdp.setLayoutY(43);
+			//mdp
+			mdp.setLayoutY(40);
+			mdp.setLayoutX(50);
+			
+			form.getChildren().addAll(l_id,id,l_mdp,mdp);
+			form.setLayoutX(150);
+			form.setLayoutY(100);
+			
+			root.getChildren().add(form);
+			
+			primaryStage.setResizable(false);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
