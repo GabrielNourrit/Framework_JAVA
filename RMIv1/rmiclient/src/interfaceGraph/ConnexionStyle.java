@@ -1,6 +1,9 @@
 package interfaceGraph;
 
 import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import connexion.ConnexionInterface;
 import javafx.geometry.Pos;
@@ -52,7 +55,9 @@ public class ConnexionStyle extends Formulaire{
 			
 			ConnexionInterface connex;
 			try {
-				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
+				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+	            connex = (ConnexionInterface) registry.lookup("Connexion");
+				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();

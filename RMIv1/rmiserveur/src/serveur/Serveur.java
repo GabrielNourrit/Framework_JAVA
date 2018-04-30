@@ -2,24 +2,33 @@ package serveur;
 import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.*;
 import java.util.ArrayList;
 
 import connexion.Connexion;
+import connexion.ConnexionInterface;
 import connexion.MethodeServeur;
 
 public class Serveur {
 
 	private ArrayList<MethodeServeur> l;
 	
-	public Serveur(ArrayList<MethodeServeur> l) throws RemoteException, MalformedURLException {
+	public Serveur(ArrayList<MethodeServeur> l) throws RemoteException, MalformedURLException, AlreadyBoundException {
 		String url = "";
-		java.rmi.registry.LocateRegistry.createRegistry(1099);
-		for (MethodeServeur t : l) {
-			url += "rmi://localhost/";
+		Registry registry = java.rmi.registry.LocateRegistry.createRegistry(1099);
+		ConnexionInterface c = new Connexion("Connexion");
+		registry.bind("Connexion", (ConnexionInterface) UnicastRemoteObject.exportObject(c, 0));
+		/*for (MethodeServeur t : l) {
+			if (t instanceof ConnexionInterface) {
+				ConnexionInterface c = (ConnexionInterface) t;
+				registry.bind("Connexion", (ConnexionInterface) UnicastRemoteObject.exportObject(c, 0));
+			}*/
+			//registry.bind("Connexion", (MethodeServeur) UnicastRemoteObject.exportObject(t, 0));
+			/*url += "rmi://localhost/";
 			url += t.name();
 			Naming.rebind(url, t);
-		}
+		}*/
 	}
 	
 	/*public static void main (String[] argv) {
