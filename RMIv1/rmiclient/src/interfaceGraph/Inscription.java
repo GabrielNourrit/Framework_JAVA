@@ -1,14 +1,17 @@
 package interfaceGraph;
 
-
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class Inscription extends Formulaire {
-	private Group form;
 	private Label l_login;
 	private Label l_mdp;
 	private Label l_nom;
@@ -19,15 +22,21 @@ public class Inscription extends Formulaire {
 	private TextField t_nom;
 	private TextField t_prenom;
 	private Button b_valider;
+	private Label l_groupe;
+	private ChoiceBox<String> cb_groupe;
+	private int choix;
 	
 	/**
 	 * @description : Cet objet est un formulaire d'inscription par defaut
 	 */
 	public Inscription() {
+		super();
+		choix=-1;
 		genererSousComposant();
 		ecouteurDefaultAction();
+		ecouteurChoixGroupe();
 		layoutDefaultParametre();
-		this.form.getChildren().addAll(l_login, l_titre, t_login, l_mdp, t_mdp, l_nom, t_nom, l_prenom, t_prenom, b_valider);
+		this.setAlignment(Pos.CENTER);
 	}
 	
 	/**
@@ -40,11 +49,11 @@ public class Inscription extends Formulaire {
 		/*generation de notre formulaire*/
 		this();
 		/*mise en page form*/
-		this.getStyleForm().setLayoutX(X);
-		this.getStyleForm().setLayoutY(Y);
+		/*this.getStyleForm().setLayoutX(X);
+		this.getStyleForm().setLayoutY(Y);*/
 		
 		/*Attachement de notre form a notre environnement test*/
-		pere.getChildren().add(this.getStyleForm());
+		//pere.getChildren().add(this.getStyleForm());
 	}
 	
 	/**
@@ -52,7 +61,8 @@ public class Inscription extends Formulaire {
 	 */
 	@Override
 	protected void genererSousComposant() {
-		form = new Group();
+		//form = new GridPane();
+		form = new VBox();
 		l_login = new Label("Login : ");
 		l_mdp = new Label("Mot de passe : ");
 		l_nom = new Label("Nom : ");
@@ -63,6 +73,8 @@ public class Inscription extends Formulaire {
 		t_nom = new TextField();
 		t_prenom = new TextField();
 		b_valider = new Button("Valider");
+		l_groupe = new Label("Groupe : ");
+		cb_groupe = new ChoiceBox<String>(FXCollections.observableArrayList("Groupe 1","Groupe 2"));
 	}
 
 	/**
@@ -70,58 +82,45 @@ public class Inscription extends Formulaire {
 	 */
 	@Override
 	protected void ecouteurDefaultAction() {
-		b_valider.setOnAction(event -> {
-			System.out.println("OK");
-			
+		b_valider.setOnAction(event -> {		
 			t_login.setText("");
 			t_mdp.setText("");
 			t_nom.setText("");
 			t_prenom.setText("");
+		});	
+		if (choix == 1);
+	}
+	
+	/**
+	 * Ecouteur d'evenement sur le choix du groupe
+	 */
+	private void ecouteurChoixGroupe() {
+		cb_groupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>) (ov, value, new_value) -> {
+			System.out.println(value);	
+			System.out.println(new_value);
+			choix = (int) new_value;
+			System.out.println(ov.getClass());
 		});
-		
-		
 	}
 
 	/**
-	 * Applique les paramètres par default du design du composant
+	 * Applique les parametres par default du design du composant
 	 */
 	@Override
 	protected void layoutDefaultParametre() {
-		l_titre.setLayoutX(70);
-		l_titre.setLayoutY(0);
-		
-		l_login.setLayoutX(0);
-		l_login.setLayoutY(33);
-		
-		t_login.setLayoutX(100);
-		t_login.setLayoutY(30);
-		
-		l_mdp.setLayoutX(0);
-		l_mdp.setLayoutY(63);
-		
-		t_mdp.setLayoutX(100);
-		t_mdp.setLayoutY(60);
-		
-		l_prenom.setLayoutX(0);
-		l_prenom.setLayoutY(93);
-		
-		t_prenom.setLayoutX(100);
-		t_prenom.setLayoutY(90);
-		
-		l_nom.setLayoutX(0);
-		l_nom.setLayoutY(123);
-		
-		t_nom.setLayoutX(100);
-		t_nom.setLayoutY(120);
-		
-		b_valider.setLayoutX(70);
-		b_valider.setLayoutY(150);
+		/*petite mise en page de notre box*/
+		form.getChildren().addAll(l_titre,l_login,t_login,l_mdp,t_mdp,l_nom,t_nom,l_prenom,t_prenom,l_groupe,cb_groupe,b_valider);
+		form.setMaxSize(120, 100);
+		form.setSpacing(3);
+		form.setAlignment(Pos.CENTER);
+		this.getChildren().add(form);	
 	}
+	
 	
 	/**
 	 * @return retourne le formulaire Graphique modifiable a la guise du client.
 	 */
-	public Group getStyleForm(){
+	public VBox getStyleForm(){
 		return this.form;
 	}
 

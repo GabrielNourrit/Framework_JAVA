@@ -10,9 +10,11 @@ import java.sql.Statement;
 
 import BD.Connexionsgbd;
 
-public class Connexion extends UnicastRemoteObject implements ConnexionInterface {
+public class Connexion extends MethodeServeur implements ConnexionInterface {
 
-	public Connexion () throws RemoteException {   }
+	public Connexion (String url) throws RemoteException {  
+		super(url);
+	}
 	
 	public boolean verifierMdp(String login, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
 		int n = 0;

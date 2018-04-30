@@ -1,109 +1,96 @@
 package interfaceGraph;
 
-
 import java.rmi.Naming;
-import java.rmi.RemoteException;
 
 import connexion.ConnexionInterface;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class ConnexionStyle extends Formulaire {
-	protected Group form;
+public class ConnexionStyle extends Formulaire{
 	private Label l_id;
 	private Label l_mdp;
 	protected TextField id;
 	protected PasswordField mdp;
 	
 	/**
-	 * @description : Cet objet est un formulaire de connexion par defaut
+	 * Cet objet est un formulaire de connexion par defaut
 	 */
 	public ConnexionStyle(){
-		System.out.println("WESH CONNEXION");
-		/*generation de notre formulaire*/
+		super();
 		genererSousComposant();
 		layoutDefaultParametre();
-		ecouteurDefaultAction();
-		
-		
-		this.form.getChildren().addAll(l_id,id,l_mdp,mdp);
+		ecouteurDefaultAction();		
 	}
-	
-	/**
-	 * ConnexionStyle() avec liaison au pere et parametrage du placement
-	 * @param pere le groupe pere de notre formulaire 
-	 * @param X l'axe en X du formulaire dans la fenetre
-	 * @param Y l'axe en Y du formulaire dans la fenetre
-	 */
-	public ConnexionStyle(Group pere, int X, int Y){
-		/*generation de notre formulaire*/
-		this();
-		/*mise en page form*/
-		this.getStyleForm().setLayoutX(X);
-		this.getStyleForm().setLayoutY(Y);
-		
-		/*Attachement de notre form a notre environnement test*/
-		pere.getChildren().add(this.getStyleForm());
-	
-	}
-	
-	protected void genererSousComposant(){
-		this.form = new Group();
+
+	@Override
+	protected void genererSousComposant() {
+		//this.form = new GridPane();
+		this.form = new VBox();
 		this.l_id = new Label("id");
 		this.id = new TextField();
 		this.l_mdp = new Label("pass");
 		this.mdp = new PasswordField();
+		
 	}
-	
-	/*Definie le comportement par defaut de notre interface*/
-	protected void ecouteurDefaultAction(){
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		/*Definie le comportement par defaut de notre interface*/
 		this.mdp.setOnAction(event ->{
-			
 			/*Traitement de l'appli*/
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
 			
-			
-			ConnexionInterface c;
+			ConnexionInterface connex;
 			try {
-				c = (ConnexionInterface)Naming.lookup("rmi://localhost/c");
-				System.out.println(c.verifierMdp(this.id.getText(),this.mdp.getText()));
-				
-				}catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("HelloClient exception: " + e);
+				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
+				if(connex.verifierMdp(id.getText(),mdp.getText())) {
+					ScrollPane sp = new ScrollPane();
+					Inscription i = new Inscription();
+					Stage nouveauStage;
+					nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+					sp.setContent(i);
+					i.setAlignment(Pos.CENTER);
+					sp.setFitToWidth(true);
+					sp.setFitToHeight(true);
+					Scene scene = new Scene(sp, 200, 250);
+					nouveauStage.setScene(scene);
 				}
+				else {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Information Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("Login ou mot de passe incorrect");
+
+					alert.showAndWait();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			/*On efface les anciennes valeures une fois finie*/
 			this.id.setText("");
 			this.mdp.setText("");
 		});
+		
 	}
-	
-	
-	/* Permet de parametrer les valeurs par defauts du layout (peut etre a externaliser)*/
-	protected void layoutDefaultParametre(){
+
+	@Override
+	protected void layoutDefaultParametre() {
 		/*petite mise en page de notre box*/
-		//l_id
-		this.l_id.setLayoutX(10);
-		this.l_id.setLayoutY(5);
-		//id
-		this.id.setLayoutX(50);
-		//l_mdp
-		this.l_mdp.setLayoutX(10);
-		this.l_mdp.setLayoutY(43);
-		//mdp
-		this.mdp.setLayoutY(40);
-		this.mdp.setLayoutX(50);
-	}
-	
-	
-	/**
-	 * @return retourne le formulaire Graphique modifiable a la guise du client.
-	 */
-	public Group getStyleForm(){
-		return this.form;
-	}		
+		form.getChildren().addAll(l_id,id,l_mdp,mdp);
+		form.setMaxSize(120, 100);
+		form.setSpacing(3);
+		form.setAlignment(Pos.CENTER);
+		this.getChildren().add(form);		
+	}	
 }

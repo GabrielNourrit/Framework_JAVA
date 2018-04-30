@@ -4,16 +4,28 @@ import java.rmi.*;
 
 import connexion.ConnexionInterface;
 import interfaceGraph.ConnexionStyle;
-import javafx.scene.Group;
+import interfaceGraph.ConnexionStyle2;
+import interfaceGraph.Inscription;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 
  
 public class Client extends Application {
+	/*protected Pane p;
+	
+	public Client(Pane pane) {
+		p = pane;
+	}*/
+	
 	public static void main (String[] args) {
 		//AdditionInterface hello;
-		ConnexionInterface c;
+		//ConnexionInterface c;
 		try {
 			/*hello = (AdditionInterface)Naming.lookup("rmi://localhost/ABC");
 			int result=hello.add(9,10);
@@ -23,27 +35,31 @@ public class Client extends Application {
 			System.out.println(c.verifierMdp("metzgegu","01234"));*/
 			
 			launch(args);
-			
+
 			}catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("HelloClient exception: " + e);
 				}
 		}
 	
-	public void start(Stage primaryStage) {
-		try {
-			Group root = new Group();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			
-			
-			ConnexionStyle c = new ConnexionStyle(root,80,80);
-			
-			primaryStage.setResizable(false);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	
+	@Override
+	public void start(Stage stage) throws Exception {
+		// TODO Auto-generated method stub
+		//BorderPane sp = new BorderPane();
+		ScrollPane sp = new ScrollPane();
+		VBox vb = new ConnexionStyle2();
+		//VBox vb = new Inscription();
+		sp.setContent(vb);
+		vb.setAlignment(Pos.CENTER);
+		/*sp.setContent(p);
+		//p.setAlignment(Pos.CENTER);*/
+		sp.setFitToWidth(true);
+		sp.setFitToHeight(true);
+		Scene scene = new Scene(sp, 200, 200);
+		stage.setTitle("test");
+		stage.setScene(scene);
+		stage.show();
+		
 	}
 }
