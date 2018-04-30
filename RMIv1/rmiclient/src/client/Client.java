@@ -27,6 +27,7 @@ public class Client extends Application {
 		//AdditionInterface hello;
 		//ConnexionInterface c;
 		try {
+			System.setSecurityManager(new RMISecurityManager());
 			/*hello = (AdditionInterface)Naming.lookup("rmi://localhost/ABC");
 			int result=hello.add(9,10);
 			System.out.println("Result is :"+result);*/
