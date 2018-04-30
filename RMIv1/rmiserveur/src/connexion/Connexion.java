@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 import BD.Connexionsgbd;
 
-public class Connexion extends MethodeServeur implements ConnexionInterface {
+public class Connexion extends MethodeServeur implements ConnexionInterface{
 
 	public Connexion (String url) throws RemoteException {  
 		super(url);
