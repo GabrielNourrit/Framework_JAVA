@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ConnexionStyle extends Formulaire{
+public class ConnexionStyle extends Composition{
 	private Label l_id;
 	private Label l_mdp;
 	protected ConnexionInterface connexion;

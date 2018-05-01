@@ -1,14 +1,14 @@
-package interfaceGraph;
-
+package application;
+import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.layout.VBox;
+import javafx.scene.Parent;
 
-public abstract class Formulaire extends VBox{
+public abstract class Composition2 extends Parent{
 	
 	/**
 	 * Le formulaire
 	 */
-	protected VBox form;
+	protected Group form;
 	
 	/**
 	 * genere tout les sous Composant du formulaire

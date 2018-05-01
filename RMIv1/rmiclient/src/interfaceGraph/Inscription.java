@@ -11,7 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class Inscription extends Formulaire {
+public class Inscription extends Composition {
 	private Label l_login;
 	private Label l_mdp;
 	private Label l_nom;

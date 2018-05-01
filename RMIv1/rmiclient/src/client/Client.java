@@ -49,7 +49,6 @@ public class Client extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
 		//BorderPane sp = new BorderPane();
 		ScrollPane sp = new ScrollPane();
 		//VBox vb = new ConnexionStyle();
