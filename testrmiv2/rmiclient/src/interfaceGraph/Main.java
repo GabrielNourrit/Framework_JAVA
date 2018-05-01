@@ -1,32 +1,26 @@
 package interfaceGraph;
-	
 import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-
-
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			Group root = new Group();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			
-			Inscription form2 = new Inscription(root,80,180);
-			
-			
-			primaryStage.setResizable(false);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		VBox vb = new Tchat();
+		vb.setAlignment(Pos.CENTER);
+		Scene scene = new Scene(vb, 600, 600);
+		stage.setResizable(false);
+		stage.setTitle("ChatBox");
+		stage.setScene(scene);
+		stage.show();
+		
+	}
+
 }

@@ -10,13 +10,13 @@ import java.sql.Statement;
 
 import BD.Connexionsgbd;
 
-public class Connexion extends MethodeServeur implements ConnexionInterface {
+public class Connexion extends MethodeServeur implements ConnexionInterface{
 
 	public Connexion (String url) throws RemoteException {  
 		super(url);
 	}
 	
-	public synchronized boolean verifierMdp(String login, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
+	public boolean verifierMdp(String login, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
 		int n = 0;
 		Connexionsgbd csgbd = new Connexionsgbd();
 		Connection conn = csgbd.openConnexionsgbd();
