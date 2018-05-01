@@ -43,10 +43,8 @@ public class ConnexionStyle2 extends ConnexionStyle{
 			/*Traitement de l'appli*/
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
-			ConnexionInterface connex;
 			try {
-				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/c");
-				if(connex.verifierMdp(id.getText(),mdp.getText())) {
+				if(this.connexion.verifierMdp(id.getText(),mdp.getText())) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;

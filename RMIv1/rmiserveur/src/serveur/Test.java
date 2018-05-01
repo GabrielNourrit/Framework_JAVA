@@ -11,7 +11,6 @@ import connexion.MethodeServeur;
 import parametrage.SettingServeurJVM;
 
 public class Test {
-
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
@@ -19,5 +18,4 @@ public class Test {
 		l.add(new Connexion("Connexion"));
 		Serveur s = new Serveur(l);
 	}
-
 }

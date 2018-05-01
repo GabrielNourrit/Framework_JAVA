@@ -2,8 +2,10 @@ package interfaceGraph;
 
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 
 import connexion.ConnexionInterface;
 import javafx.geometry.Pos;
@@ -21,6 +23,7 @@ import javafx.stage.Stage;
 public class ConnexionStyle extends Formulaire{
 	private Label l_id;
 	private Label l_mdp;
+	protected ConnexionInterface connexion;
 	protected TextField id;
 	protected PasswordField mdp;
 	
@@ -29,6 +32,12 @@ public class ConnexionStyle extends Formulaire{
 	 */
 	public ConnexionStyle(){
 		super();
+		try {
+		Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+        connexion = (ConnexionInterface) registry.lookup("Connexion");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		genererSousComposant();
 		layoutDefaultParametre();
 		ecouteurDefaultAction();		
@@ -53,34 +62,31 @@ public class ConnexionStyle extends Formulaire{
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
 			
-			ConnexionInterface connex;
-			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-	            connex = (ConnexionInterface) registry.lookup("Connexion");
 				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
-				if(connex.verifierMdp(id.getText(),mdp.getText())) {
-					ScrollPane sp = new ScrollPane();
-					Inscription i = new Inscription();
-					Stage nouveauStage;
-					nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-					sp.setContent(i);
-					i.setAlignment(Pos.CENTER);
-					sp.setFitToWidth(true);
-					sp.setFitToHeight(true);
-					Scene scene = new Scene(sp, 200, 250);
-					nouveauStage.setScene(scene);
+				try {
+					if(this.connexion.verifierMdp(id.getText(),mdp.getText())) {
+						ScrollPane sp = new ScrollPane();
+						Inscription i = new Inscription();
+						Stage nouveauStage;
+						nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+						sp.setContent(i);
+						i.setAlignment(Pos.CENTER);
+						sp.setFitToWidth(true);
+						sp.setFitToHeight(true);
+						Scene scene = new Scene(sp, 200, 250);
+						nouveauStage.setScene(scene);
+					}
+					else {
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Information Dialog");
+						alert.setHeaderText(null);
+						alert.setContentText("Login ou mot de passe incorrect");
+						alert.showAndWait();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				else {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("Login ou mot de passe incorrect");
-
-					alert.showAndWait();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
 			
 			/*On efface les anciennes valeures une fois finie*/
 			this.id.setText("");

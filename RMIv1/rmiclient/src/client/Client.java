@@ -52,7 +52,8 @@ public class Client extends Application {
 		// TODO Auto-generated method stub
 		//BorderPane sp = new BorderPane();
 		ScrollPane sp = new ScrollPane();
-		VBox vb = new ConnexionStyle();
+		//VBox vb = new ConnexionStyle();
+		VBox vb = new ConnexionStyle2();
 		//VBox vb = new Inscription();
 		sp.setContent(vb);
 		vb.setAlignment(Pos.CENTER);
