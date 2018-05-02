@@ -87,6 +87,9 @@ public class Inscription extends Formulaire {
 			t_mdp.setText("");
 			t_nom.setText("");
 			t_prenom.setText("");
+			
+			
+			
 		});	
 		if (choix == 1);
 	}

@@ -45,7 +45,7 @@ public class ConnexionStyle2 extends ConnexionStyle{
 			System.out.print("mdp est "+this.mdp.getText());
 			ConnexionInterface connex;
 			try {
-				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/c");
+				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();

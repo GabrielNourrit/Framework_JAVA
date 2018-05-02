@@ -1,8 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.Naming;
-import java.rmi.RMISecurityManager;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import connexion.ConnexionInterface;

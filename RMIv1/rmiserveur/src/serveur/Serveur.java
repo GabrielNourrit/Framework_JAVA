@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import connexion.Connexion;
 import connexion.ConnexionInterface;
 import connexion.MethodeServeur;
+import connexion.Utilisateur;
+import connexion.Utilisateurs;
+import connexion.UtilisateursInterface;
 
 public class Serveur {
 
@@ -18,7 +21,11 @@ public class Serveur {
 		String url = "";
 		Registry registry = java.rmi.registry.LocateRegistry.createRegistry(1099);
 		ConnexionInterface c = new Connexion("Connexion");
-		registry.bind("Connexion", (ConnexionInterface) UnicastRemoteObject.exportObject(c, 0));
+		registry.bind("Connexion", (ConnexionInterface) UnicastRemoteObject.exportObject(c, 1099));
+		UtilisateursInterface ui = new Utilisateurs("Utilisateurs");
+		registry.bind("Utilisateurs", (UtilisateursInterface) UnicastRemoteObject.exportObject(ui, 1099));
+		//UtilisateurInterface ui1 = new Utilisateur("Utilisateur");
+		//registry.bind("Utilisateur", (UtilisateurInterface) UnicastRemoteObject.exportObject(ui1, 1099));
 		/*for (MethodeServeur t : l) {
 			if (t instanceof ConnexionInterface) {
 				ConnexionInterface c = (ConnexionInterface) t;
