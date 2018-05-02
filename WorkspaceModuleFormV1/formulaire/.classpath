@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Gab/Documents/Framework_JAVA/RMIv1/rmiclient/ressources/jfxrt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tguev/Documents/ProjetPPO/Framework_JAVA/RMIv1/rmiclient/ressources/jfxrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
