@@ -3,7 +3,9 @@ package parametrage;
 import java.rmi.RMISecurityManager;
 /**
  * Classe de paramètrage de la Java Virtial Machine du Serveur
+ * @info utilisation de RMISecurityManager qui est dépréciée.
  */
+@SuppressWarnings("deprecation")
 public class SettingServeurJVM {
 	/**
 	 * Localisation des propriétés de sécurité définit

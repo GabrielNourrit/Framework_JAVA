@@ -3,21 +3,14 @@ package serveur;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import BaseDeDonnee.MethodeServeur;
-import BaseDeDonnee.connexion.ConnexionInterface;
-import BaseDeDonnee.sgbd.SGBD;
 import BaseDeDonnee.sgbd.SGBDInterface;
 import BaseDeDonnee.sgbd.SGBDMySQL;
 import BaseDeDonnee.sgbd.SGBDOracle;
+import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 
 public class Main {
@@ -29,18 +22,27 @@ public class Main {
 		// Définition du type de SGBD utilisé
 		SGBDInterface sgbd;
 		
-		//sgbd = new SGBDOracle();
-		
-		sgbd = new SGBDMySQL();
-
+		switch(PropertiesServeur.getTypeSGBD().toUpperCase()) {
+			case "MYSQL": sgbd = new SGBDMySQL();break;
+			default : sgbd = new SGBDOracle();break;
+		}
 		
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("SGBD", sgbd);
 
 		
 		//Création du serveur
-		new Serveur(listBind);
-		System.out.println("Lancement du Serveur");
+		try{
+			
+			new Serveur(listBind);
+			System.out.println("Lancement du Serveur");
+			
+		}catch(NumberFormatException e){
+			System.err.println("Numéro de port non définit");
+		} catch (Exception e) {
+			System.err.println("Erreur Aux lancement du Serveur : "+e.getMessage());
+			e.printStackTrace();
+		}
 		
 	}
 	
