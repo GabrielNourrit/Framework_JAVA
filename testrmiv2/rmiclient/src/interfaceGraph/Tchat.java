@@ -10,6 +10,8 @@ import java.util.Date;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -21,10 +23,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import tchat.TchatInterface;
+import util.LimitedTextField;
 
 public class Tchat extends VBox {
 
-	private TextField ZoneText;
+	private LimitedTextField ZoneText;
 	private Button BouttonEnv;
 	HBox hb;
 	HBox hboxTextTchat;
@@ -67,7 +70,7 @@ public class Tchat extends VBox {
 	}
 	
 	private void genererSousComposant() {
-		ZoneText= new TextField();
+		ZoneText= new LimitedTextField(5);
 		BouttonEnv= new Button("Envoyer");
 		hb= new HBox();
 		hboxTextTchat = new HBox();
@@ -121,10 +124,12 @@ public class Tchat extends VBox {
 				olds=mess;
 				String[] str = mess.split("§");					
 				for (String u : str) {
-					if (!exist(u,buffer)) {
-						s = u.split("~");
-						info.getChildren().add(new Label(s[0]+ " " + s[1]));
-						contenu.getChildren().add(new Label(s[2]));
+					if (!u.equals("")) {
+						if (!exist(u,buffer)) {
+							s = u.split("~");
+							info.getChildren().add(new Label(s[0]+ " " + s[1]));
+							contenu.getChildren().add(new Label(s[2]));
+						}
 					}
 				}
 				buffer=str;
@@ -139,5 +144,17 @@ public class Tchat extends VBox {
 			if (u.equals(s)) return true;
 		}
 		return false;
+	}
+	
+	private void addTextLimiter(TextField tf, int maxLength) {
+	    tf.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {
+	            if (tf.getText().length() > maxLength) {
+	                String s = tf.getText().substring(0, maxLength);
+	                tf.setText(s);
+	            }
+	        }
+	    });
 	}
 }

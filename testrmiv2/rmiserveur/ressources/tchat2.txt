@@ -1,7 +1,6 @@
 15:42:08~metzgegu~salut§
 15:42:08~metzgegu~salut§
-15:42:08~metzgegu~salut
-§
+15:42:08~metzgegu~salut§
 21:16:04~guevarat~aa§
 21:16:07~guevarat~ss§
 21:16:11~guevarat~vv§
@@ -10,3 +9,6 @@
 22:44:37~guevarat~ça va comment§
 22:45:32~guevarat~cool§
 23:05:58~guevarat~yooho§
+09:18:01~guevarat~jfjfj§
+09:18:04~guevarat~fjdfjd§
+09:24:03~guevarat~cool§
