@@ -2,7 +2,8 @@ package interfaceGraph;
 
 import java.rmi.Naming;
 
-import connexion.ConnexionInterface;
+import BaseDeDonnee.connexion.ConnexionInterface;
+import BaseDeDonnee.sgbd.SGBDInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -44,9 +45,12 @@ public class ConnexionStyle2 extends ConnexionStyle{
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
 			ConnexionInterface connex;
+			SGBDInterface sgbd;
 			try {
-				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/c");
-				if(connex.verifierMdp(id.getText(),mdp.getText())) {
+				
+				sgbd = (SGBDInterface)Naming.lookup("rmi://localhost/SGBDInterface");				
+				connex = sgbd.nouvelleConnexion(id.getText(),mdp.getText());
+				if(connex.verifierMdp()) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;

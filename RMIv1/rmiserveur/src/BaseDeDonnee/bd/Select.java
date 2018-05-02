@@ -1,4 +1,4 @@
-package BD;
+package BaseDeDonnee.bd;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
