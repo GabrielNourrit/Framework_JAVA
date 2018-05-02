@@ -5,19 +5,10 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
-			<item value="C:\Users\Gab\Documents\Framework_JAVA\RMIv1"/>
+			<item value="/home/n/nourritg/Documents/S6/Framework_JAVA/formulaire"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
 			<item value=""/>
-		</list>
-	</section>
-	<section name="NewWizardAction">
-		<item value="org.eclipse.jdt.ui.wizards.JavaProjectWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
-		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
-			<item value="org.eclipse.jdt.ui.java"/>
-			<item value="org.eclipse.jst.j2ee.internal"/>
-			<item value="org.eclipse.jpt.jaxb"/>
-			<item value="org.eclipse.jpt.jpa"/>
 		</list>
 	</section>
 </section>

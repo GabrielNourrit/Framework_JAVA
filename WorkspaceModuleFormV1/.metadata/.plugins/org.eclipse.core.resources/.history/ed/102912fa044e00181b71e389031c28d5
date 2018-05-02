@@ -1,0 +1,45 @@
+package application.mail;
+
+import application.Composition;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+public class GestionMail extends Composition{
+	private TableView<TypeMess> t;
+	private TableColumn<TypeMess,String> date;
+	private TableColumn<TypeMess,String> objet;
+	private TableColumn<TypeMess,String> mail;
+	
+	public GestionMail(){
+		genererSousComposant();
+		ecouteurDefaultAction();
+		layoutDefaultParametre();
+	}
+	
+	@Override
+	protected void genererSousComposant() {
+		t = new TableView<TypeMess>();
+		date = new TableColumn<TypeMess,String>("Date");
+		objet = new TableColumn<TypeMess, String>("Objet");
+		mail = new TableColumn<TypeMess,String>("Mail");
+		
+	}
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		
+	}
+
+	@Override
+	protected void layoutDefaultParametre() {
+		this.t.getColumns().addAll(this.date,this.objet,this.mail);
+		this.form.getChildren().add(this.t);
+		this.form.setMaxSize(120, 100);
+		this.form.setSpacing(5);
+		this.getChildren().add(form);
+	}
+
+	
+	
+	
+}
