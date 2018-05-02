@@ -24,6 +24,8 @@ public class Connexion extends MethodeServeur implements ConnexionInterface {
 		ResultSet rs = stmt.executeQuery("select count(*) from utilisateurs where login='"+ login +"' and motDePasse='" + mdp + "'");
 		if (rs.next()) n = rs.getInt(1);
 		System.out.println(n);
+		rs.close();
+        stmt.close();
 		csgbd.closeConnexionsgbd(conn);
 		if(n == 1) return true;
 		return false;
