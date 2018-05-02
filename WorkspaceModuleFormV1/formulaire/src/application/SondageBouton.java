@@ -31,14 +31,18 @@ public class SondageBouton extends Composition{
 		this.creerSondage.setOnAction(event ->{
 		
 						ScrollPane sp = new ScrollPane();
-						SondageCreation sc = new SondageCreation();
+						
+						VBox sc = new SondageCreation();
+						
+						
+						
 						Stage nouveauStage;
 						nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-						sp.setContent(sc);
 						sc.setAlignment(Pos.CENTER);
+						sp.setContent(sc);
 						sp.setFitToWidth(true);
 						sp.setFitToHeight(true);
-						Scene scene = new Scene(sp, 200, 250);
+						Scene scene = new Scene(sp, 300, 250);
 						nouveauStage.setScene(scene);
 
 		});

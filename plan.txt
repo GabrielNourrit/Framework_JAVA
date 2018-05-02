@@ -1,0 +1,7 @@
+25;75;26;37;14.
+
+->ArrayList<Int>()
+->Somme total
+->Affiche pour chacun % et nombre de vote brut
+->Affiche total
+->Affiche jour restant

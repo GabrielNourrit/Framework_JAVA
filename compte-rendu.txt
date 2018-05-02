@@ -1,0 +1,14 @@
+LUN :
+- Jules m'a mis au point sur le modele RMI
+- Cahier des charges
+
+MAR :
+- Thib m'a mis au point sur le security manager
+- module sondage à 40%
+- ajout des fonctionnalités de connexionStyle2
+
+obj :
+- sécurité mdp base
+- sécurité injection sql
+- module sondage 100%
+- présentation mi-parcours
