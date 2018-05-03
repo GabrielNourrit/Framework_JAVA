@@ -8,14 +8,13 @@ import java.util.ArrayList;
 
 import connexion.Connexion;
 import connexion.MethodeServeur;
+import parametrage.SettingServeurJVM;
 
 public class Test {
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException {
-		// Security Manager
-		if (System.getSecurityManager() == null) {
-		   System.setSecurityManager(new RMISecurityManager());
-	    }
+		SettingServeurJVM.configureProperty();
+		SettingServeurJVM.useSecurityManager();
 		ArrayList<MethodeServeur> l = new ArrayList<>();
 		l.add(new Connexion("Connexion"));
 		Serveur s = new Serveur(l);

@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parametrage.SettingClientJVM;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 
@@ -27,7 +28,9 @@ public class Client extends Application {
 		//AdditionInterface hello;
 		//ConnexionInterface c;
 		try {
-			System.setSecurityManager(new RMISecurityManager());
+			SettingClientJVM.configureProperty();
+			SettingClientJVM.useSecurityManager();
+			
 			/*hello = (AdditionInterface)Naming.lookup("rmi://localhost/ABC");
 			int result=hello.add(9,10);
 			System.out.println("Result is :"+result);*/
