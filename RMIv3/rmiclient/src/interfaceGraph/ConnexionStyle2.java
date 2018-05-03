@@ -1,10 +1,8 @@
 package interfaceGraph;
 
-import java.rmi.Naming;
 import java.rmi.registry.Registry;
 
-import BaseDeDonnee.sgbd.SGBDInterface;
-import BaseDeDonnee.connexion.ConnexionInterface;
+import connexion.ConnexionInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -44,12 +42,10 @@ public class ConnexionStyle2 extends ConnexionStyle{
 		this.boutonOk.setOnAction(event ->{
 			/*Traitement de l'appli*/
 			ConnexionInterface connex;
-			SGBDInterface sgbd;
 			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-				sgbd = (SGBDInterface) registry.lookup("SGBD");
-	            connex = sgbd.nouvelleConnexion(id.getText(), mdp.getText());
-				if(connex.verifierMdp()) {
+				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+				connex = (ConnexionInterface) registry.lookup("Connexion");
+				if(connex.verifierMdp(id.getText(), mdp.getText())) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;

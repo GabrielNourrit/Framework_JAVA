@@ -5,8 +5,7 @@ import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import BaseDeDonnee.connexion.ConnexionInterface;
-import BaseDeDonnee.sgbd.SGBDInterface;
+import connexion.ConnexionInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -51,16 +50,14 @@ public class ConnexionStyle extends Formulaire{
 		/*Definie le comportement par defaut de notre interface*/
 		this.mdp.setOnAction(event ->{
 			/*Traitement de l'appli*/
-			System.out.println("id est "+this.id.getText());
-			System.out.print("mdp est "+this.mdp.getText());
+			//System.out.println("id est "+this.id.getText());
+			//System.out.print("mdp est "+this.mdp.getText());
 			
 			ConnexionInterface connex;
-			SGBDInterface sgbd;
 			try {
 				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-				sgbd = (SGBDInterface) registry.lookup("SGBD");
-	            connex = sgbd.nouvelleConnexion(id.getText(), mdp.getText());
-				if(connex.verifierMdp()) {
+				connex = (ConnexionInterface) registry.lookup("Connexion");
+				if(connex.verifierMdp(id.getText(), mdp.getText())) {
 					ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;

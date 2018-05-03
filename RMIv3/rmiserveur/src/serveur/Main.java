@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import BaseDeDonnee.MethodeServeur;
-import BaseDeDonnee.sgbd.SGBDInterface;
+import BaseDeDonnee.sgbd.SGBD;
 import BaseDeDonnee.sgbd.SGBDMySQL;
 import BaseDeDonnee.sgbd.SGBDOracle;
-import fichier.Fichier;
-import fichier.FichierInterface;
+import connexion.Connexion;
+import connexion.ConnexionInterface;
+import fichier.GestionFichier;
+import fichier.GestionFichierInterface;
 import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
@@ -24,20 +26,21 @@ public class Main {
 		SettingServeurJVM.useSecurityManager();
 		
 		// Définition du type de SGBD utilisé
-		SGBDInterface sgbd;
+		SGBD sgbd;
 		TchatInterface tchat;
-		FichierInterface fichier;
+		GestionFichierInterface fichier;
 		switch(PropertiesServeur.getTypeSGBD().toUpperCase()) {
 			case "MYSQL": sgbd = new SGBDMySQL();System.out.println("MYSQL");break;
 			case "ORACLE": sgbd =new SGBDOracle();System.out.println("ORACLE");break;
 			default : sgbd = new SGBDOracle();break;
 		}
 		tchat = new Tchat();
-		fichier = new Fichier();
+		fichier = new GestionFichier(sgbd);
+		ConnexionInterface connexion = new Connexion(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
-		listBind.put("SGBD", sgbd);
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
+		listBind.put("Connexion", connexion);
 
 		
 		//Création du serveur

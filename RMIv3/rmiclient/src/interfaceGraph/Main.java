@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import javax.management.remote.rmi.RMIServer;
 
-import fichier.FichierInterface;
+import fichier.GestionFichierInterface;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,17 +20,17 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, NotBoundException {
-		//launch(args);
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-		FichierInterface connex = (FichierInterface) registry.lookup("Fichier");
+		launch(args);
+		/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+		GestionFichierInterface connex = (GestionFichierInterface) registry.lookup("Fichier");
 		/*byte[] bytes = Files.readAllBytes(Paths.get("test.txt"));
-		System.out.println(connex.enregisterFichier("test.txt",bytes));*/
+		System.out.println(connex.enregisterFichier("test.txt",bytes));
 		byte[] bytes=connex.sauvegarderFichier("ressources/ganttCahierDesCharges.pdf");
 		try{
             Files.write(Paths.get("ganttCahierDesCharges.pdf"),bytes);
         } catch (IOException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 	}
 
 	@Override

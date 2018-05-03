@@ -1,13 +1,15 @@
 package BaseDeDonnee.sgbd;
 
 import java.rmi.RemoteException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import BaseDeDonnee.connexion.Connexion;
-import BaseDeDonnee.connexion.ConnexionMySQL;
+import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
 
-public class SGBDOracle extends SGBD {
 
+public class SGBDOracle extends SGBD {
+	
 	public SGBDOracle() throws RemoteException {
 		super();
 	}
@@ -15,10 +17,31 @@ public class SGBDOracle extends SGBD {
 	private static final String LINK_SETTING_ORACLE = "ressources/BDOracle.properties";
 	
 	@Override
-	protected Connexion creeSGBD(String utilisateur, String motdepasse) throws RemoteException {
-		Connexion conn = null;
-		conn = new ConnexionOracle();
-		conn.creeConnexion(utilisateur, motdepasse, LINK_SETTING_ORACLE);
-		return conn;
+	protected ConnexionBase creeSGBD() throws RemoteException {
+		return new ConnexionOracle(LINK_SETTING_ORACLE);
 	}
+
+	
+	@Override
+	public ResultSet executeSelect(String requete) throws SQLException, ClassNotFoundException, RemoteException {
+		ResultSet rs = null;
+		try {
+			conn = new ConnexionOracle(LINK_SETTING_ORACLE).prepare();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+
+	@Override
+	public void closeReq(ResultSet rs) throws SQLException {
+		conn.close();
+		stmt.close();
+		rs.close();
+	}
+	
+	
 }

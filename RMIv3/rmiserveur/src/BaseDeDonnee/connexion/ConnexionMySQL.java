@@ -2,42 +2,21 @@ package BaseDeDonnee.connexion;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import BaseDeDonnee.bd.Connexionsgbd;
 
 
-public class ConnexionMySQL extends Connexion {
+public class ConnexionMySQL extends ConnexionBase {
 
-	public ConnexionMySQL() throws RemoteException {
-		super();
+	public ConnexionMySQL( String link_properties) throws RemoteException {
+		super(link_properties);
 	}
 
-	@Override
-	public Connexion creeConnexion(String utilisateur, String motdepasse, String link_properties) {
-		this.utilisateur = utilisateur;
-		this.motdepasse = motdepasse;
-		this.link_properties = link_properties;
-		return this;
-	}
-
-	@Override
-	public boolean verifierMdp() throws RemoteException, ClassNotFoundException, SQLException {
-		/*int n = 0;
-		Connexionsgbd csgbd = new Connexionsgbd(this.link_properties);
+	public Connection prepare() throws SQLException, ClassNotFoundException {
+		Connexionsgbd csgbd = new Connexionsgbd(link_properties);
 		Connection conn = csgbd.openConnexionsgbd();
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("select count(*) from utilisateurs where login='"+ this.utilisateur +"' and motDePasse='" + this.motdepasse + "'");
-		if (rs.next()) n = rs.getInt(1);
-		System.out.println(n);
-		csgbd.closeConnexionsgbd(conn);
-		if(n == 1) return true;
-		return false;*/
-		System.out.println("passe");
-		return true;
+		return conn;
 	}
-
 
 }
