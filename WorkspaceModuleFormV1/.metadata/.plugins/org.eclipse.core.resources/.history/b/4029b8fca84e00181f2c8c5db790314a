@@ -1,0 +1,77 @@
+package application.mail;
+
+import application.Composition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+
+@SuppressWarnings("rawtypes")
+public class GestionMail extends Composition{
+	private TableView<melCell> t;
+	private TableColumn<melCell,CheckBox> check;
+	private TableColumn<melCell,String> date;
+	private TableColumn<melCell,String> objet;
+	private TableColumn<melCell,String> mail;
+	
+	public GestionMail(){
+		genererSousComposant();
+		ecouteurDefaultAction();
+		layoutDefaultParametre();
+	}
+	
+	
+	@Override
+	protected void genererSousComposant() {
+		t = new TableView<melCell>();
+		check = new TableColumn<melCell,CheckBox>();
+		date = new TableColumn<melCell,String>("Date");
+		objet = new TableColumn<melCell,String>("Objet");
+		mail = new TableColumn<melCell,String>("Mail");
+		form = new VBox();
+		/*
+		 * Chargement des données en
+		 * Table Cell ici
+		 * */
+		
+	//	mel.add(new TableCell().);
+		ObservableList<melCell> list = chargement();
+        t.setItems(list);
+        
+	}
+	
+	private ObservableList<melCell> chargement(){
+		melCell mel1 = new melCell("15-02-18", "[L3-MIAG] Rendu TP2", "gabriel.nrt@hotmail.fr");
+		melCell mel2 = new melCell("16-02-18", "Carglass répare Carglass Remplace", "carglass@arnaqlapost.gouv.fr");
+		 
+        ObservableList<melCell> list = FXCollections.observableArrayList(mel1, mel2);
+        
+        date.setCellValueFactory(new PropertyValueFactory<melCell, String>("date"));
+        mail.setCellValueFactory(new PropertyValueFactory<melCell, String>("mail"));
+        objet.setCellValueFactory(new PropertyValueFactory<melCell, String>("objet"));
+        check.setCellValueFactory(new PropertyValueFactory<melCell, Boolean>("check"));
+        return list; 
+	}
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		
+	} 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void layoutDefaultParametre() {
+		this.t.getColumns().addAll(this.date,this.objet,this.mail);
+		this.form.getChildren().add(this.t);
+		this.form.setMaxSize(500, 200);
+		this.form.setSpacing(5);
+		this.getChildren().add(form);
+	}
+
+	
+	
+	
+}

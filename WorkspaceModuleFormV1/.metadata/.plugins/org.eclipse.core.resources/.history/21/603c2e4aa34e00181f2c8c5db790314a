@@ -1,0 +1,72 @@
+package application.mail;
+
+import java.util.ArrayList;
+
+import application.Composition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
+
+@SuppressWarnings("rawtypes")
+public class GestionMail extends Composition{
+	private TableView t;
+	private TableColumn date;
+	private TableColumn objet;
+	private TableColumn mail;
+	private ArrayList<TableCell> mel;
+	
+	public GestionMail(){
+		genererSousComposant();
+		ecouteurDefaultAction();
+		layoutDefaultParametre();
+	}
+	
+	
+	@Override
+	protected void genererSousComposant() {
+		t = new TableView();
+		date = new TableColumn<melCell,String>("Date");
+		objet = new TableColumn<melCell,String>("Objet");
+		mail = new TableColumn<melCell,String>("Mail");
+		form = new VBox();
+		mel = new ArrayList<TableCell>();
+		/*
+		 * Chargement des données en
+		 * Table Cell ici
+		 * */
+		
+	//	mel.add(new TableCell().);
+		ObservableList<melCell> list = chargement();
+        t.setItems(list);
+	}
+	
+	private ObservableList chargement(){
+		melCell mel1 = new melCell("15-02-18", "[L3-MIAG] Rendu TP2", "gabriel.nrt@hotmail.fr");
+		melCell mel2 = new melCell("16-02-18", "Carglass répare Carglass Remplace", "carglass@arnaqlapost.gouv.fr");
+		 
+        ObservableList<melCell> list = FXCollections.observableArrayList(mel1, mel2);
+        return list; 
+	}
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		
+	} 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void layoutDefaultParametre() {
+		this.t.getColumns().addAll(this.date,this.objet,this.mail);
+		this.form.getChildren().add(this.t);
+		this.form.setMaxSize(500, 200);
+		this.form.setSpacing(5);
+		this.getChildren().add(form);
+	}
+
+	
+	
+	
+}

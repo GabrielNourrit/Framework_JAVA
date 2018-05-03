@@ -1,0 +1,47 @@
+package application.mail;
+
+
+public class melCell {
+    	private boolean checked;
+	    private String date;
+	    private String objet;
+	    private String mail;
+	 
+	    public melCell(String date, String objet, String mail) {
+	        this.date = date;
+	        this.objet = objet;
+	        this.mail = mail;
+	        this.checked = false;
+	        
+	        
+	    }
+	 
+	    public String getDate() {
+	        return date;
+	    }
+	    public String getObjet() {
+	        return objet;
+	    }
+	    public String getMail() {
+	        return mail;
+	    }
+	    
+	    
+	    public void setDate(String date) {
+	        this.date = date;
+	    }
+	    public void setObjet(String obj) {
+	        this.objet = obj;
+	    }
+	    public void setMail(String mail) {
+	        this.mail = mail;
+	    }
+
+		public boolean isChecked() {
+			return checked;
+		}
+
+		
+	    
+	    
+}

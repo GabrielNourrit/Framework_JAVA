@@ -1,0 +1,9 @@
+package mail;
+
+import java.util.ArrayList;
+
+public interface MelInterface {
+
+	public ArrayList<MelMenuItem> melUnUser();
+	
+}

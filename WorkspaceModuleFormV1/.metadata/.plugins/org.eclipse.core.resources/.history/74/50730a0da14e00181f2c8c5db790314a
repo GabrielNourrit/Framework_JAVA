@@ -1,0 +1,74 @@
+package application.mail;
+
+import java.util.ArrayList;
+
+import application.Composition;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
+
+@SuppressWarnings("rawtypes")
+public class GestionMail extends Composition{
+	private TableView t;
+	private TableColumn date;
+	private TableColumn objet;
+	private TableColumn mail;
+	private ArrayList<TableCell> mel;
+	
+	public GestionMail(){
+		genererSousComposant();
+		ecouteurDefaultAction();
+		layoutDefaultParametre();
+	}
+	
+	
+	@Override
+	protected void genererSousComposant() {
+		t = new TableView();
+		date = new TableColumn("Date");
+		objet = new TableColumn("Objet");
+		mail = new TableColumn("Mail");
+		form = new VBox();
+		mel = new ArrayList<TableCell>();
+		/*
+		 * Chargement des données en
+		 * Table Cell ici
+		 * */
+		
+	//	mel.add(new TableCell().);
+		ObservableList list = chargement();
+        t.setItems(list);
+		
+	}
+	
+	private ObservableList chargement(){
+		melCell person1 = new melCell("Susan Smith", "male", true);
+        melCell person2 = new melCell("Anne McNeil", "female", true);
+        melCell person3 = new melCell("Kenvin White", "male", false);
+ 
+        ObservableList<Person> list = FXCollections.observableArrayList(person1, person2, person3);
+        return list;
+		return null;  
+	}
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		
+	} 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void layoutDefaultParametre() {
+		this.t.getColumns().addAll(this.date,this.objet,this.mail);
+		this.form.getChildren().add(this.t);
+		this.form.setMaxSize(500, 200);
+		this.form.setSpacing(5);
+		this.getChildren().add(form);
+	}
+
+	
+	
+	
+}
