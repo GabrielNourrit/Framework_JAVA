@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import connexion.Connexion;
 import connexion.MethodeServeur;
+import fichier.Fichier;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
 
@@ -18,6 +19,7 @@ public class Test {
 		ArrayList<MethodeServeur> l = new ArrayList<>();
 		l.add(new Connexion("Connexion"));
 		l.add(new Tchat("Tchat"));
+		l.add(new Fichier("Fichier"));
 		new Serveur(l);
 	}
 }
