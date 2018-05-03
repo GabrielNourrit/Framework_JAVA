@@ -1,9 +1,13 @@
 package interfaceGraph;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import connexion.OperationUtilisateurInterface;
 import connexion.Utilisateur;
 import connexion.UtilisateursInterface;
 import javafx.collections.FXCollections;
@@ -93,18 +97,7 @@ public class ListeUtilisateur extends Formulaire {
 		
 		lst_user = new ListView<>();
 		
-		UtilisateursInterface connex;
-		try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
-			List<Utilisateur> lesUser = connex.getUsers();
-			olstUser = FXCollections.observableArrayList(lesUser);
-			
-			//ObservableList<String> l = lesUser;
-			lst_user.setItems((ObservableList<Utilisateur>) olstUser);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		refreshList();
 		/*lst_user.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 
 			@Override
@@ -136,7 +129,6 @@ public class ListeUtilisateur extends Formulaire {
 				alert.setTitle("Attention !");
 				alert.setHeaderText(null);
 				alert.setContentText("Veuillez selectionnez un utilisateur");
-
 				alert.showAndWait();
 			}
 		});
@@ -152,6 +144,25 @@ public class ListeUtilisateur extends Formulaire {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK){
 				    //Suprimer cet utilisateur
+					OperationUtilisateurInterface connex;
+					Registry registry;
+					try {
+						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+						connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+						if (connex.SupprimerUtilisateur(user.getLogin())) {
+							refreshList();
+						} else {
+							alert = new Alert(AlertType.WARNING);
+							alert.setTitle("Attention !");
+							alert.setHeaderText(null);
+							alert.setContentText("Fail");
+							alert.showAndWait();
+						}
+					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+						e.printStackTrace();
+					}
+		            
+					
 				}
 				
 			} 
@@ -165,6 +176,25 @@ public class ListeUtilisateur extends Formulaire {
 			}
 			
 		});
+	}
+
+	/**
+	 * Rafraichi la liste en envoyant une requête au serveur
+	 */
+	private void refreshList() {
+		UtilisateursInterface connex;
+		try {
+			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+            connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
+			List<Utilisateur> lesUser = connex.getUsers();
+			olstUser = FXCollections.observableArrayList(lesUser);
+			
+			//ObservableList<String> l = lesUser;
+			lst_user.setItems((ObservableList<Utilisateur>) olstUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

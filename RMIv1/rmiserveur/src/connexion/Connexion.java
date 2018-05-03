@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import BD.Connexionsgbd;
 
 public class Connexion extends MethodeServeur implements ConnexionInterface {
@@ -17,15 +19,15 @@ public class Connexion extends MethodeServeur implements ConnexionInterface {
 	}
 	
 	public boolean verifierMdp(String login, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
-		int n = 0;
+		String mdpCrypt="";
 		Connexionsgbd csgbd = new Connexionsgbd();
 		Connection conn = csgbd.openConnexionsgbd();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("select count(*) from utilisateurs where login='"+ login +"' and motDePasse='" + mdp + "'");
-		if (rs.next()) n = rs.getInt(1);
-		System.out.println(n);
+		ResultSet rs = stmt.executeQuery("select motDePasse from utilisateurs where login='"+ login +"'");
+		if (rs.next()) mdpCrypt = rs.getString(1);
+		//System.out.println(n);
 		csgbd.closeConnexionsgbd(conn);
-		if(n == 1) return true;
+		if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		return false;
 	}
 }

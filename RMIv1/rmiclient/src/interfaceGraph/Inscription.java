@@ -1,14 +1,29 @@
 package interfaceGraph;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.sql.SQLException;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import connexion.OperationUtilisateurInterface;
+import connexion.Utilisateur;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class Inscription extends Formulaire {
@@ -22,19 +37,22 @@ public class Inscription extends Formulaire {
 	private TextField t_nom;
 	private TextField t_prenom;
 	private Button b_valider;
+	private Button b_annuler;
 	private Label l_groupe;
 	private ChoiceBox<String> cb_groupe;
-	private int choix;
+	private Utilisateur utilisateur;
+	private HBox hb_validerAnnuler;
+	//private int choix;
 	
 	/**
 	 * @description : Cet objet est un formulaire d'inscription par defaut
 	 */
 	public Inscription() {
 		super();
-		choix=-1;
+		//choix=-1;
 		genererSousComposant();
 		ecouteurDefaultAction();
-		ecouteurChoixGroupe();
+		//ecouteurChoixGroupe();
 		layoutDefaultParametre();
 		this.setAlignment(Pos.CENTER);
 	}
@@ -69,12 +87,21 @@ public class Inscription extends Formulaire {
 		l_prenom = new Label("Prenom : ");
 		l_titre = new Label("Inscription");
 		t_login = new TextField();
+		
 		t_mdp = new PasswordField();
 		t_nom = new TextField();
 		t_prenom = new TextField();
 		b_valider = new Button("Valider");
+		b_annuler = new Button("Annuler");
+		hb_validerAnnuler = new HBox(b_valider,b_annuler);
+		hb_validerAnnuler.setAlignment(Pos.CENTER);
 		l_groupe = new Label("Groupe : ");
-		cb_groupe = new ChoiceBox<String>(FXCollections.observableArrayList("Groupe 1","Groupe 2"));
+		cb_groupe = new ChoiceBox<String>(FXCollections.observableArrayList("user","Admin"));
+		cb_groupe.getSelectionModel().select(0);
+		addTextLimiter(t_login, 50);
+		addTextLimiter(t_nom, 50);
+		addTextLimiter(t_prenom, 50);
+		addTextLimiter(t_mdp, 100);
 	}
 
 	/**
@@ -82,29 +109,57 @@ public class Inscription extends Formulaire {
 	 */
 	@Override
 	protected void ecouteurDefaultAction() {
-		b_valider.setOnAction(event -> {		
-			t_login.setText("");
-			t_mdp.setText("");
-			t_nom.setText("");
-			t_prenom.setText("");
+		b_valider.addEventHandler(ActionEvent.ACTION,event -> {		
 			
-			
+			if (t_login.getText()!="" && t_mdp.getText()!="") {
+				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
+				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_groupe.getSelectionModel().getSelectedItem());
+				utilisateur.setMdp(mdp);
+				OperationUtilisateurInterface connex;
+				Registry registry;
+				try {
+					registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+					connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+					if (!(connex.AjouterUtilisateur(utilisateur))) {
+						Alert alert = new Alert(AlertType.WARNING);
+						alert.setTitle("Attention !");
+						alert.setHeaderText(null);
+						alert.setContentText("Fail");
+						alert.showAndWait();
+						
+					} else {
+						t_login.setText("");
+						t_mdp.setText("");
+						t_nom.setText("");
+						t_prenom.setText("");
+					}
+				} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			
 		});	
-		if (choix == 1);
+	}
+	
+	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
+		this.b_valider.addEventHandler(ActionEvent.ACTION, value);
+	}
+	
+	public void setAnnulerEvent(EventHandler<ActionEvent> value) {
+		b_annuler.addEventHandler(ActionEvent.ACTION, value);
 	}
 	
 	/**
 	 * Ecouteur d'evenement sur le choix du groupe
 	 */
-	private void ecouteurChoixGroupe() {
+	/*private void ecouteurChoixGroupe() {
 		cb_groupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>) (ov, value, new_value) -> {
 			System.out.println(value);	
 			System.out.println(new_value);
 			choix = (int) new_value;
 			System.out.println(ov.getClass());
 		});
-	}
+	}*/
 
 	/**
 	 * Applique les parametres par default du design du composant
@@ -112,8 +167,9 @@ public class Inscription extends Formulaire {
 	@Override
 	protected void layoutDefaultParametre() {
 		/*petite mise en page de notre box*/
-		form.getChildren().addAll(l_titre,l_login,t_login,l_mdp,t_mdp,l_nom,t_nom,l_prenom,t_prenom,l_groupe,cb_groupe,b_valider);
-		form.setMaxSize(120, 100);
+		form.getChildren().addAll(l_titre,l_login,t_login,l_mdp,t_mdp,l_nom,t_nom,l_prenom,t_prenom,l_groupe,cb_groupe,hb_validerAnnuler);
+		//form.setMinSize(minWidth, minHeight);
+		form.setMaxSize(160, 100);
 		form.setSpacing(3);
 		form.setAlignment(Pos.CENTER);
 		this.getChildren().add(form);	
@@ -125,6 +181,14 @@ public class Inscription extends Formulaire {
 	 */
 	public VBox getStyleForm(){
 		return this.form;
+	}
+	
+	/**
+	 * Retourne l'utilisateur créer, devrai etre appellé dans l'evenement après l'inscription d'un utilisateur
+	 * @return Utilisateur
+	 */
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
 	}
 
 }

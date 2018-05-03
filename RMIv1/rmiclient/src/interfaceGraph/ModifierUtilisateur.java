@@ -1,5 +1,10 @@
 package interfaceGraph;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+
+import connexion.OperationUtilisateurInterface;
 import connexion.Utilisateur;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,20 +25,28 @@ public class ModifierUtilisateur extends Formulaire {
 	private Button b_valider;
 	private int choix;
 	
+	/**
+	 * Constructeur de la classe ModifierUtilisateur
+	 * @param _utilisateur l'utilisateur à modifié
+	 */
 	public ModifierUtilisateur(Utilisateur _utilisateur) {
 		super();
 		utilisateur = _utilisateur;
-		genererSousComposant();
-		ecouteurDefaultAction();
-		layoutDefaultParametre();
-		this.setAlignment(Pos.CENTER);
+		if (utilisateur != null) {
+			genererSousComposant();
+			ecouteurDefaultAction();
+			layoutDefaultParametre();
+			this.setAlignment(Pos.CENTER);
+		}
 	}
+
 
 	@Override
 	protected void genererSousComposant() {
 		form = new VBox();
 		try {
 			t_login = new TextField(utilisateur.getLogin());
+			
 			t_nom = new TextField(utilisateur.getNom());
 			t_prenom = new TextField(utilisateur.getPrenom());
 		} catch (Exception e) {
@@ -51,7 +64,20 @@ public class ModifierUtilisateur extends Formulaire {
 
 	@Override
 	protected void ecouteurDefaultAction() {
-		
+		b_valider.setOnAction(event ->{
+			if (!(t_nom.getText().equals(utilisateur.getNom()))) {
+				OperationUtilisateurInterface connex = connectToServeur();
+				if (connex != null) {
+					
+				}
+			}
+			if (!(t_prenom.getText().equals(utilisateur.getPrenom()))) {
+				OperationUtilisateurInterface connex = connectToServeur();
+				if (connex != null) {
+					
+				}
+			}
+		});
 	}
 
 	@Override
@@ -62,6 +88,18 @@ public class ModifierUtilisateur extends Formulaire {
 		form.setSpacing(3);
 		form.setAlignment(Pos.CENTER);
 		this.getChildren().add(form);	
+	}
+	
+	private OperationUtilisateurInterface connectToServeur() {
+		Registry registry;
+		try {
+			registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+			OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+			return connex;
+		} catch (RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 

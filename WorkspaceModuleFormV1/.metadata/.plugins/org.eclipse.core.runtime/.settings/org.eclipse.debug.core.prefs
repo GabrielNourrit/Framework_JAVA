@@ -2,3 +2,4 @@
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.attachLaunchType=org.eclipse.cdt.dsf.gdb.launch.attachCLaunch,debug,;
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.postmortemLaunchType=org.eclipse.cdt.dsf.gdb.launch.coreCLaunch,debug,;
 eclipse.preferences.version=1
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="user.getLogin()"/>\n<expression enabled\="true" text\="&quot;delete from utilisateurs where login \= '&quot;+user+&quot;';&quot;"/>\n<expression enabled\="true" text\="&quot;insert into utilisateurs (login,nom,prenom,motDePasse,type) values ('&quot;+login+&quot;','&quot;+nom+&quot;','&quot;+prenom+&quot;','&quot;+mdp+&quot;','&quot;+type+&quot;');&quot;"/>\n</watchExpressions>\n

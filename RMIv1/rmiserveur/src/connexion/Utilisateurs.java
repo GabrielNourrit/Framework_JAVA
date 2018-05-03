@@ -25,10 +25,10 @@ public class Utilisateurs extends MethodeServeur  implements UtilisateursInterfa
 		ResultSet rs = stmt.executeQuery("select * from utilisateurs");
 		while (rs.next()) {
 			//old
-			Utilisateur user = new Utilisateur(rs.getString(4), rs.getString(2), rs.getString(3),rs.getString(5));
+			//Utilisateur user = new Utilisateur(rs.getString(4), rs.getString(2), rs.getString(3),rs.getString(5));
 			
 			//new
-			//Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4));
+			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(5));
 			
 			lesUser.add(user);
 		}

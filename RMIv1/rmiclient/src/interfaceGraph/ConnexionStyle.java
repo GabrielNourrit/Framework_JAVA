@@ -3,6 +3,9 @@ package interfaceGraph;
 import java.rmi.registry.Registry;
 
 import connexion.ConnexionInterface;
+import connexion.Utilisateur;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -20,6 +23,7 @@ public class ConnexionStyle extends Formulaire{
 	private Label l_mdp;
 	protected TextField id;
 	protected PasswordField mdp;
+	private Utilisateur utilisateur;
 	
 	/**
 	 * Cet objet est un formulaire de connexion par defaut
@@ -28,7 +32,8 @@ public class ConnexionStyle extends Formulaire{
 		super();
 		genererSousComposant();
 		layoutDefaultParametre();
-		ecouteurDefaultAction();		
+		ecouteurDefaultAction();	
+		utilisateur = null;
 	}
 
 	@Override
@@ -45,7 +50,7 @@ public class ConnexionStyle extends Formulaire{
 	@Override
 	protected void ecouteurDefaultAction() {
 		/*Definie le comportement par defaut de notre interface*/
-		this.mdp.setOnAction(event ->{
+		this.mdp.addEventHandler(ActionEvent.ACTION, event ->{
 			/*Traitement de l'appli*/
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
@@ -56,7 +61,8 @@ public class ConnexionStyle extends Formulaire{
 	            connex = (ConnexionInterface) registry.lookup("Connexion");
 				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
-					ScrollPane sp = new ScrollPane();
+					utilisateur = new Utilisateur(id.getText());
+					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;
 					nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -65,7 +71,7 @@ public class ConnexionStyle extends Formulaire{
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
 					Scene scene = new Scene(sp, 200, 250);
-					nouveauStage.setScene(scene);
+					nouveauStage.setScene(scene);*/
 				}
 				else {
 					Alert alert = new Alert(AlertType.INFORMATION);
@@ -82,8 +88,13 @@ public class ConnexionStyle extends Formulaire{
 			/*On efface les anciennes valeures une fois finie*/
 			this.id.setText("");
 			this.mdp.setText("");
+			//value;
 		});
 		
+	}
+	
+	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
+		this.mdp.addEventHandler(ActionEvent.ACTION, value);
 	}
 
 	@Override
@@ -94,5 +105,10 @@ public class ConnexionStyle extends Formulaire{
 		form.setSpacing(3);
 		form.setAlignment(Pos.CENTER);
 		this.getChildren().add(form);		
-	}	
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+	
 }
