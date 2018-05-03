@@ -62,7 +62,7 @@ public class Inscription extends Composition {
 	@Override
 	protected void genererSousComposant() {
 		//form = new GridPane();
-		form = new VBox();
+		comp = new VBox();
 		l_login = new Label("Login : ");
 		l_mdp = new Label("Mot de passe : ");
 		l_nom = new Label("Nom : ");
@@ -109,11 +109,11 @@ public class Inscription extends Composition {
 	@Override
 	protected void layoutDefaultParametre() {
 		/*petite mise en page de notre box*/
-		form.getChildren().addAll(l_titre,l_login,t_login,l_mdp,t_mdp,l_nom,t_nom,l_prenom,t_prenom,l_groupe,cb_groupe,b_valider);
-		form.setMaxSize(120, 100);
-		form.setSpacing(3);
-		form.setAlignment(Pos.CENTER);
-		this.getChildren().add(form);	
+		comp.getChildren().addAll(l_titre,l_login,t_login,l_mdp,t_mdp,l_nom,t_nom,l_prenom,t_prenom,l_groupe,cb_groupe,b_valider);
+		comp.setMaxSize(120, 100);
+		comp.setSpacing(3);
+		comp.setAlignment(Pos.CENTER);
+		this.getChildren().add(comp);	
 	}
 	
 	
@@ -121,7 +121,7 @@ public class Inscription extends Composition {
 	 * @return retourne le formulaire Graphique modifiable a la guise du client.
 	 */
 	public VBox getStyleForm(){
-		return this.form;
+		return this.comp;
 	}
 
 }

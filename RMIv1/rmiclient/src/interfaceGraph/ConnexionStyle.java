@@ -46,7 +46,7 @@ public class ConnexionStyle extends Composition{
 	@Override
 	protected void genererSousComposant() {
 		//this.form = new GridPane();
-		this.form = new VBox();
+		this.comp = new VBox();
 		this.l_id = new Label("id");
 		this.id = new TextField();
 		this.l_mdp = new Label("pass");
@@ -98,10 +98,10 @@ public class ConnexionStyle extends Composition{
 	@Override
 	protected void layoutDefaultParametre() {
 		/*petite mise en page de notre box*/
-		form.getChildren().addAll(l_id,id,l_mdp,mdp);
-		form.setMaxSize(120, 100);
-		form.setSpacing(3);
-		form.setAlignment(Pos.CENTER);
-		this.getChildren().add(form);		
+		comp.getChildren().addAll(l_id,id,l_mdp,mdp);
+		comp.setMaxSize(120, 100);
+		comp.setSpacing(3);
+		comp.setAlignment(Pos.CENTER);
+		this.getChildren().add(comp);		
 	}	
 }

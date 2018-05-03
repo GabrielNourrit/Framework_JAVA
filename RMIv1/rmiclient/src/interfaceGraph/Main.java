@@ -1,26 +1,34 @@
 package interfaceGraph;
 	
+import interfaceGraph.mail.AffichageMessage;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		try {
-			Group root = new Group();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			
-			Inscription form2 = new Inscription(root,80,180);
+ScrollPane sp = new ScrollPane();
 			
 			
-			primaryStage.setResizable(false);
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			VBox vb = new AffichageMessage();
+			
+			
+			
+			sp.setContent(vb);
+			vb.setAlignment(Pos.CENTER);
+			sp.setFitToWidth(true);
+			sp.setFitToHeight(true);
+			Scene scene = new Scene(sp, 1000, 1000);
+			stage.setTitle("test");
+			stage.setScene(scene);
+			stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

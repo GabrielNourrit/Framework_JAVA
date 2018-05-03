@@ -36,7 +36,7 @@ public class GestionMail extends Composition{
 		date = new TableColumn<melCell,String>("Date");
 		objet = new TableColumn<melCell,String>("Objet");
 		mail = new TableColumn<melCell,String>("Mail");
-		form = new VBox();
+		comp = new VBox();
 		/*
 		 * Chargement des données en
 		 * Table Cell ici
@@ -72,9 +72,9 @@ public class GestionMail extends Composition{
 		this.toolb.setSpacing(15);
 		this.toolb.setAlignment(Pos.CENTER);
 		this.t.getColumns().addAll(this.date,this.objet,this.mail);
-		this.form.getChildren().addAll(this.t,this.toolb);
-		this.form.setSpacing(5);
-		this.getChildren().add(form);
+		this.comp.getChildren().addAll(this.t,this.toolb);
+		this.comp.setSpacing(5);
+		this.getChildren().add(comp);
 	}
 
 	
