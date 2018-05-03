@@ -1,3 +1,4 @@
+package interfaceGraph;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;

@@ -3,6 +3,7 @@ package client;
 import java.rmi.*;
 
 import connexion.ConnexionInterface;
+import interfaceGraph.AffichageMessage;
 import interfaceGraph.ConnexionStyle;
 import interfaceGraph.ConnexionStyle2;
 import interfaceGraph.Inscription;
@@ -53,7 +54,7 @@ public class Client extends Application {
 		//BorderPane sp = new BorderPane();
 		ScrollPane sp = new ScrollPane();
 		//VBox vb = new ConnexionStyle();
-		VBox vb = new ConnexionStyle2();
+		VBox vb = new AffichageMessage();
 		//VBox vb = new Inscription();
 		sp.setContent(vb);
 		vb.setAlignment(Pos.CENTER);
