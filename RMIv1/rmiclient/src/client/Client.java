@@ -2,7 +2,7 @@ package client;
 
 import java.rmi.*;
 
-import connexion.ConnexionInterface;
+import BaseDeDonnee.connexion.ConnexionInterface;
 import interfaceGraph.ConnexionStyle;
 import interfaceGraph.ConnexionStyle2;
 import interfaceGraph.Inscription;
