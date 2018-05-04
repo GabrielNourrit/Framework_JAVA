@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import BaseDeDonnee.MethodeServeur;
 
-public class Mel implements MethodeServeur, MelInterface{
+public class Mel implements MelInterface{
 
 	public Mel (String url) throws RemoteException {  
 	}
