@@ -1,28 +1,27 @@
 package fichier;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import BaseDeDonnee.bd.Connexionsgbd;
 
 public class Fichier implements Serializable {
-	private int idMes;
-	private String contenu;
+	private int idFic;
+	private String nom;
+	private String url;
 
-	public Fichier(int i, String s) {
-		this.idMes = i;
-		this.contenu = s;
+	public Fichier(int i, String n, String s) {
+		this.idFic = i;
+		this.nom = n;
+		this.url = s;
 		
 	}
 	public String getFileLink() {
-		return this.contenu;
+		return this.url;
 		
 	}
-	public int getidMes() {
-		return idMes;	
+	public int getidFic() {
+		return idFic;	
+	}
+	
+	public String toString() {
+		return nom;
 	}
 }

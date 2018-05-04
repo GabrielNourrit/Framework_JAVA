@@ -1,5 +1,7 @@
 package util;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -35,8 +37,8 @@ public class LimitedTextField extends TextField {
 			alert.setContentText("Caractere ~ interdit");
 			alert.showAndWait();
     	}
-    	if (getText().contains("§")) {   
-    		int index = getText().indexOf("§");
+    	if (getText().contains("ï¿½")) {   
+    		int index = getText().indexOf("ï¿½");
     		if (index != 0) index--;
     		setText(getText().substring(0, index));
     		Alert alert = new Alert(AlertType.INFORMATION);
@@ -54,4 +56,16 @@ public class LimitedTextField extends TextField {
 			alert.showAndWait();
         }
     }
+    
+    public static void addTextLimiter(final TextField tf, final int maxLength) {
+	    tf.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+	            if (tf.getText().length() > maxLength) {
+	                String s = tf.getText().substring(0, maxLength);
+	                tf.setText(s);
+	            }
+	        }
+	    });
+	}
 }

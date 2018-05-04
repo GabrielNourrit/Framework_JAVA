@@ -29,46 +29,49 @@ public class GestionFichier implements GestionFichierInterface {
 		this.sgbd=sgbd;
 	}
 	
-	public String enregisterFichier(String nom, byte[] contenu) throws RemoteException, ClassNotFoundException, SQLException {
+	public String upload(String nom, byte[] contenu) throws RemoteException, ClassNotFoundException, SQLException {
 		 try{
 	            Files.write(Paths.get(nom),contenu);
 	        } catch (IOException ex) {
 	            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
-	            return "Non reçu";
+	            return "Non reï¿½u";
 	        }
-	        return "Bien reçu";
+	        return "Bien reï¿½u";
 	}
 	
-	public byte[] sauvegarderFichier(String nom) throws ClassNotFoundException, SQLException, IOException {
+	public byte[] download(String nom) throws ClassNotFoundException, SQLException, IOException {
 		return Files.readAllBytes(Paths.get(nom)); 
 	}
 
 	@Override
 	public Fichier[] recupererTousFichiers() throws RemoteException, ClassNotFoundException, SQLException {
-		String c = "";
+		/*String u = "";
+		String n = "";
 		Integer i = 0;	
 		ResultSet rs = sgbd.executeSelect("select idMes, contenue from messages");
 		List<Fichier> fs = new ArrayList<Fichier>();
 		Fichier f;
 		while (rs.next()) {
-			i = rs.getInt("idMes");
-			c = rs.getString("contenue");
-			f = new Fichier(i,c);
+			i = rs.getInt("idFic");
+			n = rs.getString("nom");
+			u = rs.getString("url");
+			f = new Fichier(i,n,u);
 			fs.add(f);
 		}
 		Fichier[] fichiers = fs.toArray(new Fichier[fs.size()]);
 		fichiers = (Fichier[]) fs.toArray();
-		return fichiers;
+		return fichiers;*/
+		return null;
 	}
 	
 	@Override
-	public Fichier recupererFichier(String contenu) throws RemoteException, ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		int i=-1;
-		ResultSet rs = sgbd.executeSelect("select idMes,contenue from Messages join utilisateurs on loginExpediteur = login where contenue = '"+ contenu +"'");
+	public Fichier recupererFichier(String nom) throws RemoteException, ClassNotFoundException, SQLException {
+		/*int i=-1;
+		ResultSet rs = sgbd.executeSelect("select idMes,contenue from Messages join utilisateurs on loginExpediteur = login where contenue = '"+ nom +"'");
 		if (rs.next()) i = rs.getInt("idMes");
-		Fichier f = new Fichier(i,contenu);
-		return f;
+		Fichier f = new Fichier(i,nom,"");
+		return f;*/
+		return null;
 	}
 	
 }

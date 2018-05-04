@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import tchat.TchatInterface;
 import util.LimitedTextField;
+import util.Utilisateur;
 
 public class Tchat extends VBox {
 
@@ -38,14 +39,14 @@ public class Tchat extends VBox {
 	private String olds = "";
 	private String[] buffer = {};
 
-	//TODO: Déclaration automatique de l'utilisateur
+	//TODO: Dï¿½claration automatique de l'utilisateur
 	public Utilisateur util = new Utilisateur("guevarat","Guevara","Thomas","Gars");
 
 	private void execute(TchatInterface tchat) throws RemoteException{
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "§");
-		System.out.println(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "§");
+		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "ï¿½");
+		System.out.println(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "ï¿½");
 		ZoneText.setText("");
 	}
 
@@ -122,7 +123,7 @@ public class Tchat extends VBox {
 			else mess = tchat.getMessage();
 			if (!mess.equals(olds)) {
 				olds=mess;
-				String[] str = mess.split("§");					
+				String[] str = mess.split("ï¿½");					
 				for (String u : str) {
 					if (!u.equals("")) {
 						if (!exist(u,buffer)) {

@@ -1,8 +1,9 @@
 package interfaceGraph;
 
-import java.rmi.registry.Registry;
+import java.rmi.Naming;
 
 import connexion.ConnexionInterface;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -39,14 +40,15 @@ public class ConnexionStyle2 extends ConnexionStyle{
 	 * definit Actions-Listeners du bouton valider
 	 */
 	private void listenerButtonValider() {
-		this.boutonOk.setOnAction(event ->{
+		this.boutonOk.addEventHandler(ActionEvent.ACTION, event ->{
 			/*Traitement de l'appli*/
+			System.out.println("id est "+this.id.getText());
+			System.out.print("mdp est "+this.mdp.getText());
 			ConnexionInterface connex;
 			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-				connex = (ConnexionInterface) registry.lookup("Connexion");
-				if(connex.verifierMdp(id.getText(), mdp.getText())) {
-					ScrollPane sp = new ScrollPane();
+				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
+				if(connex.verifierMdp(id.getText(),mdp.getText())) {
+					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;
 					nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -55,7 +57,7 @@ public class ConnexionStyle2 extends ConnexionStyle{
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
 					Scene scene = new Scene(sp, 200, 250);
-					nouveauStage.setScene(scene);
+					nouveauStage.setScene(scene);*/
 				}
 				else {
 					Alert alert = new Alert(AlertType.INFORMATION);

@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import BaseDeDonnee.MethodeServeur;
+import BaseDeDonnee.gestionUtilisateur.OperationUtilisateur;
+import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
+import BaseDeDonnee.gestionUtilisateur.Utilisateurs;
+import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import BaseDeDonnee.sgbd.SGBD;
 import BaseDeDonnee.sgbd.SGBDMySQL;
 import BaseDeDonnee.sgbd.SGBDOracle;
@@ -25,7 +29,7 @@ public class Main {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
 		
-		// Définition du type de SGBD utilisé
+		// Dï¿½finition du type de SGBD utilisï¿½
 		SGBD sgbd;
 		TchatInterface tchat;
 		GestionFichierInterface fichier;
@@ -35,21 +39,26 @@ public class Main {
 			default : sgbd = new SGBDOracle();break;
 		}
 		tchat = new Tchat();
-		fichier = new GestionFichier(sgbd);
+		//fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
+		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
+		UtilisateursInterface ui = new Utilisateurs(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
-		listBind.put("Fichier", fichier);
+		//listBind.put("Fichier", fichier);
 		listBind.put("Connexion", connexion);
-
 		
-		//Création du serveur
+		listBind.put("Utilisateurs", ui);
+		
+		listBind.put("OperationUtilisateur", ou);
+		
+		//Crï¿½ation du serveur
 		try{	
 			new Serveur(listBind);
 			System.out.println("Lancement du Serveur");
 			
 		}catch(NumberFormatException e){
-			System.err.println("Numéro de port non définit");
+			System.err.println("Numï¿½ro de port non dï¿½finit");
 		} catch (Exception e) {
 			System.err.println("Erreur Aux lancement du Serveur : "+e.getMessage());
 			e.printStackTrace();
