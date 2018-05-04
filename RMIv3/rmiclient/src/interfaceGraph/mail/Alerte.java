@@ -11,6 +11,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import mail.MelInterface;
+import mail.Utilisateur;
 
 public class Alerte extends Composition{
 
@@ -19,15 +21,24 @@ public class Alerte extends Composition{
 	private Button changer;
 	private HBox hb;
 	
-	public Alerte(String probleme) {
+	private String bien;
+	private MelInterface mel;
+	private Utilisateur u;
+	
+	public Alerte(Utilisateur u, String probleme, String bien, MelInterface mel) {
+		this.bien=bien;
+		this.u=u;
+		this.mel=mel;
 		genererSousComposant();
 		message.setText(probleme);
 		this.message.setFont(Font.font("Arial",FontPosture.REGULAR, 20));
 		this.message.setWrappingWidth(500);
-		this.message.setTextAlignment(TextAlignment.CENTER);;
+		this.message.setTextAlignment(TextAlignment.CENTER);
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
+	
+	
 	
 	
 	
@@ -39,6 +50,7 @@ public class Alerte extends Composition{
 		this.changer = new Button("Modifier");
 		this.hb = new HBox();
 		this.comp = new VBox();
+		
 	}
 
 	@Override
@@ -47,6 +59,16 @@ public class Alerte extends Composition{
 		this.changer.setOnAction(event ->{
 			Stage stage = (Stage) this.changer.getScene().getWindow();
 		    stage.close();
+			}
+		);
+		this.continuer.setOnAction(event ->{
+			try{
+			this.mel.saveMessage(this.u,bien);
+			Stage stage = (Stage) this.changer.getScene().getWindow();
+		    stage.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			}
 		);
 	}

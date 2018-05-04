@@ -53,7 +53,7 @@ public class Main {
 			System.out.println("Lancement du Serveur");
 			
 		}catch(NumberFormatException e){
-			System.err.println("Num�ro de port non d�finit");
+			System.err.println("Numero de port non definit");
 		} catch (Exception e) {
 			System.err.println("Erreur Aux lancement du Serveur : "+e.getMessage());
 			e.printStackTrace();

@@ -33,8 +33,9 @@ public class ManipulationFichier {
 	 */
 	public static void sauverFichier(String fichier, String texte) {
 		try {
-			FileWriter fw = new FileWriter(new File(fichier),true);
-			fw.write("\n"+texte);	
+			File f = new File(fichier);
+			FileWriter fw = new FileWriter(f,true);
+			fw.write(texte);	
 			fw.close();
 		} catch (Exception e) {
 			e.printStackTrace();

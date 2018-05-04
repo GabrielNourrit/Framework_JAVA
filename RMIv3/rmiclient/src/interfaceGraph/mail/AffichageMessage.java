@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mail.Utilisateur;
 
 public class AffichageMessage extends Composition{
 
@@ -24,12 +25,14 @@ public class AffichageMessage extends Composition{
 	private HBox hbd;
 	private HBox hbo;
 	private HBox hbbutton;
+	private Utilisateur u;
 
 	private ScrollPane sp;
 	private Button retour;
 	private Button repondre;
 	
-	public AffichageMessage() {
+	public AffichageMessage(Utilisateur u) {
+		this.u=u;
 		genererSousComposant();
 		lecture();
 		ecouteurDefaultAction();
@@ -64,6 +67,7 @@ public class AffichageMessage extends Composition{
 		this.retour = new Button("Retour");
 		this.comp = new VBox();
 		
+		
 	}
 
 	@Override
@@ -71,7 +75,7 @@ public class AffichageMessage extends Composition{
 		// TODO Auto-generated method stub
 		this.repondre.setOnAction(event ->{
 			ScrollPane sp = new ScrollPane();
-			VBox reponse= new WriteMessage(this.e.getText(), this.o.getText());
+			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			
 			sp.setContent(reponse);

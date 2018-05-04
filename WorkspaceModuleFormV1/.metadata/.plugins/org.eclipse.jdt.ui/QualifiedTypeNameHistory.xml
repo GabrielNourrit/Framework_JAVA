@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.Label"/>
-    <fullyQualifiedTypeName name="application.Composition"/>
-    <fullyQualifiedTypeName name="javafx.scene.control.TableView"/>
-    <fullyQualifiedTypeName name="javafx.scene.control.TableColumn"/>
-    <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
-    <fullyQualifiedTypeName name="application.mail.GestionMail"/>
-    <fullyQualifiedTypeName name="interfaceGraph.Composition"/>
-    <fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
-    <fullyQualifiedTypeName name="interfaceGraph.mail.AffichageMessage"/>
-    <fullyQualifiedTypeName name="interfaceGraph.mail.melCell"/>
-    <fullyQualifiedTypeName name="BaseDeDonnee.MethodeServeur"/>
-    <fullyQualifiedTypeName name="java.rmi.Remote"/>
-    <fullyQualifiedTypeName name="mail.MelInterface"/>
+<fullyQualifiedTypeName name="java.awt.Label"/>
+<fullyQualifiedTypeName name="application.Composition"/>
+<fullyQualifiedTypeName name="javafx.scene.control.TableView"/>
+<fullyQualifiedTypeName name="javafx.scene.control.TableColumn"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Label"/>
+<fullyQualifiedTypeName name="application.mail.GestionMail"/>
+<fullyQualifiedTypeName name="interfaceGraph.Composition"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
+<fullyQualifiedTypeName name="interfaceGraph.mail.AffichageMessage"/>
+<fullyQualifiedTypeName name="interfaceGraph.mail.melCell"/>
+<fullyQualifiedTypeName name="BaseDeDonnee.MethodeServeur"/>
+<fullyQualifiedTypeName name="java.rmi.Remote"/>
+<fullyQualifiedTypeName name="mail.MelInterface"/>
+<fullyQualifiedTypeName name="interfaceGraph.mail.User"/>
+<fullyQualifiedTypeName name="BaseDeDonnee.bd.Connexionsgbd"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="fichier.Fichier"/>
+<fullyQualifiedTypeName name="interfaceGraph.mail.Congo"/>
+<fullyQualifiedTypeName name="util.ManipulationFichier"/>
+<fullyQualifiedTypeName name="application.Sondage.SondageBouton"/>
+<fullyQualifiedTypeName name="mail.Utilisateur"/>
 </qualifiedTypeNameHistroy>

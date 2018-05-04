@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mail.Utilisateur;
 import parametrage.SettingClientJVM;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -53,7 +54,7 @@ public class Client extends Application {
 		//BorderPane sp = new BorderPane();
 		ScrollPane sp = new ScrollPane();
 		//VBox vb = new ConnexionStyle();
-		VBox vb = new WriteMessage();
+		VBox vb = new WriteMessage(new Utilisateur("guevarat","guevara","thomas","ennerver"));
 		//VBox vb = new Inscription();
 		sp.setContent(vb);
 		vb.setAlignment(Pos.CENTER);

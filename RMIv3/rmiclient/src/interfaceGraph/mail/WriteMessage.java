@@ -27,6 +27,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import mail.MelInterface;
+import mail.Utilisateur;
 
 public class WriteMessage extends Composition{
 
@@ -38,41 +39,47 @@ public class WriteMessage extends Composition{
 	private VBox alert;
 	private HBox hb;
 	private Label message;
-	private String sauvegarde;
+	private MelInterface mel;
+	private Utilisateur moi;
+	private String verif;
+	
+	
     
-    public WriteMessage() {
+    public WriteMessage(Utilisateur u) {
+    	this.moi = u;
+		chargerMel();
 		genererSousComposant();
-		affichage();
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
     
-    public WriteMessage(String adr, String obj) {
-		this();
+    public WriteMessage(Utilisateur u, String adr, String obj) {
+		this(u);
 		this.emailComboBox.setValue(adr);
 		this.objet.setText("[RE]: " + obj);
 	}
     
-    
-    public void affichage() {
-    	this.emailComboBox.getItems().addAll("guevarat@example.com","nourritG@example.com","lyuya@example.com","metzgegu@example.com","dervieuxc@example.com", "");
-        this.emailComboBox.setPromptText("Contact");
-        this.emailComboBox.setEditable(true);  
-        
-        this.notification.setText("Objet : ");	
-    }
 
     public void methode(String mesg) {
-    	VBox alerte = new Alerte(mesg);
+    	String contenu = verif + ";" + this.text.getText();
+    	VBox alerte = new Alerte(moi,mesg,contenu,mel);
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,400);
 		s.setScene(scene);
 		s.show();
     }
     
+    private void chargerMel(){
+    	try {
+			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+			this.mel = (MelInterface) registry.lookup("Mel");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
 	@Override
 	protected void genererSousComposant() {
-		// TODO Auto-generated method stub
 		
 		this.comp= new VBox();
 		this.envoyer = new Button ("Envoyer");
@@ -83,8 +90,36 @@ public class WriteMessage extends Composition{
 		this.hb = new HBox();
 		this.message = new Label();
 		this.alert = new VBox();
+    	this.verif = "[Sans objet]";
+    	
+		try{
+		initialiserComboBox();
+		}catch(Exception e){
+			System.out.println("Oups : SOD is in a lonely day");
+			e.printStackTrace();
+		}
+		
 	}
 
+	private void initialiserComboBox() throws Exception{
+		this.emailComboBox.setPromptText("Contact");
+		for (Utilisateur u : this.mel.getAllUsers()){
+			
+			this.emailComboBox.getItems().add(u.contact());
+		}
+        this.emailComboBox.setEditable(true);  
+        this.notification.setText("Objet : ");
+	}
+	
+	private void envoyerMessage(){
+		String contenu = verif + ";" + this.text.getText();
+		try{
+		this.mel.saveMessage(this.moi,contenu);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	protected void ecouteurDefaultAction() {
 		
@@ -93,36 +128,34 @@ public class WriteMessage extends Composition{
 				if (this.text.getLength() != 0) {
 					if(this.objet.getLength() != 0) {
 						//---
-						
-						
-						try {
-							Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-							MelInterface mel = (MelInterface) registry.lookup("Mel");
-							mel.test();
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						
-						
-						
+						// On remplace les ";" car c'est notre délimiteur Objet;Message
+						// et si l'utilisateur entre des ; dans son objet, on va le remplacer par
+						// des blancs pour eviter de deplacer une partie de l'objet dans le message
+						//---
+						this.verif = this.objet.getText().replace(";", " ");
+						envoyerMessage();
+
 						
 						
 						//---
-						 message.setText("Votre message � bien �tait envoy� � : " + this.emailComboBox.getValue());   
+						 message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
 		                        emailComboBox.setValue(null);
 		                        this.text.clear();
 		                        this.objet.clear();
 					}
 					else {
 						methode("Vous avez oublier de mettre un objet");
+						message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
+                        emailComboBox.setValue(null);
+						this.text.clear();
+                        this.objet.clear();
 					}
 				}
 				else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Information Dialog");
 					alert.setHeaderText(null);
-					alert.setContentText("Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas s�rieux");
+					alert.setContentText("Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas serieux");
 					alert.showAndWait();
 				}
 			}
@@ -134,6 +167,7 @@ public class WriteMessage extends Composition{
 				alert.showAndWait();
 			}
 			});
+			
 	}
 		
 	@Override

@@ -1,5 +1,6 @@
 package application;
 	
+import application.Sondage.SondageBouton;
 import application.mail.GestionMail;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -18,7 +19,7 @@ public class Main extends Application {
 			ScrollPane sp = new ScrollPane();
 			
 			
-			VBox vb = new GestionMail();
+			VBox vb = new SondageBouton();
 			
 			
 			
