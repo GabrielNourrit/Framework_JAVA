@@ -12,36 +12,12 @@ public class Mel implements MethodeServeur, MelInterface{
 	public Mel (String url) throws RemoteException {  
 	}
 
+
 	@Override
-	public ArrayList<melCell> melUnUser(int id) {
-		    /* Connecte sgbd
-		     * Recupere tout les messages
-		     * Pour chaque message on instancie objet, date ...
-		     * retourne liste
-		     * */
-	/*	try {
-			Connexionsgbd csgbd = new Connexionsgbd();
-			Connection conn = csgbd.openConnexionsgbd();
-			Statement stmt;
-	
-			stmt = conn.createStatement();
+	public void test() throws RemoteException{
 		
-			ResultSet rs = stmt.executeQuery("select contenu from Messages where login='"+ id +"' and type ='mail'");
+		System.out.println("on est en finale !!");
 		
-			while (rs.next())
-				System.out.println("ok");
-		
-		
-		
-		
-		
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
-		System.out.println("ok");
-		
-		return null;
 	}
 	
 	

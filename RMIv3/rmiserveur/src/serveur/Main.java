@@ -14,6 +14,8 @@ import connexion.Connexion;
 import connexion.ConnexionInterface;
 import fichier.GestionFichier;
 import fichier.GestionFichierInterface;
+import mail.Mel;
+import mail.MelInterface;
 import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
@@ -25,7 +27,7 @@ public class Main {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
 		
-		// Définition du type de SGBD utilisé
+		// Dï¿½finition du type de SGBD utilisï¿½
 		SGBD sgbd;
 		TchatInterface tchat;
 		GestionFichierInterface fichier;
@@ -36,20 +38,22 @@ public class Main {
 		}
 		tchat = new Tchat();
 		fichier = new GestionFichier(sgbd);
+		MelInterface mel = new Mel("salut");
 		ConnexionInterface connexion = new Connexion(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
 		listBind.put("Connexion", connexion);
+		listBind.put("Mel", mel);
 
 		
-		//Création du serveur
+		//Crï¿½ation du serveur
 		try{	
 			new Serveur(listBind);
 			System.out.println("Lancement du Serveur");
 			
 		}catch(NumberFormatException e){
-			System.err.println("Numéro de port non définit");
+			System.err.println("Numï¿½ro de port non dï¿½finit");
 		} catch (Exception e) {
 			System.err.println("Erreur Aux lancement du Serveur : "+e.getMessage());
 			e.printStackTrace();

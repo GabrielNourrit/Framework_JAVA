@@ -6,6 +6,7 @@ import java.rmi.registry.Registry;
 
 import connexion.ConnexionInterface;
 import interfaceGraph.Composition;
+import interfaceGraph.Inscription;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -92,28 +94,14 @@ public class WriteMessage extends Composition{
 					if(this.objet.getLength() != 0) {
 						//---
 						
-
-						Registry registry;
-						try {
-							registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						MelInterface mel;
-						try {
-							mel = (MelInterface) registry.lookup("Mail");
-						} catch (AccessException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (NotBoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 						
+						try {
+							Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+							MelInterface mel = (MelInterface) registry.lookup("Mel");
+							mel.test();
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
 						
 						
 						

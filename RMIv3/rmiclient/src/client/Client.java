@@ -5,6 +5,7 @@ import java.rmi.*;
 import interfaceGraph.ConnexionStyle;
 import interfaceGraph.ConnexionStyle2;
 import interfaceGraph.Inscription;
+import interfaceGraph.mail.WriteMessage;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -51,7 +52,8 @@ public class Client extends Application {
 		// TODO Auto-generated method stub
 		//BorderPane sp = new BorderPane();
 		ScrollPane sp = new ScrollPane();
-		VBox vb = new ConnexionStyle();
+		//VBox vb = new ConnexionStyle();
+		VBox vb = new WriteMessage();
 		//VBox vb = new Inscription();
 		sp.setContent(vb);
 		vb.setAlignment(Pos.CENTER);
