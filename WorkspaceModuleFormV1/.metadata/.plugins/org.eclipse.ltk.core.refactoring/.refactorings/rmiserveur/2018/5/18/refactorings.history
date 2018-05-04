@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <session version="1.0">
-<refactoring accessors="true" comment="Delete element from project &apos;rmiserveur&apos;&#x0A;- Original project: &apos;rmiserveur&apos;&#x0A;- Original element: &apos;mail.MelMenuItem.java&apos;" description="Delete element" element1="/src&lt;mail{MelMenuItem.java" elements="1" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1525338963464" subPackages="false" version="1.0"/>
+<refactoring comment="Move package &apos;mail&apos; to &apos;rmiserveur2/src&apos;&#x0D;&#x0A;- Original project: &apos;rmiserveur&apos;&#x0D;&#x0A;- Destination element: &apos;rmiserveur2/src&apos;&#x0D;&#x0A;- Original element: &apos;rmiserveur/src/mail&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move package" destination="=rmiserveur2/src" element1="/src&lt;mail" flags="589830" fragments="1" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1525396737343" version="1.0"/>
 </session>
