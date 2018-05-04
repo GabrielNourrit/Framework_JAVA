@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import BaseDeDonnee.connexion.ConnexionBase;
+import fichier.Fichier;
 import util.Utilisateur;
 
 public abstract class SGBD {
@@ -129,4 +130,22 @@ public abstract class SGBD {
 	}
 	
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException{ return null; }
+	
+	public List<Fichier> getFichiers() throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
+	}
+	
+	public Fichier getUrlFichier(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
+	}
+	
+	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
+	}
+	
+	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
+	}
+	
+	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
+		return 0;
+	}
 }

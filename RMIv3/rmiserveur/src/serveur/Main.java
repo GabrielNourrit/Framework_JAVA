@@ -39,13 +39,13 @@ public class Main {
 			default : sgbd = new SGBDOracle();break;
 		}
 		tchat = new Tchat();
-		//fichier = new GestionFichier(sgbd);
+		fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
-		//listBind.put("Fichier", fichier);
+		listBind.put("Fichier", fichier);
 		listBind.put("Connexion", connexion);
 		
 		listBind.put("Utilisateurs", ui);

@@ -21,6 +21,9 @@ public class Fichier implements Serializable {
 		return idFic;	
 	}
 	
+	public String getNom() {
+		return nom;
+	}
 	public String toString() {
 		return nom;
 	}

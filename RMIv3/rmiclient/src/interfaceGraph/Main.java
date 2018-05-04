@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Utilisateur;
 
 public class Main extends Application {
 
@@ -35,14 +36,13 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		VBox vb = new Tchat();
+		VBox vb = new PoseFichier(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234"));
 		vb.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);
 		stage.setTitle("ChatBox");
 		stage.setScene(scene);
-		stage.show();
-		
+		stage.show();		
 	}
 
 }

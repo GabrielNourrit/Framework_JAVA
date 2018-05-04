@@ -13,6 +13,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
+import fichier.Fichier;
 import util.Utilisateur;
 
 
@@ -51,7 +52,7 @@ public class SGBDOracle extends SGBD {
 		csgbd.closeConnexionsgbd(conn);
 		return r;
 	}
-
+	
 
 	public void closeReq(ResultSet rs) throws SQLException {
 		conn.close();
@@ -64,6 +65,7 @@ public class SGBDOracle extends SGBD {
 		String mdpCrypt="";
 		ResultSet rs = executeSelect("select motDePasse from utilisateurs where login='"+ login +"'");
 		if (rs.next()) mdpCrypt = rs.getString(1);
+		rs.close();
 		if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		return false;
 	}
@@ -107,6 +109,15 @@ public class SGBDOracle extends SGBD {
 		executeUpdate("update utilisateurs set etat ='SUPPR' where login ='"+user+"'");
 	}
 	
+	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',1)");
+	}
+	
+	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"')");
+	}
+	
+	
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
 		ResultSet rs = executeSelect("select * from utilisateurs where etat ='VALID'");
@@ -114,6 +125,52 @@ public class SGBDOracle extends SGBD {
 			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(5));
 			lesUser.add(user);
 		}
+		rs.close();
 		return lesUser;
 	}
+	
+	public List<Fichier> getFichiers() throws ClassNotFoundException, RemoteException, SQLException {
+		List<Fichier> fs = new ArrayList<>();
+		Fichier f = null;
+		int i;
+		String n, u;
+		ResultSet rs = executeSelect("select idFic,nom,url from fichiers");
+		while (rs.next()) {
+			i = rs.getInt("idFic");
+			n = rs.getString("nom");
+			u = rs.getString("url");
+			f = new Fichier(i,n,u);
+			fs.add(f);
+		}
+		rs.close();
+		return fs;
+	}
+	
+	public Fichier getUrlFichier(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		String url, nom;
+		Fichier f = null;
+		ResultSet rs = executeSelect("select nom,url from fichiers where idFic="+id);
+		if (rs.next()) {
+			nom = rs.getString("nom");
+			url = rs.getString("url");
+			f = new Fichier(id,nom,url);
+		}
+		rs.close();
+		return f;
+	}
+	
+	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
+		int i = -1;
+		ResultSet rs = executeSelect("select max(idmai) from mails");
+		if (rs.next()) i = rs.getInt("idmai")+1;
+		return i;
+	}
+	
+	/*public Fichier getFichier(int idFic) {
+		int i=-1;
+		ResultSet rs = executeSelect("select ");
+		if (rs.next()) i = rs.getInt("idMes");
+		Fichier f = new Fichier(i,nom,"");
+		return f;
+	}*/
 }

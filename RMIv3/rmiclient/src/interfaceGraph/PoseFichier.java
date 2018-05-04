@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import util.TransformerFichier;
+import util.Utilisateur;
 
 public class PoseFichier extends VBox {
 	private VBox form;
@@ -20,8 +21,10 @@ public class PoseFichier extends VBox {
 	private Button button;
 	private Label label;
 	private Stage stage;
+	private Utilisateur u;
 	
-	public PoseFichier() {
+	public PoseFichier(Utilisateur u) {
+		this.u=u;
 		genererSousComposant();
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
@@ -48,7 +51,7 @@ public class PoseFichier extends VBox {
 				byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
 				Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
 				GestionFichierInterface connex = (GestionFichierInterface) registry.lookup("Fichier");
-				connex.upload(chosenFile.getName(), b);
+				connex.upload(chosenFile.getName(), b,u.getLogin());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
