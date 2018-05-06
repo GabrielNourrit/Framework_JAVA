@@ -64,7 +64,7 @@ public class PropertiesServeur {
 	 * Le numéro de port utilisé par le serveur
 	 * @return Interger
 	 */
-	public static Integer getPortServeur() throws NumberFormatException{
+	public static int getPortServeur() throws NumberFormatException{
 		initialiseProperties();
 		return Integer.parseInt(portServeur);
 	}

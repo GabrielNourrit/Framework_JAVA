@@ -23,7 +23,7 @@ public class SGBDMySQL extends SGBD {
 		super();
 	}
 
-	private static final String LINK_SETTING_MYSQL = "ressources/BDMySQL.properties";
+	private static final String LINK_SETTING_MYSQL = "ressources/bdd/BDMySQL.properties";
 
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {

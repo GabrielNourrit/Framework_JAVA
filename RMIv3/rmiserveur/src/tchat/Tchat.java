@@ -1,9 +1,6 @@
 package tchat;
 
 import java.rmi.*;
-import java.rmi.server.UnicastRemoteObject;
-
-import BaseDeDonnee.MethodeServeur;
 import util.ManipulationFichier;
  
 public class Tchat implements TchatInterface  {
