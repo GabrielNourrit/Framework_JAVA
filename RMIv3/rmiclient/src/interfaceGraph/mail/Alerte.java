@@ -21,14 +21,10 @@ public class Alerte extends Composition{
 	private Button changer;
 	private HBox hb;
 	
-	private String bien;
-	private MelInterface mel;
-	private Utilisateur u;
+	Alertable a;
 	
-	public Alerte(Utilisateur u, String probleme, String bien, MelInterface mel) {
-		this.bien=bien;
-		this.u=u;
-		this.mel=mel;
+	public Alerte(String probleme, Alertable a) {
+		this.a = a;
 		genererSousComposant();
 		message.setText(probleme);
 		this.message.setFont(Font.font("Arial",FontPosture.REGULAR, 20));
@@ -37,10 +33,6 @@ public class Alerte extends Composition{
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
-	
-	
-	
-	
 	
 	@Override
 	protected void genererSousComposant() {
@@ -57,22 +49,20 @@ public class Alerte extends Composition{
 	protected void ecouteurDefaultAction() {
 		// TODO Auto-generated method stub
 		this.changer.setOnAction(event ->{
-			Stage stage = (Stage) this.changer.getScene().getWindow();
-		    stage.close();
+			fermerFenetre();
 			}
 		);
 		this.continuer.setOnAction(event ->{
-			try{
-			this.mel.saveMessage(this.u,bien);
-			Stage stage = (Stage) this.changer.getScene().getWindow();
-		    stage.close();
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			}
-		);
+			this.a.update();
+			fermerFenetre();
+		});
 	}
 
+	protected void fermerFenetre() {
+		Stage stage = (Stage) this.changer.getScene().getWindow();
+	    stage.close();
+	}
+	
 	@Override
 	protected void layoutDefaultParametre() {
 		// TODO Auto-generated method stub

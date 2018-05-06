@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 import mail.MelInterface;
 import mail.Utilisateur;
 
-public class WriteMessage extends Composition{
+public class WriteMessage extends Composition implements Alertable{
 
     private Button envoyer;
     private Label notification;
@@ -62,9 +62,9 @@ public class WriteMessage extends Composition{
 
     public void methode(String mesg) {
     	String contenu = verif + ";" + this.text.getText();
-    	VBox alerte = new Alerte(moi,mesg,contenu,mel);
+    	VBox alerte = new Alerte(mesg,this);
 		Stage s = new Stage();
-		Scene scene = new Scene(alerte,800,400);
+		Scene scene = new Scene(alerte,800,100);
 		s.setScene(scene);
 		s.show();
     }
@@ -115,6 +115,10 @@ public class WriteMessage extends Composition{
 		String contenu = verif + ";" + this.text.getText();
 		try{
 		this.mel.saveMessage(this.moi,contenu);
+		 message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
+         emailComboBox.setValue(null);
+         this.text.clear();
+         this.objet.clear();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -135,20 +139,10 @@ public class WriteMessage extends Composition{
 						this.verif = this.objet.getText().replace(";", " ");
 						envoyerMessage();
 
-						
-						
-						//---
-						 message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
-		                        emailComboBox.setValue(null);
-		                        this.text.clear();
-		                        this.objet.clear();
+						//--
 					}
 					else {
 						methode("Vous avez oublier de mettre un objet");
-						message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
-                        emailComboBox.setValue(null);
-						this.text.clear();
-                        this.objet.clear();
 					}
 				}
 				else {
@@ -184,6 +178,11 @@ public class WriteMessage extends Composition{
 		//comp.setAlignment(Pos.CENTER);
 
 		this.getChildren().add(this.comp);
+	}
+
+	@Override
+	public void update() {
+		envoyerMessage();
 	}
 
 }
