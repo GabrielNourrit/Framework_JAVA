@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import parametrage.PropertiesClient;
 import util.Utilisateur;
 
 public class ConnexionStyle extends Formulaire{
@@ -53,7 +54,7 @@ public class ConnexionStyle extends Formulaire{
 			
 			ConnexionInterface connex;
 			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
 	            connex = (ConnexionInterface) registry.lookup("Connexion");
 				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {

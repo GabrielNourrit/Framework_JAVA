@@ -14,9 +14,9 @@ public class PropertiesServeur {
 	 * Valeurs utilisables par l'application
 	 */
 	private static String portServeur;
-	private static String TypeSGBD;
-	private static String adressServeur;
-	
+	private static String typeSGBD;
+	private static String stockageTchat;
+	private static String stockageFichiers;
 	
 	
 	/**
@@ -38,8 +38,9 @@ public class PropertiesServeur {
 			e.printStackTrace();
 		}
 		portServeur = prop.getProperty("numero.port");
-		TypeSGBD = prop.getProperty("type.sgbd.serveur");
-		adressServeur = prop.getProperty("adress.server");
+		typeSGBD = prop.getProperty("type.sgbd.serveur");
+		stockageTchat = prop.getProperty("stockage.tachat");
+		stockageFichiers = prop.getProperty("stockage.fichiers");
 	}
 	
 	/**
@@ -54,21 +55,29 @@ public class PropertiesServeur {
 	/* Methodes visibles du dehort */
 	
 	/**
-	 * L'ardesse du serveur
+	 * La localisation de l'adresse de stockage des fichiers
 	 * @return String
 	 */
-	public static String getAdresseServeur(){
+	public static String getStockageFichiers(){
 		initialiseProperties();
-		return adressServeur;
+		return stockageFichiers;
 	}
 	
+	/**
+	 * La localisation de l'adresse de stockage des tchats
+	 * @return String
+	 */
+	public static String getStockageTchat(){
+		initialiseProperties();
+		return stockageTchat;
+	}
 	/**
 	 * Le SGBD définit dans les paramètres
 	 * @return String
 	 */
 	public static String getTypeSGBD(){
 		initialiseProperties();
-		return TypeSGBD;
+		return typeSGBD;
 	}
 	
 	/**

@@ -35,7 +35,7 @@ public class PropertiesClient {
 			System.err.println( "IOException: " + e.getMessage()) ;
 			e.printStackTrace();
 		}
-		adressServeur = prop.getProperty("adress.server");
+		adressServeur = prop.getProperty("adresse.serveur.defaut");
 	}
 	
 	/**
