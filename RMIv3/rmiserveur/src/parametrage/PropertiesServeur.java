@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class PropertiesServeur {
 	
-	private static final String URI_PROPERTIES_FILE = "ressources/Serveur.properties";
+	private static final String URI_PROPERTIES_FILE = "ressources/parametre_Serveur/Serveur.properties";
 	private static PropertiesServeur singleton = null;
 	private static Properties prop;
 	

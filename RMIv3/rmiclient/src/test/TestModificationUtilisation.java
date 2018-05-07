@@ -1,5 +1,9 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fichier.Groupe;
 import interfaceGraph.ModifierMotDePasse;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,7 +18,10 @@ public class TestModificationUtilisation extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			VBox vb = new ModifierMotDePasse(new Utilisateur("metzgegu","Guillaume","metzger",null));
+			List<Groupe> s = new ArrayList<>();
+			s.add(new Groupe(1,"Groupe Projet MORAT"));
+			s.add(new Groupe(2,"Groupe Projet A380"));
+			VBox vb = new ModifierMotDePasse(new Utilisateur("metzgegu","Guillaume","metzger",null,s));
 			//VBox vb = new ConnexionStyle();
 			ScrollPane sp = new ScrollPane();
 			//VBox vb = new ModifierUtilisateur(new Utilisateur("metzgegu","Guillaume","metzger",null));

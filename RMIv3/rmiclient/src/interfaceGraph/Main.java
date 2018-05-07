@@ -5,12 +5,15 @@ import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.management.remote.rmi.RMIServer;
 
 import fichier.GestionFichierInterface;
+import fichier.Groupe;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -36,7 +39,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		VBox vb = new PoseFichier(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234"));
+		List<Groupe> s = new ArrayList<>();
+		s.add(new Groupe(1,"Groupe Projet MORAT"));
+		s.add(new Groupe(2,"Groupe Projet A380"));
+		VBox vb = new PoseFichier(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234",s));
 		vb.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);

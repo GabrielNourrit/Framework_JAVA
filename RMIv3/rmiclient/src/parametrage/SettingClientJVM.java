@@ -8,7 +8,7 @@ public class SettingClientJVM {
 	/**
 	 * Localisation des propriétés de sécurité définit
 	 */
-	private final static String SECURITY_POLICY = "ressources/security.policy";
+	private final static String SECURITY_POLICY = "ressources/parametre_Client/security.policy";
 	/**
 	 * Localisation des points classes utilisée pour l'annuaire
 	 */

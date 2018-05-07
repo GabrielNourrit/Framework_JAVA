@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
+import fichier.Groupe;
 import util.Utilisateur;
 
 public abstract class SGBD {
@@ -64,12 +65,19 @@ public abstract class SGBD {
 		return list;
 	}
 	
+	public void ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException {
+	}
+	
 	public static SGBD determine(String baseDeDonnees) throws RemoteException{
 		return mesBases.getOrDefault(baseDeDonnees.toUpperCase(), mesBases.get(TYPE_DEFAULT_SGBD));
 	}
 	
 	public boolean verifierMdp(String login, String mdp) throws ClassNotFoundException, RemoteException, SQLException {
 		return false;
+	}
+	
+	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
 	}
 	
 	/**
@@ -191,5 +199,14 @@ public abstract class SGBD {
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
 		return 0;
+	}
+	public List<Fichier> getFichiersGroupe(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
+	}
+	public List<Groupe> getGroupeUtilisateur(String l) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
+	}
+	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
 	}
 }

@@ -3,7 +3,9 @@ package serveur;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import BaseDeDonnee.MethodeServeur;
@@ -36,7 +38,11 @@ public class Main {
 		//Determinie le type de SGBD utiliser
 		SGBD sgbd = SGBD.determine(PropertiesServeur.getTypeSGBD());
 		
-		TchatInterface tchat = new Tchat();
+		List<String> s = new ArrayList<>();
+		s.add("Groupe Projet MORAT");
+		s.add("Groupe Projet A380");
+		
+		TchatInterface tchat = new Tchat(s,"ressources");
 		GestionFichierInterface fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
