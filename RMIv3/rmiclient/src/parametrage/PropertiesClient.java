@@ -4,17 +4,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertiesServeur {
+public class PropertiesClient {
 	
-	private static final String URI_PROPERTIES_FILE = "ressources/parametre_Serveur/Serveur.properties";
-	private static PropertiesServeur singleton = null;
+	private static final String URI_PROPERTIES_FILE = "ressources/parametre_Client/Client.properties";
+	private static PropertiesClient singleton = null;
 	private static Properties prop;
 	
 	/**
 	 * Valeurs utilisables par l'application
 	 */
-	private static String portServeur;
-	private static String TypeSGBD;
 	private static String adressServeur;
 	
 	
@@ -22,7 +20,7 @@ public class PropertiesServeur {
 	/**
 	 * Constructeur local
 	 */
-	private PropertiesServeur(){
+	private PropertiesClient(){
 		load();
 	}
 	
@@ -37,8 +35,6 @@ public class PropertiesServeur {
 			System.err.println( "IOException: " + e.getMessage()) ;
 			e.printStackTrace();
 		}
-		portServeur = prop.getProperty("numero.port");
-		TypeSGBD = prop.getProperty("type.sgbd.serveur");
 		adressServeur = prop.getProperty("adress.server");
 	}
 	
@@ -47,7 +43,7 @@ public class PropertiesServeur {
 	 */
 	private static void initialiseProperties(){
 		if(singleton == null){
-			singleton = new PropertiesServeur();
+			singleton = new PropertiesClient();
 		}
 	}
 	
@@ -60,24 +56,6 @@ public class PropertiesServeur {
 	public static String getAdresseServeur(){
 		initialiseProperties();
 		return adressServeur;
-	}
-	
-	/**
-	 * Le SGBD définit dans les paramètres
-	 * @return String
-	 */
-	public static String getTypeSGBD(){
-		initialiseProperties();
-		return TypeSGBD;
-	}
-	
-	/**
-	 * Le numéro de port utilisé par le serveur
-	 * @return Interger
-	 */
-	public static int getPortServeur() throws NumberFormatException{
-		initialiseProperties();
-		return Integer.parseInt(portServeur);
 	}
 	
 	/**
