@@ -2,10 +2,13 @@ package BaseDeDonnee.sgbd;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
@@ -16,13 +19,54 @@ public abstract class SGBD {
 	protected Connection conn;
 	protected Statement stmt;
 	
+	private static final String TYPE_DEFAULT_SGBD = "ORACLE";
+	
+	private static final Map<String, SGBD> mesBases;
+	static {
+        Map<String, SGBD> aMap = new HashMap<>();
+        try {
+        	aMap.put(TYPE_DEFAULT_SGBD,new SGBDOracle());
+		} catch (RemoteException e) {
+			System.err.println("Erreur d'initialisation :" + e.getMessage());
+		}
+        mesBases = aMap;
+    }
+	
+	/**
+	 * Constructeur protéger
+	 * @throws RemoteException
+	 */
 	protected SGBD() throws RemoteException {
 		this.creeSGBD();
 	}
 
 	protected abstract ConnexionBase creeSGBD() throws RemoteException;
 	
+	/**
+	 * Recherche das la liste si il existe deja
+	 * 	- si oui alors rien n'est fait
+	 *  - si non on ajout dans la liste
+	 * @param nomBase
+	 * @param sgbd
+	 */
+	public static void addTypeSGBD(String nomBase, SGBD sgbd){
+		String nom = nomBase.toUpperCase();
+		if(!mesBases.containsKey(nom)){
+			mesBases.put(nom,sgbd);
+		}
+	}
 	
+	public static List<String> printListBaseNom(){
+		List<String> list = new ArrayList<>();
+		for(Entry<String, SGBD> e : mesBases.entrySet()){
+			list.add(e.getKey());
+		}
+		return list;
+	}
+	
+	public static SGBD determine(String baseDeDonnees) throws RemoteException{
+		return mesBases.getOrDefault(baseDeDonnees.toUpperCase(), mesBases.get(TYPE_DEFAULT_SGBD));
+	}
 	
 	public boolean verifierMdp(String login, String mdp) throws ClassNotFoundException, RemoteException, SQLException {
 		return false;

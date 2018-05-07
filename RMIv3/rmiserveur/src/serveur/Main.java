@@ -24,32 +24,29 @@ import tchat.Tchat;
 import tchat.TchatInterface;
 
 public class Main {
-
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
 		
-		// D�finition du type de SGBD utilis�
-		SGBD sgbd;
-		TchatInterface tchat;
-		GestionFichierInterface fichier;
-		switch(PropertiesServeur.getTypeSGBD().toUpperCase()) {
-			case "MYSQL": sgbd = new SGBDMySQL();System.out.println("MYSQL");break;
-			case "ORACLE": sgbd =new SGBDOracle();System.out.println("ORACLE");break;
-			default : sgbd = new SGBDOracle();break;
-		}
-		tchat = new Tchat();
-		fichier = new GestionFichier(sgbd);
+		// Ajout d'un type de SGBD
+		SGBD.addTypeSGBD("oracle", new SGBDOracle());
+		SGBD.addTypeSGBD("mysql", new SGBDMySQL());
+		
+		//Determinie le type de SGBD utiliser
+		SGBD sgbd = SGBD.determine(PropertiesServeur.getTypeSGBD());
+		
+		TchatInterface tchat = new Tchat();
+		GestionFichierInterface fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
+		
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
-		listBind.put("Connexion", connexion);
-		
-		listBind.put("Utilisateurs", ui);
-		
+		listBind.put("Connexion", connexion);		
+		listBind.put("Utilisateurs", ui);		
 		listBind.put("OperationUtilisateur", ou);
 		
 		//Cr�ation du serveur

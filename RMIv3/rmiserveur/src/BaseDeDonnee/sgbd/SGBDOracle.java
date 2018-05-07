@@ -23,7 +23,7 @@ public class SGBDOracle extends SGBD {
 		super();
 	}
 
-	private static final String LINK_SETTING_ORACLE = "ressources/BDOracle.properties";
+	private static final String LINK_SETTING_ORACLE = "ressources/bdd/BDOracle.properties";
 	
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {
