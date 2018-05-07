@@ -17,6 +17,7 @@ public class PropertiesServeur {
 	private static String typeSGBD;
 	private static String stockageTchat;
 	private static String stockageFichiers;
+	private static String stockageMail;
 	
 	
 	/**
@@ -41,6 +42,7 @@ public class PropertiesServeur {
 		typeSGBD = prop.getProperty("type.sgbd.serveur");
 		stockageTchat = prop.getProperty("stockage.tachat");
 		stockageFichiers = prop.getProperty("stockage.fichiers");
+		stockageMail = prop.getProperty("stockage.mail");
 	}
 	
 	/**
@@ -53,6 +55,15 @@ public class PropertiesServeur {
 	}
 	
 	/* Methodes visibles du dehort */
+	
+	/**
+	 * La localisation de l'adresse de stockage des mails
+	 * @return String
+	 */
+	public static String getStockageMail(){
+		initialiseProperties();
+		return stockageMail;
+	}
 	
 	/**
 	 * La localisation de l'adresse de stockage des fichiers
