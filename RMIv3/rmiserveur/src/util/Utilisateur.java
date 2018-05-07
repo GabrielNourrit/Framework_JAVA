@@ -54,6 +54,10 @@ public class Utilisateur implements Serializable {
 		return type;
 	}
 	
+	public List<Groupe> getGroupe() {
+		return groupe;
+	}
+	
 	public String toString(){
 		return login+" " +nom+" "+prenom+" "+type;
 	}
