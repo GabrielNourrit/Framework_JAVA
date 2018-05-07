@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import BaseDeDonnee.sgbd.SGBD;
@@ -16,19 +14,6 @@ import BaseDeDonnee.sgbd.SGBDOracle;
 import parametrage.PropertiesServeur;
 
 public class StructSGBD {
-
-	private SGBD sgbd;
-	
-	
-	@BeforeClass
-	public static void init() throws Exception{				
-		
-	}
-	
-	@Before
-	public void initationsationDuSGBD() throws Exception{
-		sgbd = SGBD.determine("Oracle");// valeur par défault Oracle
-	}
 	
 	@Test
 	public void testMapSGBD()throws Exception{

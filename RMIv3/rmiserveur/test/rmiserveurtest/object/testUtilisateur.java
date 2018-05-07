@@ -36,6 +36,12 @@ public class testUtilisateur {
 	}
 	
 	@Test
+	public void test_Constructeur(){
+		assertNotNull(utilSimple);
+		assertNotNull(utilComplet);
+	}
+	
+	@Test
 	public void test_getMdp_setMdp() {	
 		assertNull(utilSimple.getMdp());
 		assertNull(utilComplet.getMdp());
