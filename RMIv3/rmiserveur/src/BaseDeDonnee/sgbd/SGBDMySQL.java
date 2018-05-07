@@ -14,6 +14,7 @@ import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionMySQL;
 import fichier.Fichier;
+import fichier.Groupe;
 import util.Utilisateur;
 
 
@@ -23,7 +24,7 @@ public class SGBDMySQL extends SGBD {
 		super();
 	}
 
-	private static final String LINK_SETTING_MYSQL = "ressources/bdd/BDMySQL.properties";
+	private static final String LINK_SETTING_MYSQL = "ressources/BDMySQL.properties";
 
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {
@@ -65,6 +66,15 @@ public class SGBDMySQL extends SGBD {
 		rs.close();
 		if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		return false;
+	}
+	
+	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		ResultSet rs = executeSelect("select login, nom, prenom, idtype from utilisateurs where login='"+ login +"'");
+		if (rs.next()) {
+			List<Groupe> l = getGroupeUtilisateur(login);
+			return new Utilisateur(login,rs.getString(2),rs.getString(3),rs.getString(4),l);
+		}
+		return null;
 	}
 	
 	public void creaUse (String login,String mdp,String type) throws ClassNotFoundException, SQLException {
@@ -117,13 +127,36 @@ public class SGBDMySQL extends SGBD {
 	
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
+		String login;
 		ResultSet rs = executeSelect("select * from utilisateurs where etat ='VALID'");
 		while (rs.next()) {
-			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(5));
+			login = rs.getString(1);
+			Utilisateur user = new Utilisateur(login, rs.getString(2),rs.getString(3),rs.getString(5), getGroupeUtilisateur(login));
 			lesUser.add(user);
 		}
 		rs.close();
 		return lesUser;
+	}
+	
+	public List<Groupe> getGroupeUtilisateur(String l) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Groupe> groupes = new ArrayList<>();
+		int id;
+		ResultSet rs = executeSelect("select idgr from faitpartiegroupe where login='"+l+"'");
+		while (rs.next()) {
+			id = rs.getInt(1);
+			Groupe g = new Groupe(id, getLibelleGroup(id));
+			groupes.add(g);
+		}
+		rs.close();
+		return groupes;
+	}
+	
+	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		String libelle="";
+		ResultSet rs = executeSelect("select libelle from groupe where idgr="+id);
+		if (rs.next()) libelle = rs.getString(1);
+		rs.close();
+		return libelle;
 	}
 	
 	public List<Fichier> getFichiers() throws ClassNotFoundException, RemoteException, SQLException {
@@ -136,7 +169,23 @@ public class SGBDMySQL extends SGBD {
 			i = rs.getInt("idFic");
 			n = rs.getString("nom");
 			u = rs.getString("url");
-			System.out.println(n);
+			f = new Fichier(i,n,u);
+			fs.add(f);
+		}
+		rs.close();
+		return fs;
+	}
+	
+	public List<Fichier> getFichiersGroupe(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Fichier> fs = new ArrayList<>();
+		Fichier f = null;
+		int i;
+		String n, u;
+		ResultSet rs = executeSelect("select idFic,nom,url from fichiers where idReceveur="+id);
+		while (rs.next()) {
+			i = rs.getInt("idFic");
+			n = rs.getString("nom");
+			u = rs.getString("url");
 			f = new Fichier(i,n,u);
 			fs.add(f);
 		}

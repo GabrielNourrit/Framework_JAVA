@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -9,17 +8,19 @@ import java.util.List;
 
 import fichier.Fichier;
 import fichier.GestionFichierInterface;
+import fichier.Groupe;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import tchat.TchatInterface;
 import util.TransformerFichier;
+import util.Utilisateur;
 
 public class TelechargerFichier extends VBox {
 	private HBox form;
@@ -30,80 +31,66 @@ public class TelechargerFichier extends VBox {
 	private ListView<Fichier> list;
 	private Registry registry;
 	private GestionFichierInterface connex;
+	private Utilisateur u;
+	private ChoiceBox<Groupe> cbgroupe;
+	private List<Fichier> fs;
+	private ObservableList<Fichier> items;
 
-
-	public TelechargerFichier() throws RemoteException, ClassNotFoundException, NotBoundException, SQLException {
+	public TelechargerFichier(Utilisateur utilisateur) throws RemoteException, ClassNotFoundException, NotBoundException, SQLException {
+		this.u=utilisateur;
 		registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
 		connex = (GestionFichierInterface) registry.lookup("Fichier");
 		genererSousComposant();
-		ecouteurDefaultAction();
 		layoutDefaultParametre();
+		ecouteurChoixGroupe();
+		ecouteurDefaultAction();
+		
 	}
 
-	protected void genererSousComposant() {
+	protected void genererSousComposant() throws ClassNotFoundException, RemoteException, SQLException {
 		button = new Button("Download");
 		label = new Label("Filename");
 		form = new HBox();
 		vb1 = new VBox();
 		vb2 = new VBox();
-		list = new ListView();
+		list = new ListView<Fichier>();
+		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
+		cbgroupe.getSelectionModel().select(0);
+		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
 	}
 
+	
+	private void ecouteurChoixGroupe() {
+		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
+			try {
+				items.removeAll(fs);
+				cbgroupe.getSelectionModel().select((int) new_value);
+				fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+				items.addAll(fs);
+				System.out.println(fs);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+	
 	protected void ecouteurDefaultAction() throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
 		button.setOnAction(event -> {
-			//list.getSe
-			/*Traitement de l'appli*/
-			
 			Fichier f = list.getSelectionModel().getSelectedItem();
 			try {
 				TransformerFichier.byteToFile(connex.download(f.getidFic()), f.getNom());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			//System.out.println("id est "+this.id.getText());
-			//System.out.print("mdp est "+this.mdp.getText());
-
-			//			TelechargerFichier cherchefichier;
-			//					Registry registry;
-			//					try {
-			//						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			//						cherchefichier = (TrouverFichierInterface) registry.lookup("TrouverFichier");
-			//						if(cherchefichier.) {
-			//							
-			//						}
-			//					} catch (RemoteException | NotBoundException e) {
-			//						// TODO Auto-generated catch block
-			//						e.printStackTrace();
-			//					}
-
-
-
-			//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
-
-			/*On efface les anciennes valeures une fois finie*/
-
-
-			//s = list.getSelectionModel().getSelectedItem();
-			System.out.println("Super!");
-
 		});
 	}
 
 	protected void layoutDefaultParametre() throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		int id;
-		Fichier s; // item cliquer
-		Fichier f = new Fichier(1,"fic1","/");
-
-		
-		
-		List<Fichier> fs = connex.recupererTousFichiers();
-		ObservableList<Fichier> items = FXCollections.observableArrayList (fs);//connex.recupererTousFichiers()); 
+		items = FXCollections.observableArrayList (fs); 
 		list.setItems(items);
-		s = list.getSelectionModel().getSelectedItem();
 		vb1.getChildren().add(list);
-		vb2.getChildren().addAll(button,label);
+		vb2.getChildren().addAll(cbgroupe,button,label);
 		vb1.setAlignment(Pos.CENTER);
 		vb2.setAlignment(Pos.CENTER);
 		form.getChildren().addAll(vb1,vb2);

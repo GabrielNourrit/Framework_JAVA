@@ -2,6 +2,10 @@ package util;
 
 import java.io.Serializable;
 
+import java.util.List;
+
+import fichier.Groupe;
+
 public class Utilisateur implements Serializable {
 	private static final long serialVersionUID = 447192624987987345L;
 	/**
@@ -12,17 +16,18 @@ public class Utilisateur implements Serializable {
 	private String prenom;
 	private String type;
 	private String mdp;
+	private List<Groupe> groupe;
 	
 	public Utilisateur(String _login) {
 		login = _login;
 	}
 	
-	public Utilisateur(String _login, String _nom, String _prenom, String _type) {
-		
+	public Utilisateur(String _login, String _nom, String _prenom, String _type, List<Groupe> g) {		
 		this.login = _login;
 		this.nom = _nom;
 		this.prenom = _prenom;
 		this.type = _type;
+		this.groupe = g;
 	}
 	
 	public void setMdp(String _mdp) {

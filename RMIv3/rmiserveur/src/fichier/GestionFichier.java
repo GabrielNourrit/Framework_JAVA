@@ -4,20 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.management.remote.rmi.RMIServer;
 
-import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.sgbd.SGBD;
-import connexion.ConnexionInterface;
 
 
 public class GestionFichier implements GestionFichierInterface {
@@ -29,10 +23,10 @@ public class GestionFichier implements GestionFichierInterface {
 		this.sgbd=sgbd;
 	}
 	
-	public String upload(String nom, byte[] contenu, String l) throws RemoteException, ClassNotFoundException, SQLException {
+	public String upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException {
 		 try{
 	            Files.write(Paths.get(nom),contenu);
-	            sgbd.ajouterFichier(nom, l);
+	            sgbd.ajouterFichier(nom, l, id);
 	        } catch (IOException ex) {
 	            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
 	            return "Non recu";
@@ -48,6 +42,15 @@ public class GestionFichier implements GestionFichierInterface {
 	@Override
 	public List<Fichier> recupererTousFichiers() throws RemoteException, ClassNotFoundException, SQLException {
 		return sgbd.getFichiers();
+	}
+	
+	@Override
+	public List<Fichier> recupererFichierGroupe(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getFichiersGroupe(id);
+	}
+	
+	public List<Groupe> recupererGroupe(String l) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getGroupeUtilisateur(l);
 	}
 	
 	@Override

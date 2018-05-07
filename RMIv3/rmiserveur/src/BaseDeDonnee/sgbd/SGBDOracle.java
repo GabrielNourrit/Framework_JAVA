@@ -14,6 +14,7 @@ import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
 import fichier.Fichier;
+import fichier.Groupe;
 import util.Utilisateur;
 
 
@@ -23,7 +24,7 @@ public class SGBDOracle extends SGBD {
 		super();
 	}
 
-	private static final String LINK_SETTING_ORACLE = "ressources/bdd/BDOracle.properties";
+	private static final String LINK_SETTING_ORACLE = "ressources/BDOracle.properties";
 	
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {
@@ -64,10 +65,22 @@ public class SGBDOracle extends SGBD {
 	public boolean verifierMdp(String login, String mdp) throws SQLException, ClassNotFoundException, RemoteException {
 		String mdpCrypt="";
 		ResultSet rs = executeSelect("select motDePasse from utilisateurs where login='"+ login +"'");
-		if (rs.next()) mdpCrypt = rs.getString(1);
+		if (rs.next()) {
+			mdpCrypt = rs.getString(1);
+			if (mdp.equals(mdpCrypt)) return true;
+		}
 		rs.close();
-		if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
+		//if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		return false;
+	}
+	
+	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		ResultSet rs = executeSelect("select login, nom, prenom, idtype from utilisateurs where login='"+ login +"'");
+		if (rs.next()) {
+			List<Groupe> l = getGroupeUtilisateur(login);
+			return new Utilisateur(login,rs.getString(2),rs.getString(3),rs.getString(4),l);
+		}
+		return null;
 	}
 	
 	public void creaUse (String login,String mdp,String type) throws ClassNotFoundException, SQLException {
@@ -109,8 +122,8 @@ public class SGBDOracle extends SGBD {
 		executeUpdate("update utilisateurs set etat ='SUPPR' where login ='"+user+"'");
 	}
 	
-	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
-		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',1)");
+	public void ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',"+id+")");
 	}
 	
 	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
@@ -120,13 +133,37 @@ public class SGBDOracle extends SGBD {
 	
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
+		String login;
 		ResultSet rs = executeSelect("select * from utilisateurs where etat ='VALID'");
 		while (rs.next()) {
-			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(5));
+			login = rs.getString(1);
+			Utilisateur user = new Utilisateur(login, rs.getString(2),rs.getString(3),rs.getString(5), getGroupeUtilisateur(login));
 			lesUser.add(user);
 		}
 		rs.close();
 		return lesUser;
+	}
+	
+	public List<Groupe> getGroupeUtilisateur(String l) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Groupe> groupes = new ArrayList<>();
+		int id;
+		ResultSet rs = executeSelect("select idgr from faitpartiegroupe where login='"+l+"'");
+		while (rs.next()) {
+			id = rs.getInt(1);
+			Groupe g = new Groupe(id, getLibelleGroup(id));
+			groupes.add(g);
+		}
+		rs.close();
+		return groupes;
+	}
+	
+	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		String libelle="";
+		ResultSet rs = executeSelect("select libelle from groupes where idgr="+id);
+
+		if (rs.next()) libelle = rs.getString(1);
+		rs.close();
+		return libelle;
 	}
 	
 	public List<Fichier> getFichiers() throws ClassNotFoundException, RemoteException, SQLException {
@@ -135,6 +172,23 @@ public class SGBDOracle extends SGBD {
 		int i;
 		String n, u;
 		ResultSet rs = executeSelect("select idFic,nom,url from fichiers");
+		while (rs.next()) {
+			i = rs.getInt("idFic");
+			n = rs.getString("nom");
+			u = rs.getString("url");
+			f = new Fichier(i,n,u);
+			fs.add(f);
+		}
+		rs.close();
+		return fs;
+	}
+	
+	public List<Fichier> getFichiersGroupe(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Fichier> fs = new ArrayList<>();
+		Fichier f = null;
+		int i;
+		String n, u;
+		ResultSet rs = executeSelect("select idFic,nom,url from fichiers where idReceveur="+id);
 		while (rs.next()) {
 			i = rs.getInt("idFic");
 			n = rs.getString("nom");

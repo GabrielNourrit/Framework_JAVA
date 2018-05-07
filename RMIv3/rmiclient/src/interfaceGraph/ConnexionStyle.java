@@ -6,16 +6,12 @@ import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import util.Utilisateur;
 
 public class ConnexionStyle extends Formulaire{
@@ -61,7 +57,8 @@ public class ConnexionStyle extends Formulaire{
 	            connex = (ConnexionInterface) registry.lookup("Connexion");
 				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
-					utilisateur = new Utilisateur(id.getText());
+					utilisateur = connex.getUse(id.getText());
+					System.out.println(utilisateur);
 					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;

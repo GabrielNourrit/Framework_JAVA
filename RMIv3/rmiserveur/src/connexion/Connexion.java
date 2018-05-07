@@ -1,10 +1,10 @@
 package connexion;
 
 import java.rmi.RemoteException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import BaseDeDonnee.sgbd.SGBD;
+import util.Utilisateur;
 
 public class Connexion implements ConnexionInterface{
 	
@@ -19,6 +19,10 @@ public class Connexion implements ConnexionInterface{
 	}
 	
 	public boolean verifierMdp(String utilisateur, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
-		 return sgbd.verifierMdp("dzq", "dzq");
+		 return sgbd.verifierMdp(utilisateur, mdp);
+	}
+	
+	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getUse(login);
 	}
 }

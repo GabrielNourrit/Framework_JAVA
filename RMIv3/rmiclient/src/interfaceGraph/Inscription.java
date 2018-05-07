@@ -4,10 +4,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
+import fichier.Groupe;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -114,7 +116,8 @@ public class Inscription extends Formulaire {
 			
 			if (t_login.getText()!="" && t_mdp.getText()!="") {
 				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
-				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_groupe.getSelectionModel().getSelectedItem());
+				List<Groupe> l=null;
+				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_groupe.getSelectionModel().getSelectedItem(),l);
 				utilisateur.setMdp(mdp);
 				OperationUtilisateurInterface connex;
 				Registry registry;
