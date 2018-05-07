@@ -194,8 +194,6 @@ public abstract class SGBD {
 	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
 	}
 	
-	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
-	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
 		return 0;
@@ -208,5 +206,8 @@ public abstract class SGBD {
 	}
 	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
 		return null;
+	}
+	public synchronized int ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException, RemoteException {
+		return 0;
 	}
 }

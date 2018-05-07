@@ -1,20 +1,19 @@
 package interfaceGraph;
 
-import java.rmi.Naming;
+import java.rmi.registry.Registry;
 
 import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
+import util.Utilisateur;
 
 public class ConnexionStyle2 extends ConnexionStyle{
-	private Button boutonOk;	
+	protected Button boutonOk;	
+	private ConnexionInterface connex;
+	private Utilisateur utilisateur;
 
 	/**
 	 * Cet objet est un formulaire de connexion par defaut + bouton valider
@@ -23,6 +22,7 @@ public class ConnexionStyle2 extends ConnexionStyle{
 		super();
 		genererBouton();
 		listenerButtonValider();
+		utilisateur = null;
 		
 	}
 	
@@ -44,10 +44,12 @@ public class ConnexionStyle2 extends ConnexionStyle{
 			/*Traitement de l'appli*/
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
-			ConnexionInterface connex;
 			try {
-				connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
+				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+	            connex = (ConnexionInterface) registry.lookup("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
+					utilisateur = connex.getUse(id.getText());
+					System.out.println(utilisateur);
 					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;
@@ -67,9 +69,12 @@ public class ConnexionStyle2 extends ConnexionStyle{
 					alert.showAndWait();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Erreur");
+				alert.showAndWait();
+			}	
 			/*On efface les anciennes valeures une fois finie*/
 			this.id.setText("");
 			this.mdp.setText("");

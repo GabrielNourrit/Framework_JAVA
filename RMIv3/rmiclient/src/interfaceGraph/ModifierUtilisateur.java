@@ -10,10 +10,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.LimitedTextField;
@@ -81,8 +83,11 @@ public class ModifierUtilisateur extends Formulaire {
 				connex = connectToServeur();
 				connex.ModifierUtilisateur(utilisateur, uNew);
 			} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Erreur");
+				alert.showAndWait();
 			}
 			
 		});

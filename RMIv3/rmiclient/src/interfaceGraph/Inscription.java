@@ -138,7 +138,11 @@ public class Inscription extends Formulaire {
 						t_prenom.setText("");
 					}
 				} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-					e.printStackTrace();
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Information Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("Erreur");
+					alert.showAndWait();
 				}
 			}
 			

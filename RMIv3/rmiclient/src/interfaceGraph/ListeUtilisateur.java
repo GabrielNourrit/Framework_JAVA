@@ -30,7 +30,6 @@ import util.Utilisateur;
 public class ListeUtilisateur extends Formulaire {
 	private ListView<Utilisateur> lst_user;
 	private ObservableList<Utilisateur> olstUser;
-	//private Group form;
 	private Button btn_modifier;
 	private Button btn_supprimer;
 	private Button btn_ajouter;
@@ -168,7 +167,11 @@ public class ListeUtilisateur extends Formulaire {
 							alert.showAndWait();
 						}
 					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-						e.printStackTrace();
+						Alert alert1 = new Alert(AlertType.ERROR);
+						alert1.setTitle("Information Dialog");
+						alert1.setHeaderText(null);
+						alert1.setContentText("Erreur");
+						alert1.showAndWait();
 					}
 		            
 					

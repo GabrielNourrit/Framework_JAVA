@@ -7,10 +7,8 @@ import java.util.List;
 import fichier.Groupe;
 
 public class Utilisateur implements Serializable {
+	
 	private static final long serialVersionUID = 447192624987987345L;
-	/**
-	 * 
-	 */
 	private String login;
 	private String nom;
 	private String prenom;

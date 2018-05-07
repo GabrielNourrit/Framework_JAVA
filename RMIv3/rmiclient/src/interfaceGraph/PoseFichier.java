@@ -12,9 +12,11 @@ import fichier.Groupe;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -22,13 +24,13 @@ import util.TransformerFichier;
 import util.Utilisateur;
 
 public class PoseFichier extends VBox {
-	private VBox form;
-	private FileChooser filechooser;
-	private Button button;
-	private Label label;
+	protected VBox form;
+	protected FileChooser filechooser;
+	protected Button button;
+	protected Label label;
 	private Stage stage;
 	private Utilisateur u;
-	private ChoiceBox<Groupe> cbgroupe;
+	protected ChoiceBox<Groupe> cbgroupe;
 	private GestionFichierInterface connex;
 	
 	public PoseFichier(Utilisateur u) throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
@@ -53,7 +55,6 @@ public class PoseFichier extends VBox {
 			filechooser = new FileChooser();
 			File chosenFile = filechooser.showOpenDialog(stage);
 			if(chosenFile != null){
-				System.out.println(chosenFile.getAbsolutePath());
 				label.setText(chosenFile.getAbsolutePath());
             }else {
                 label.setText("please choose a file!");
@@ -62,9 +63,12 @@ public class PoseFichier extends VBox {
 				byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
 				connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
 			} catch (Exception e) {
-				e.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Erreur");
+				alert.showAndWait();
 			}
-			//String filename = filechooser.getTitle();
 		});
 	}
 

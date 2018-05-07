@@ -12,12 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import parametrage.PropertiesClient;
 import util.Utilisateur;
 
 public class ConnexionStyle extends Formulaire{
-	private Label l_id;
-	private Label l_mdp;
+	protected Label l_id;
+	protected Label l_mdp;
 	protected TextField id;
 	protected PasswordField mdp;
 	private Utilisateur utilisateur;
@@ -80,7 +79,11 @@ public class ConnexionStyle extends Formulaire{
 					alert.showAndWait();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Erreur");
+				alert.showAndWait();
 			}
 			
 			/*On efface les anciennes valeures une fois finie*/

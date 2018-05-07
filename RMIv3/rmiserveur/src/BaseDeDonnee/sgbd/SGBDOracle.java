@@ -24,7 +24,7 @@ public class SGBDOracle extends SGBD {
 		super();
 	}
 
-	private static final String LINK_SETTING_ORACLE = "ressources/BDOracle.properties";
+	private static final String LINK_SETTING_ORACLE = "ressources/bdd/BDOracle.properties";
 	
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {
@@ -126,8 +126,12 @@ public class SGBDOracle extends SGBD {
 		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',"+id+")");
 	}
 	
-	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
+	public synchronized int ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException, RemoteException {
 		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"')");
+		int i = -1;
+		ResultSet rs = executeSelect("select max(idmai) from mails");
+		if (rs.next()) i = rs.getInt("idmai")+1;
+		return i;
 	}
 	
 	

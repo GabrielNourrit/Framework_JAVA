@@ -3,5 +3,5 @@ package tchat;
 import java.rmi.Remote;
 
 public interface TchatListener extends Remote {
-	public void nouveauMessage(String message, String groupe);
+	public void nouveauMessage(String message, Integer groupe);
 }

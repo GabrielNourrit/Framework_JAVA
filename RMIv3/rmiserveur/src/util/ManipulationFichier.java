@@ -23,7 +23,6 @@ public class ManipulationFichier {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(s);
 		return s;
 	}
 

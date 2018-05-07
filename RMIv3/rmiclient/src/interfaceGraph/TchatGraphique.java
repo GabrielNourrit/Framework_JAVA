@@ -42,19 +42,26 @@ public class TchatGraphique extends VBox {
 	private TchatInterface connex;
 	private GestionFichierInterface connexG;
 	private ChoiceBox<Groupe> cbgroupe;
-	private Map<String ,Tchat> listener = new HashMap<>();
-	private Utilisateur util;// = new Utilisateur("guevarat","Guevara","Thomas","Gars",null);
+	private Map<Integer ,Tchat> listener = new HashMap<>();
+	private Utilisateur util;
 	
 
-	private void execute(TchatInterface tchat) throws RemoteException{
+	private void execute(TchatInterface tchat) throws RemoteException{ 
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getLibelle());
-		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "§",cbgroupe.getSelectionModel().getSelectedItem().getLibelle());
-		System.out.println(dateFormat.format(date) + "~" + util.getLogin() + "~" + ZoneText.getText() + "§");
+		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "§",cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
 		ZoneText.setText("");
 	}
 
+	/**
+	 * Constructeur du tchat graphique
+	 * @param util l l'utilisateur courant qui va utiliser le tchat, grace a cela on connaitra les droits de l'utilisateur et ses groupes
+	 * @throws AccessException
+	 * @throws RemoteException
+	 * @throws NotBoundException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public TchatGraphique(Utilisateur util) throws AccessException, RemoteException, NotBoundException, ClassNotFoundException, SQLException{
 		super();
 		this.util=util;
@@ -67,13 +74,11 @@ public class TchatGraphique extends VBox {
 		ecouteurChoixGroupe();
 		for (Groupe g : connexG.recupererGroupe(util.getLogin())) {
 			Tchat l = new Tchat();
-			String gr = g.getLibelle();
+			int gr = g.getIdGr();
 			listener.put(gr,l);
 			connex.addTchatListener(l,gr);
 		}
-		//listener = new Tchat();	
-		//connex.addTchatListener(listener);
-		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getLibelle()));		
+		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getIdGr()));		
 	}
 
 	private void genererSousComposant() {
@@ -86,8 +91,6 @@ public class TchatGraphique extends VBox {
 		sp = new ScrollPane();
 		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(util.getGroupe()));
 		cbgroupe.getSelectionModel().select(0);
-		/*cb_groupe = new ChoiceBox<String>(FXCollections.observableArrayList("user","Admin"));
-		cb_groupe.getSelectionModel().select(0);*/
 	}
 
 	private void layoutDefaultParametre() {
@@ -127,12 +130,11 @@ public class TchatGraphique extends VBox {
 	
 	private void ecouteurChoixGroupe() {
 		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
-			try {
-				
+			try {				
 				vboxInfo.getChildren().removeAll(vboxInfo.getChildren());
 				vboxContenu.getChildren().removeAll(vboxContenu.getChildren());
 				cbgroupe.getSelectionModel().select((int) new_value);
-				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getLibelle())));
+				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getIdGr())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -142,10 +144,13 @@ public class TchatGraphique extends VBox {
 	public void ajouterMessage(String message) {
 		String[] str = message.split("§");	
 		String[] s;
+		String nom;
 		for (String u : str) {
 			if (!u.equals("")) {
 				s = u.split("~");
-				vboxInfo.getChildren().addAll(new Label(s[0]+ " " + s[1]));
+				if (s[1].equals(util.getPrenom() + " " + util.getNom())) nom = "Moi";
+				else nom = s[1];
+				vboxInfo.getChildren().addAll(new Label(s[0]+ " " + nom));
 				vboxContenu.getChildren().add(new Label(s[2]));
 			}
 		}
@@ -160,9 +165,8 @@ public class TchatGraphique extends VBox {
 		}
 
 		@Override
-		public void nouveauMessage(String message, String groupe) throws RemoteException {
-			System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getLibelle());
-			if (groupe.equals(cbgroupe.getSelectionModel().getSelectedItem().getLibelle())) {
+		public void nouveauMessage(String message, Integer groupe) throws RemoteException {
+			if (groupe==cbgroupe.getSelectionModel().getSelectedItem().getIdGr()) {
 				Platform.runLater(
 						() -> {
 							ajouterMessage(message);
