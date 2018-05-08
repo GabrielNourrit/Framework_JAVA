@@ -129,7 +129,12 @@ public class Inscription extends Formulaire {
 			if (t_login.getText()!="" && t_mdp.getText()!="") {
 				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
 				List<Groupe> l=null;
-				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
+				try {
+					utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				utilisateur.setMdp(mdp);
 				OperationUtilisateurInterface connex;
 				Registry registry;

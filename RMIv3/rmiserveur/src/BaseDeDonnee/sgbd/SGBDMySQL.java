@@ -14,6 +14,7 @@ import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionMySQL;
 import fichier.Fichier;
+import mail.MelCell;
 import util.Groupe;
 import util.Type;
 import util.Utilisateur;
@@ -21,12 +22,14 @@ import util.Utilisateur;
 
 public class SGBDMySQL extends SGBD {
 	
+	private static int i = -1;
+	
 	public SGBDMySQL() throws RemoteException, ClassNotFoundException, SQLException {
 		super();
-		i = -1;
+		
 	}
 
-	protected static final String LINK_SETTING_MYSQL = "ressources/bbd/BDMySQL.properties";
+	protected static final String LINK_SETTING_MYSQL = "ressources/bdd/BDMySQL.properties";
 
 	@Override
 	protected ConnexionBase creeSGBD() throws RemoteException {
@@ -215,10 +218,12 @@ public class SGBDMySQL extends SGBD {
 	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
-		int ii = -1;
+		int i = -1;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
-		if (rs.next()) ii = rs.getInt("idmai");
-		return ii;
+		if (rs.next()) i = rs.getInt("idmai");
+		return i;
+	}
+	
 	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
 		List<Groupe> lesGroupes = new ArrayList<>();
 		ResultSet rs = executeSelect("select * from groupes");
@@ -288,5 +293,17 @@ public class SGBDMySQL extends SGBD {
 	
 	public void ajouterType(String type) throws RemoteException, ClassNotFoundException, SQLException {
 		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
+	}
+	
+	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
+		List<MelCell> fs = new ArrayList<>();
+		MelCell m = null;
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL'");
+		while (rs.next()) {
+			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
+			fs.add(m);
+		}
+		rs.close();
+		return fs;
 	}
 }

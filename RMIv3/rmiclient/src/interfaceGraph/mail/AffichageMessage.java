@@ -2,7 +2,9 @@ package interfaceGraph.mail;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 
+import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -15,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
+import parametrage.PropertiesClient;
 import util.Utilisateur;
 import tchat.TchatInterface;
 public class AffichageMessage extends Composition{
@@ -32,16 +35,17 @@ public class AffichageMessage extends Composition{
 	private HBox hbo;
 	private HBox hbbutton;
 	private Utilisateur u;
-
+	private String contact;
 	private ScrollPane sp;
 	private Button retour;
 	private Button repondre;
 	private MelInterface mailInterface;
+	private Registry registry;
 	
 	
 	public AffichageMessage(Utilisateur u, MelCell mc) throws RemoteException, NotBoundException {
 		this.u=u;
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
+		registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
 		mailInterface = (MelInterface) registry.lookup("Mel");	
 		genererSousComposant();
 		lecture(mc);
@@ -75,9 +79,7 @@ public class AffichageMessage extends Composition{
 		this.sp = new ScrollPane();
 		this.repondre = new Button("Repondre");
 		this.retour = new Button("Retour");
-		this.comp = new VBox();
-		
-		
+		this.comp = new VBox();	
 	}
 
 	@Override
@@ -85,7 +87,14 @@ public class AffichageMessage extends Composition{
 		// TODO Auto-generated method stub
 		this.repondre.setOnAction(event ->{
 			ScrollPane sp = new ScrollPane();
-			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
+			VBox reponse = null;
+			try {
+				UtilisateursInterface ui = (UtilisateursInterface) registry.lookup("Utilisateurs");
+				reponse= new WriteMessage(this.u,ui.getUser(this.e.getText()).contact(), this.o.getText());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			
 			sp.setContent(reponse);
@@ -96,25 +105,6 @@ public class AffichageMessage extends Composition{
 			stage.setScene(scene);
 			}
 		);
-		
-		this.retour.setOnAction(event ->{
-			ScrollPane sp = new ScrollPane();
-			VBox reponse = null;
-			try {
-				reponse = new GestionMail(this.u);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			
-			sp.setContent(reponse);
-			reponse.setAlignment(Pos.CENTER);
-			sp.setFitToWidth(true);
-			sp.setFitToHeight(true);
-			Scene scene = new Scene(sp, 600, 600);
-			stage.setScene(scene);
-		});
 	}
 
 	@Override

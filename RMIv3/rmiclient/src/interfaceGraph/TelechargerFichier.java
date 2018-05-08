@@ -5,6 +5,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fichier.Fichier;
@@ -60,7 +61,13 @@ public class TelechargerFichier extends VBox {
 		vb1 = new VBox();
 		vb2 = new VBox();
 		list = new ListView<Fichier>();
-		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
+		try {
+			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
+			System.out.println(u.getGroupe());
+		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
+			//cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(new ArrayList<Groupe>()));
+			e.printStackTrace();
+		}
 		cbgroupe.getSelectionModel().select(0);
 		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());

@@ -37,14 +37,14 @@ public class LimitedTextField extends TextField {
 			alert.setContentText("Caractere ~ interdit");
 			alert.showAndWait();
     	}
-    	if (getText().contains("�")) {   
-    		int index = getText().indexOf("�");
+    	if (getText().contains("|")) {   
+    		int index = getText().indexOf("|");
     		if (index != 0) index--;
     		setText(getText().substring(0, index));
     		Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
-			alert.setContentText("Caractere ~ interdit");
+			alert.setContentText("Caractere | interdit");
 			alert.showAndWait();
     	}
         if (getText().length() > limit) {

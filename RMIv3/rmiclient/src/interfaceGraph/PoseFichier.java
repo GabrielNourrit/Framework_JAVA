@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import fichier.GestionFichierInterface;
 import util.Groupe;
@@ -46,7 +47,11 @@ public class PoseFichier extends VBox {
 	protected void genererSousComposant() throws ClassNotFoundException, RemoteException, SQLException {
 		button = new Button("upload");
 		label = new Label();
-		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
+		try {
+			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
+		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
+			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(new ArrayList<Groupe>()));
+		}
 		form = new VBox();	
 	}
 

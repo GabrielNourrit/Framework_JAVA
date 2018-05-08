@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import parametrage.PropertiesServeur;
 import util.ManipulationFichier;
 
 public class Tchat implements TchatInterface  {
@@ -16,9 +17,9 @@ public class Tchat implements TchatInterface  {
 	private Map<Integer ,StringBuffer> historique = new HashMap<>();
 	private String path;
 
-	public Tchat(List<Integer> fichier, String path)  throws RemoteException { 
+	public Tchat(List<Integer> fichier)  throws RemoteException { 
 		super();
-		this.path=path;
+		this.path=PropertiesServeur.getStockageTchat();
 		for (Integer s : fichier) {
 			String c = path+"/"+s;
 			historique.put(s, ManipulationFichier.chargerFichierTchat(c));

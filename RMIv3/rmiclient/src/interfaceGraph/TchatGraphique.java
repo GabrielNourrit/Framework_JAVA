@@ -8,9 +8,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import fichier.FichierInterface;
 import fichier.GestionFichierInterface;
@@ -25,6 +27,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import parametrage.PropertiesClient;
 import tchat.TchatInterface;
 import tchat.TchatListener;
 import util.LimitedTextField;
@@ -49,7 +52,7 @@ public class TchatGraphique extends VBox {
 	private void execute(TchatInterface tchat) throws RemoteException{ 
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "�",cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "|",cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 		ZoneText.setText("");
 	}
 
@@ -65,7 +68,7 @@ public class TchatGraphique extends VBox {
 	public TchatGraphique(Utilisateur util) throws AccessException, RemoteException, NotBoundException, ClassNotFoundException, SQLException{
 		super();
 		this.util=util;
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
+		Registry registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
 		connex = (TchatInterface) registry.lookup("Tchat");	
 		connexG = (GestionFichierInterface) registry.lookup("Fichier");
 		genererSousComposant();
@@ -88,8 +91,12 @@ public class TchatGraphique extends VBox {
 		hboxTextTchat = new HBox();
 		vboxInfo = new VBox();
 		vboxContenu = new VBox();
-		sp = new ScrollPane();
-		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(util.getGroupe()));
+		sp = new ScrollPane();	
+		try {
+			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(util.getGroupe()));
+		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
+			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(new ArrayList<Groupe>()));
+		}
 		cbgroupe.getSelectionModel().select(0);
 	}
 
@@ -142,7 +149,7 @@ public class TchatGraphique extends VBox {
 	}
 
 	public void ajouterMessage(String message) {
-		String[] str = message.split("�");	
+		String[] str = message.split(Pattern.quote("|"));	
 		String[] s;
 		String nom;
 		for (String u : str) {

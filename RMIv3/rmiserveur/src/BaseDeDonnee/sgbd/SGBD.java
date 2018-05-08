@@ -12,8 +12,9 @@ import java.util.Map.Entry;
 
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
-import fichier.Groupe;
 import mail.MelCell;
+import util.Groupe;
+import util.Type;
 import util.Utilisateur;
 
 public abstract class SGBD {
@@ -36,7 +37,7 @@ public abstract class SGBD {
     }
 	
 	/**
-	 * Constructeur protéger
+	 * Constructeur protï¿½ger
 	 * @throws RemoteException
 	 */
 	protected SGBD() throws RemoteException {
@@ -67,6 +68,7 @@ public abstract class SGBD {
 		return list;
 	}
 	
+	
 	public void ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException {
 	}
 	
@@ -89,7 +91,7 @@ public abstract class SGBD {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public void creaUse (String login,String mdp,String type) throws ClassNotFoundException, SQLException {
+	public void creaUse (String login,String mdp,Type type) throws ClassNotFoundException, SQLException {
 	}
 	
 	/**
@@ -102,7 +104,7 @@ public abstract class SGBD {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public void creaUse (String login,String mdp,String nom,String prenom,String type) throws ClassNotFoundException, SQLException {
+	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {
 	}
 	
 	/**
@@ -196,12 +198,6 @@ public abstract class SGBD {
 	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
 	}
 	
-	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
-		return 0;
-	}
-	
-	public void supprMail(int id) throws ClassNotFoundException, SQLException {
-	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
 		return 0;
@@ -215,7 +211,41 @@ public abstract class SGBD {
 	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
 		return null;
 	}
-	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
+	public synchronized int ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException, RemoteException {
+		return 0;
+	}
+	
+	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
 		return null;
+	}
+	
+	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { }
+	
+	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException { }
+	
+	public List<String> getAllLoginGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {	return null;}
+	
+	public List<String> getAllLoginNotInGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {return null;}
+	
+	public void ajouterUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException {
+	}
+	
+	public void supprimerUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException {
+	}
+	
+	public List<Type> getAllType()  throws RemoteException, ClassNotFoundException, SQLException { return null; }
+
+	public void ajouterType(String type) throws RemoteException, ClassNotFoundException, SQLException {
+	}
+	
+	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException{
+		return null;
+	}
+	
+	public void supprMail(int id) throws ClassNotFoundException, SQLException {
+	}
+	
+	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
+		return -1;
 	}
 }

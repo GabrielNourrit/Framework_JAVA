@@ -10,4 +10,5 @@ import util.Utilisateur;
 
 public interface UtilisateursInterface extends Remote,MethodeServeur {
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException;
+	public Utilisateur getUser(String login) throws ClassNotFoundException, RemoteException, SQLException;
 }

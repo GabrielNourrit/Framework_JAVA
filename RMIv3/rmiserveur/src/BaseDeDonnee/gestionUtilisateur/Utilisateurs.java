@@ -22,6 +22,9 @@ public class Utilisateurs implements UtilisateursInterface {
 		return sgbd.getUsers();
 	}
 	
+	public Utilisateur getUser(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getUse(login);
+	}
 	
 
 }

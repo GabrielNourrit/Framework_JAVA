@@ -22,6 +22,11 @@ public class Groupes implements GroupesInterface {
 	public List<Groupe> getAllGroupes() throws RemoteException, ClassNotFoundException, SQLException {
 		return sgbd.getGroupes();
 	}
+	
+	public List<Groupe> getGroupeLogin(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		System.out.println(sgbd.getGroupeUtilisateur(login));
+		return sgbd.getGroupeUtilisateur(login);
+	}
 
 	@Override
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {

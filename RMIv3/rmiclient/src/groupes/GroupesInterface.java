@@ -11,6 +11,8 @@ import util.Groupe;
 public interface GroupesInterface  extends Remote,MethodeServeur  {
 	public List<Groupe> getAllGroupes()  throws RemoteException, ClassNotFoundException, SQLException;
 	
+	public List<Groupe> getGroupeLogin(String login) throws ClassNotFoundException, RemoteException, SQLException;
+	
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException;

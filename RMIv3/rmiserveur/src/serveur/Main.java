@@ -25,6 +25,8 @@ import fichier.GestionFichier;
 import fichier.GestionFichierInterface;
 import groupes.Groupes;
 import groupes.GroupesInterface;
+import mail.Mel;
+import mail.MelInterface;
 import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
@@ -48,13 +50,14 @@ public class Main {
 		s.add(1);
 		s.add(2);
 		
-		TchatInterface tchat = new Tchat(s,"ressources");
+		TchatInterface tchat = new Tchat(s);
 		GestionFichierInterface fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
 		GroupesInterface gi = new Groupes(sgbd);
 		TypesInterface ti = new Types(sgbd);
+		MelInterface m = new Mel(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
@@ -63,6 +66,7 @@ public class Main {
 		listBind.put("OperationUtilisateur", ou);
 		listBind.put("Groupes", gi);
 		listBind.put("Types", ti);
+		listBind.put("Mel", m);
 		//Cr�ation du serveur
 		try{	
 			new Serveur(listBind);

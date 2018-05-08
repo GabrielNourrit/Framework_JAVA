@@ -77,7 +77,13 @@ public class ModifierUtilisateur extends Formulaire {
 	@Override
 	protected void ecouteurDefaultAction() {
 		b_valider.addEventHandler(ActionEvent.ACTION,event ->{
-			Utilisateur uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
+			Utilisateur uNew = null;
+			try {
+				uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			OperationUtilisateurInterface connex;
 			try {
 				connex = connectToServeur();
