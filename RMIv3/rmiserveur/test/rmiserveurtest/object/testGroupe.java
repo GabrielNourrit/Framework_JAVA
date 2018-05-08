@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import fichier.Groupe;
+import util.Groupe;
 
 
 public class testGroupe {
@@ -26,8 +26,8 @@ public class testGroupe {
 	
 	@Test
 	public void test_getIdGr() {
-		assertEquals(groupe.getIdGr(), numeroGroupe);
-		assertNotEquals(groupe.getIdGr(), 152);
+		assertEquals(groupe.getidGr(), numeroGroupe);
+		assertNotEquals(groupe.getidGr(), 152);
 	}
 	
 	@Test

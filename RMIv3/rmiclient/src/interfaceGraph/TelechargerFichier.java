@@ -9,7 +9,7 @@ import java.util.List;
 
 import fichier.Fichier;
 import fichier.GestionFichierInterface;
-import fichier.Groupe;
+import util.Groupe;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,8 +62,8 @@ public class TelechargerFichier extends VBox {
 		list = new ListView<Fichier>();
 		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
 		cbgroupe.getSelectionModel().select(0);
-		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
-		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 	}
 
 	
@@ -72,7 +72,7 @@ public class TelechargerFichier extends VBox {
 			try {
 				items.removeAll(fs);
 				cbgroupe.getSelectionModel().select((int) new_value);
-				fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+				fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 				items.addAll(fs);
 				System.out.println(fs);
 			} catch (Exception e) {

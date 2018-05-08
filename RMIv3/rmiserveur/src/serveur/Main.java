@@ -12,6 +12,8 @@ import java.util.Map;
 import BaseDeDonnee.MethodeServeur;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateur;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
+import BaseDeDonnee.gestionUtilisateur.Types;
+import BaseDeDonnee.gestionUtilisateur.TypesInterface;
 import BaseDeDonnee.gestionUtilisateur.Utilisateurs;
 import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import BaseDeDonnee.sgbd.SGBD;
@@ -21,8 +23,8 @@ import connexion.Connexion;
 import connexion.ConnexionInterface;
 import fichier.GestionFichier;
 import fichier.GestionFichierInterface;
-import mail.Mel;
-import mail.MelInterface;
+import groupes.Groupes;
+import groupes.GroupesInterface;
 import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
@@ -39,27 +41,28 @@ public class Main {
 		SGBD.addTypeSGBD("mysql", new SGBDMySQL());
 		
 		//Determinie le type de SGBD utiliser
+		System.out.println(PropertiesServeur.getTypeSGBD());
 		SGBD sgbd = SGBD.determine(PropertiesServeur.getTypeSGBD());
 		
-		List<String> s = new ArrayList<>();
-		s.add("Groupe Projet MORAT");
-		s.add("Groupe Projet A380");
+		List<Integer> s = new ArrayList<>();
+		s.add(1);
+		s.add(2);
 		
-		//TchatInterface tchat = new Tchat(s,"ressources");
+		TchatInterface tchat = new Tchat(s,"ressources");
 		GestionFichierInterface fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
-		MelInterface m = new Mel(sgbd);
-		
+		GroupesInterface gi = new Groupes(sgbd);
+		TypesInterface ti = new Types(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
-		//listBind.put("Tchat", tchat);
+		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
 		listBind.put("Connexion", connexion);		
 		listBind.put("Utilisateurs", ui);		
 		listBind.put("OperationUtilisateur", ou);
-		listBind.put("Mel", m);
-		
+		listBind.put("Groupes", gi);
+		listBind.put("Types", ti);
 		//Cr�ation du serveur
 		try{	
 			new Serveur(listBind);

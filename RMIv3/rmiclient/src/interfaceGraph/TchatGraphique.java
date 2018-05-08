@@ -14,7 +14,7 @@ import java.util.Map;
 
 import fichier.FichierInterface;
 import fichier.GestionFichierInterface;
-import fichier.Groupe;
+import util.Groupe;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -49,7 +49,7 @@ public class TchatGraphique extends VBox {
 	private void execute(TchatInterface tchat) throws RemoteException{ 
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "§",cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "ï¿½",cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 		ZoneText.setText("");
 	}
 
@@ -74,11 +74,11 @@ public class TchatGraphique extends VBox {
 		ecouteurChoixGroupe();
 		for (Groupe g : connexG.recupererGroupe(util.getLogin())) {
 			Tchat l = new Tchat();
-			int gr = g.getIdGr();
+			int gr = g.getidGr();
 			listener.put(gr,l);
 			connex.addTchatListener(l,gr);
 		}
-		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getIdGr()));		
+		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr()));		
 	}
 
 	private void genererSousComposant() {
@@ -134,7 +134,7 @@ public class TchatGraphique extends VBox {
 				vboxInfo.getChildren().removeAll(vboxInfo.getChildren());
 				vboxContenu.getChildren().removeAll(vboxContenu.getChildren());
 				cbgroupe.getSelectionModel().select((int) new_value);
-				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getIdGr())));
+				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -142,7 +142,7 @@ public class TchatGraphique extends VBox {
 	}
 
 	public void ajouterMessage(String message) {
-		String[] str = message.split("§");	
+		String[] str = message.split("ï¿½");	
 		String[] s;
 		String nom;
 		for (String u : str) {
@@ -166,7 +166,7 @@ public class TchatGraphique extends VBox {
 
 		@Override
 		public void nouveauMessage(String message, Integer groupe) throws RemoteException {
-			if (groupe==cbgroupe.getSelectionModel().getSelectedItem().getIdGr()) {
+			if (groupe==cbgroupe.getSelectionModel().getSelectedItem().getidGr()) {
 				Platform.runLater(
 						() -> {
 							ajouterMessage(message);

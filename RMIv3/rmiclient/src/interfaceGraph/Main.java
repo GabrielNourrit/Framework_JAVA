@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fichier.Groupe;
-import interfaceGraph.mail.GestionMail;
+import util.Groupe;
+import util.Type;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -32,10 +32,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		List<Groupe> s = new ArrayList<>();
-		s.add(new Groupe(1,"Groupe Projet MORAT"));
-		s.add(new Groupe(2,"Groupe Projet A380"));
-		VBox vb = new GestionMail(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234",s));
+		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
+		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
+		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
+		VBox vb = new TelechargerFichier(user);
 		vb.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);

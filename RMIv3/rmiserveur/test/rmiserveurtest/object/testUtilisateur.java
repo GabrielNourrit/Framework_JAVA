@@ -10,7 +10,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import fichier.Groupe;
+import util.Groupe;
 import util.Utilisateur;
 
 public class testUtilisateur {
@@ -32,7 +32,7 @@ public class testUtilisateur {
 		groupes.add(new Groupe(1,"groupe1"));
 		groupes.add(new Groupe(2,"groupe2"));
 		utilSimple = new Utilisateur(LOGIN_S);
-		utilComplet = new Utilisateur(LOGIN_C,NOM_C,PRENOM_C,TYPE_C,groupes);
+		//utilComplet = new Utilisateur(LOGIN_C,NOM_C,PRENOM_C,TYPE_C,groupes);
 	}
 	
 	@Test

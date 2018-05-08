@@ -8,7 +8,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 
 import fichier.GestionFichierInterface;
-import fichier.Groupe;
+import util.Groupe;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -61,7 +61,7 @@ public class PoseFichier extends VBox {
             }
 			try {				
 				byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
-				connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getIdGr());
+				connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Information Dialog");

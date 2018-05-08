@@ -67,26 +67,35 @@ public class ModifierMotDePasse extends Formulaire {
 	@Override
 	protected void ecouteurDefaultAction() {
 		b_valider.addEventHandler(ActionEvent.ACTION, event -> {
-			if (t_mdpNew1.getText().equals(t_mdpNew2.getText())) {
-				String mdp = BCrypt.hashpw(t_mdpNew2.getText(), BCrypt.gensalt());
-				Registry registry;
-				try {
-					registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-					OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
-					connex.ModifierMdpUtilisateur(utilisateur.getLogin(), mdp);
-				} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Information Dialog");
+			if (t_mdpNew2.getText() != "") {
+				if (t_mdpNew1.getText().equals(t_mdpNew2.getText())) {
+					String mdp = BCrypt.hashpw(t_mdpNew2.getText(), BCrypt.gensalt());
+					Registry registry;
+					try {
+						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+						OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+						connex.ModifierMdpUtilisateur(utilisateur.getLogin(), mdp);
+					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Information Dialog");
+						alert.setHeaderText(null);
+						alert.setContentText("Erreur");
+						alert.showAndWait();
+					}
+					
+				} else {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Attention !");
 					alert.setHeaderText(null);
-					alert.setContentText("Erreur");
+					alert.setContentText("Les mots de passe doivent etre identique");
+	
 					alert.showAndWait();
 				}
-				
 			} else {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Attention !");
 				alert.setHeaderText(null);
-				alert.setContentText("Les mots de passe doivent etre identique");
+				alert.setContentText("Le mot de passe ne peut pas être vide");
 
 				alert.showAndWait();
 			}

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import BaseDeDonnee.MethodeServeur;
+import util.Groupe;
 
 public interface GestionFichierInterface extends Remote,MethodeServeur {
 	public String upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException;

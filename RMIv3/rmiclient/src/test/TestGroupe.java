@@ -1,30 +1,31 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import util.Groupe;
-import util.Type;
-import interfaceGraph.Droits;
-import interfaceGraph.ModifierMotDePasse;
+import interfaceGraph.CreerGroup;
+import interfaceGraph.GererGroupe;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import util.Utilisateur;
 
-public class TestModificationUtilisation extends Application {
-	
+public class TestGroupe extends Application{
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
-			user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
-			user.addGroupe(new Groupe(2,"Groupe Projet A380"));
-			//VBox vb = new ModifierMotDePasse(user);
-			VBox vb = new Droits();
+			GererGroupe vb = new GererGroupe();
+			/*vb.setPostConnectEvent(event ->{
+				if (vb.getUtilisateur()!= null) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Information Dialog");
+					alert.setHeaderText(null);
+					
+					alert.setContentText(vb.getUtilisateur().getLogin());
+	
+					alert.showAndWait();
+					
+				}
+			});*/
+			//VBox vb = new ConnexionStyle();
 			ScrollPane sp = new ScrollPane();
 			//VBox vb = new ModifierUtilisateur(new Utilisateur("metzgegu","Guillaume","metzger",null));
 			//VBox vb = new Inscription();
@@ -34,7 +35,7 @@ public class TestModificationUtilisation extends Application {
 			//p.setAlignment(Pos.CENTER);*/
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
-			Scene scene = new Scene(sp, 400, 400);
+			Scene scene = new Scene(sp, 670, 400);
 			primaryStage.setTitle("test");
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -47,4 +48,5 @@ public class TestModificationUtilisation extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }

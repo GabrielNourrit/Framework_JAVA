@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.management.remote.rmi.RMIServer;
 
 import BaseDeDonnee.sgbd.SGBD;
+import util.Groupe;
 
 
 public class GestionFichier implements GestionFichierInterface {

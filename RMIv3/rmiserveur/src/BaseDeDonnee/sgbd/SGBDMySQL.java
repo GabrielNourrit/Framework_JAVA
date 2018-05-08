@@ -14,7 +14,8 @@ import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionMySQL;
 import fichier.Fichier;
-import fichier.Groupe;
+import util.Groupe;
+import util.Type;
 import util.Utilisateur;
 
 
@@ -70,20 +71,21 @@ public class SGBDMySQL extends SGBD {
 	}
 	
 	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
-		ResultSet rs = executeSelect("select login, nom, prenom, idtype from utilisateurs where login='"+ login +"'");
+		ResultSet rs = executeSelect("select login, nom, prenom, idtype, libelle from utilisateurs natural join types where login='"+ login +"'");
 		if (rs.next()) {
 			List<Groupe> l = getGroupeUtilisateur(login);
-			return new Utilisateur(login,rs.getString(2),rs.getString(3),rs.getString(4),l);
+			Utilisateur user =  new Utilisateur(login,rs.getString(2),rs.getString(3),new Type(rs.getInt(4),rs.getString(5)));
+			return user;
 		}
 		return null;
 	}
 	
-	public void creaUse (String login,String mdp,String type) throws ClassNotFoundException, SQLException {
-		executeUpdate("insert into utilisateurs (login,motDePasse,type,etat) values ('"+login+"','"+mdp+"','"+type+"','VALID')");
+	public void creaUse (String login,String mdp,Type type) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into utilisateurs (login,motDePasse,idType,etat) values ('"+login+"','"+mdp+"','"+type.getIdType()+"','VALID')");
 	}
 	
-	public void creaUse (String login,String mdp,String nom,String prenom,String type) throws ClassNotFoundException, SQLException {
-		executeUpdate("insert into utilisateurs (login,nom,prenom,motDePasse,type,etat) values ('"+login+"','"+nom+"','"+prenom+"','"+mdp+"','"+type+"','VALID')");
+	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into utilisateurs (login,nom,prenom,motDePasse,idType,etat) values ('"+login+"','"+nom+"','"+prenom+"','"+mdp+"','"+type.getIdType()+"','VALID')");
 	}
 	
 	public void modifAttriUser(String loginUse, String attribut,String valeur) throws ClassNotFoundException, SQLException {
@@ -135,10 +137,9 @@ public class SGBDMySQL extends SGBD {
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
 		String login;
-		ResultSet rs = executeSelect("select * from utilisateurs where etat ='VALID'");
+		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types where etat ='VALID'");
 		while (rs.next()) {
-			login = rs.getString(1);
-			Utilisateur user = new Utilisateur(login, rs.getString(2),rs.getString(3),rs.getString(5), getGroupeUtilisateur(login));
+			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),new Type(rs.getInt(5),rs.getString(6)));
 			lesUser.add(user);
 		}
 		rs.close();
@@ -218,5 +219,74 @@ public class SGBDMySQL extends SGBD {
 		ResultSet rs = executeSelect("select max(idmai) from mails");
 		if (rs.next()) ii = rs.getInt("idmai");
 		return ii;
+	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
+		List<Groupe> lesGroupes = new ArrayList<>();
+		ResultSet rs = executeSelect("select * from groupes");
+		while (rs.next()) {
+			Groupe g = new Groupe(rs.getInt(1), rs.getString(2));
+			lesGroupes.add(g);
+		}
+		return lesGroupes;
+	}
+	
+	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { 
+		executeUpdate("insert into groupes (idGr, libelle) values (groupes_id.NEXTVAL ,'"+groupe+"')");
+		ResultSet rs = executeSelect("select groupes_id.NEXTVAL from dual");
+		int idGr=-1;
+		if (rs.next()) { 
+			idGr=rs.getInt(1)-1;
+			if (lstUser != null ) {
+				for (String u: lstUser) {
+					executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+u+"',"+idGr+",SYSDATE)");
+				}
+			}	
+		}
+	}
+	
+	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("delete from groupe where idGr="+idGr);
+	}
+	
+	public List<String> getAllLoginGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		List<String> utilisateurs = new ArrayList<>();
+		ResultSet rs = executeSelect("select login from faitPartieGroupe where idGr ="+idGr);
+		while (rs.next()) {
+			String login = rs.getString(1);
+			utilisateurs.add(login);
+		}
+		return utilisateurs;
+	}
+	
+	public List<String> getAllLoginNotInGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		List<String> utilisateurs = new ArrayList<>();
+		ResultSet rs = executeSelect("select login from utilisateurs where etat ='VALID' minus select login from faitPartieGroupe where idGr ="+idGr);
+		while (rs.next()) {
+			String login = rs.getString(1);
+			utilisateurs.add(login);
+		}
+		return utilisateurs;
+	}
+	
+	public void ajouterUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+login+"',"+idGr+",SYSDATE)");
+	}
+	
+	public void supprimerUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("delete from faitPartieGroupe where idGr="+idGr +" and login ='"+login+"'");
+	}
+	
+	public List<Type> getAllType()  throws RemoteException, ClassNotFoundException, SQLException { 
+		List<Type> types = new ArrayList<>();
+		ResultSet rs = executeSelect("select * from types");
+		while (rs.next()) {
+			Type type = new Type(rs.getInt(1), rs.getString(2));
+			types.add(type);
+		}
+		
+		return types; 
+	}
+	
+	public void ajouterType(String type) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
 	}
 }
