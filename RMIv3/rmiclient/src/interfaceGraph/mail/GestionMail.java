@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -38,6 +39,7 @@ public class GestionMail extends Composition{
 	private MelInterface mel;
 	private MelCell selected;
 	private ObservableList<MelCell> list;
+	private ComboBox<String> chooseComboBox;
 
 	public GestionMail(Utilisateur u) throws RemoteException, NotBoundException{
 		this.moi = u;
@@ -59,6 +61,7 @@ public class GestionMail extends Composition{
 		objet = new TableColumn<MelCell,String>("Objet");
 		mail = new TableColumn<MelCell,String>("Expediteur");
 		comp = new VBox();
+		this.chooseComboBox = new ComboBox<String>();
 		/*
 		 * Chargement des données en
 		 * Table Cell ici
@@ -68,8 +71,23 @@ public class GestionMail extends Composition{
 		list = chargement();
 		t.setItems(list);
 
+		try{
+			initialiserComboBox();
+			}catch(Exception e){
+				System.out.println("Oups : SOD is in a lonely day");
+				e.printStackTrace();
+			}
 	}
 
+	private void initialiserComboBox() throws Exception{
+		this.chooseComboBox.setEditable(false);
+		this.chooseComboBox.getItems().add("Reception");
+		this.chooseComboBox.getItems().add("Envoyer");
+        this.chooseComboBox.setEditable(false);  
+		this.chooseComboBox.setValue("Reception");
+       // this.chooseComboBox.setText("Objet : ");
+	}
+	
 	private ObservableList<MelCell> chargement(){
 		List<MelCell> m = new ArrayList<>();
 		try {
@@ -102,6 +120,27 @@ public class GestionMail extends Composition{
 			stage.setScene(scene);
 		});
 
+		this.chooseComboBox.setOnAction(ccb->{
+			List<MelCell> m = new ArrayList<>();
+			try {
+				if(this.chooseComboBox.getValue() == "Reception") {
+					m = mel.chargerMails(moi.getLogin());
+					mail.setText("Expediteur");
+				}else {
+					//System.out.println(moi.getLogin());
+					m = mel.chargerMailsExp(moi.getLogin());
+					mail.setText("Receveur");
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			ObservableList<MelCell> list = FXCollections.observableArrayList(m);
+			t.setItems(list);
+		});
+			
+			
+		
 		t.setRowFactory( tv -> {
 			TableRow<MelCell> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -131,6 +170,7 @@ public class GestionMail extends Composition{
 			});
 			return row ;
 		});
+		
 		sup.setOnAction(e->{
 			try {
 				mel.supprMail(selected.getId(), selected.getExpediteur());
@@ -146,7 +186,7 @@ public class GestionMail extends Composition{
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void layoutDefaultParametre() {
-		this.toolb.getChildren().addAll(this.sup, this.snd);
+		this.toolb.getChildren().addAll(this.chooseComboBox,this.sup, this.snd);
 		this.toolb.setSpacing(15);
 		this.toolb.setAlignment(Pos.CENTER);
 		this.t.getColumns().addAll(this.date,this.objet,this.mail);

@@ -48,16 +48,16 @@ public class Mel implements MelInterface{
 		 * Récupéré de la base de donnée l'id du message
 		 * 
 		 */
-		int nextval = sgbd.ajouterMail(chemin+u,u,receveur,objet);
+		int nextval = sgbd.ajouterMail(chemin,u,receveur,objet);
 		
 		/* -------------------------------------------------*/
 		
-		File nouveau = new File(chemin+u);
+		/*File nouveau = new File(chemin+u);
 		if(!nouveau.exists()){
 			nouveau.mkdirs();
-		}
+		}*/
 		
-		String path = chemin + u+"/"+ nextval;
+		String path = chemin +"/"+ nextval;
 		ManipulationFichier.sauverFichier(path, message);
 		
 	}
@@ -71,9 +71,13 @@ public class Mel implements MelInterface{
 		return sgbd.chargerMails(receveur);
 	}
 
+	public List<MelCell> chargerMailsExp(String expediteur) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.chargerMailsExp(expediteur);
+	}
+	
 	public void supprMail(int id, String exp) throws RemoteException, ClassNotFoundException, SQLException {
 		System.out.println(this.chemin+exp+"/"+id);
-		new File(this.chemin+exp+"/"+id).delete();
+		new File(this.chemin+"/"+id).delete();
 		sgbd.supprMail(id);
 	}
 }

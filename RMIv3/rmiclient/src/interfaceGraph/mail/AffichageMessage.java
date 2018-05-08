@@ -2,9 +2,7 @@ package interfaceGraph.mail;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.sql.SQLException;
 
-import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,7 +15,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
-import parametrage.PropertiesClient;
 import util.Utilisateur;
 import tchat.TchatInterface;
 public class AffichageMessage extends Composition{
@@ -35,9 +32,8 @@ public class AffichageMessage extends Composition{
 	private HBox hbo;
 	private HBox hbbutton;
 	private Utilisateur u;
-	private String contact;
+
 	private ScrollPane sp;
-	private Button retour;
 	private Button repondre;
 	private MelInterface mailInterface;
 	private Registry registry;
@@ -78,8 +74,9 @@ public class AffichageMessage extends Composition{
 		this.hbbutton = new HBox();
 		this.sp = new ScrollPane();
 		this.repondre = new Button("Repondre");
-		this.retour = new Button("Retour");
-		this.comp = new VBox();	
+		this.comp = new VBox();
+		
+		
 	}
 
 	@Override
@@ -87,14 +84,7 @@ public class AffichageMessage extends Composition{
 		// TODO Auto-generated method stub
 		this.repondre.setOnAction(event ->{
 			ScrollPane sp = new ScrollPane();
-			VBox reponse = null;
-			try {
-				UtilisateursInterface ui = (UtilisateursInterface) registry.lookup("Utilisateurs");
-				reponse= new WriteMessage(this.u,ui.getUser(this.e.getText()).contact(), this.o.getText());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			
+			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			
 			sp.setContent(reponse);
@@ -119,8 +109,7 @@ public class AffichageMessage extends Composition{
 		hbe.getChildren().addAll(this.expediteur,this.e);
 		hbd.getChildren().addAll(this.date,this.d);
 		hbo.getChildren().addAll(this.objet,this.o);
-		hbbutton.getChildren().addAll(this.retour,this.repondre);
-		hbbutton.setSpacing(350);
+		hbbutton.getChildren().add(this.repondre);
 		comp.getChildren().addAll(hbe,hbd,hbo,this.sp,hbbutton);
 		comp.setMaxSize(500,500);
 		comp.setSpacing(3);

@@ -308,9 +308,10 @@ public class SGBDOracle extends SGBD {
 	}
 	
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
+	public List<MelCell> chargerMailsExp(String exp) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL'");
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginExpediteur='"+exp+"'");// and etat='VAL'");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);

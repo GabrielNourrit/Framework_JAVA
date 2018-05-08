@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
+import fichier.Groupe;
 import mail.MelCell;
 import util.Groupe;
 import util.Type;
@@ -94,6 +95,9 @@ public abstract class SGBD {
 	public void creaUse (String login,String mdp,Type type) throws ClassNotFoundException, SQLException {
 	}
 	
+	public List<MelCell> chargerMailsExp(String exp) throws ClassNotFoundException, RemoteException, SQLException{
+		return null;
+	}
 	/**
 	 * Cr�ation d'un utilisateur avec les infos principale + nom et pr�nom
 	 * @param login
