@@ -53,7 +53,7 @@ public class AffichageMessage extends Composition{
 		this.e.setText(mc.getExpediteur());
 		this.d.setText(mc.getDate());
 		this.o.setText(mc.getObjet());
-		this.msg.setText(mailInterface.chargerMessage(mc.getChemin()));
+		this.msg.setText(mailInterface.chargerMessage(mc.getExpediteur()+"/"+mc.getId()));
 		this.vb.getChildren().add(msg);
 	}
 	

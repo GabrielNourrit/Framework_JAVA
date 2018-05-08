@@ -20,11 +20,9 @@ import util.Utilisateur;
 
 public class SGBDMySQL extends SGBD {
 	
-	private static int i;
-	
 	public SGBDMySQL() throws RemoteException, ClassNotFoundException, SQLException {
 		super();
-		i = getNextvalMail(); 
+		i = -1;
 	}
 
 	protected static final String LINK_SETTING_MYSQL = "ressources/bbd/BDMySQL.properties";
@@ -123,8 +121,14 @@ public class SGBDMySQL extends SGBD {
 		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',1)");
 	}
 	
-	public void ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException {
-		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"')");
+	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
+		if (i==-1) i = getNextvalMail(); 
+		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet +"')");
+		return i++;
+	}
+	
+	public void supprMail(int id) throws ClassNotFoundException, SQLException {
+		executeUpdate("delete from mails where idmai="+id);
 	}
 	
 	
@@ -210,9 +214,9 @@ public class SGBDMySQL extends SGBD {
 	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
-		int i = -1;
+		int ii = -1;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
-		if (rs.next()) i = rs.getInt("idmai")+1;
-		return i;
+		if (rs.next()) ii = rs.getInt("idmai");
+		return ii;
 	}
 }

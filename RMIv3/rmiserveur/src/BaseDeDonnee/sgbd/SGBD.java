@@ -20,6 +20,7 @@ public abstract class SGBD {
 	
 	protected Connection conn;
 	protected Statement stmt;
+	protected static int i;
 	
 	private static final String TYPE_DEFAULT_SGBD = "ORACLE";
 	
@@ -195,7 +196,11 @@ public abstract class SGBD {
 	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
 	}
 	
-	public void ajouterMail(String path, String expediteur, String receveur,String objet) throws ClassNotFoundException, SQLException {
+	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
+		return 0;
+	}
+	
+	public void supprMail(int id) throws ClassNotFoundException, SQLException {
 	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {

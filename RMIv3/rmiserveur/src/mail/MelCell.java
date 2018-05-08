@@ -10,14 +10,12 @@ public class MelCell implements Serializable {
 	private int id;
 		private String date;
 	    private String objet;
-	    private String chemin;
 	    private String expediteur;
 	 
-	    public MelCell(int id, String date, String chemin, String expediteur, String objet) {
+	    public MelCell(int id, String date, String expediteur, String objet) {
 	    	this.id =id;
 	        this.date = date;
 	        this.objet = objet;
-	        this.chemin = chemin;
 	        this.expediteur = expediteur;
 	    }
 	 
@@ -27,12 +25,7 @@ public class MelCell implements Serializable {
 	    public String getObjet() {
 	        return objet;
 	    }
-	    public String getChemin() {
-	        return chemin;
-	    }
 	    public String getExpediteur() {
 	        return expediteur;
 	    }
-
-
 }

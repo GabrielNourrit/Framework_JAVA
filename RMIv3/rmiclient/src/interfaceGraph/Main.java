@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fichier.Groupe;
+import interfaceGraph.mail.GestionMail;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,7 +35,7 @@ public class Main extends Application {
 		List<Groupe> s = new ArrayList<>();
 		s.add(new Groupe(1,"Groupe Projet MORAT"));
 		s.add(new Groupe(2,"Groupe Projet A380"));
-		VBox vb = new TelechargerFichier(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234",s));
+		VBox vb = new GestionMail(new Utilisateur("metzgegu", "METZGER", "Guillaume",  "01234",s));
 		vb.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);

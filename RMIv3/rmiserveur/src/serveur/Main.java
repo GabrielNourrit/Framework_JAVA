@@ -3,6 +3,7 @@ package serveur;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import connexion.Connexion;
 import connexion.ConnexionInterface;
 import fichier.GestionFichier;
 import fichier.GestionFichierInterface;
+import mail.Mel;
+import mail.MelInterface;
 import parametrage.PropertiesServeur;
 import parametrage.SettingServeurJVM;
 import tchat.Tchat;
@@ -27,7 +30,7 @@ import tchat.TchatInterface;
 
 public class Main {
 	
-	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException {
+	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException, ClassNotFoundException, SQLException {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
 		
@@ -42,18 +45,20 @@ public class Main {
 		s.add("Groupe Projet MORAT");
 		s.add("Groupe Projet A380");
 		
-		TchatInterface tchat = new Tchat(s,"ressources");
+		//TchatInterface tchat = new Tchat(s,"ressources");
 		GestionFichierInterface fichier = new GestionFichier(sgbd);
 		ConnexionInterface connexion = new Connexion(sgbd);
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
+		MelInterface m = new Mel(sgbd);
 		
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
-		listBind.put("Tchat", tchat);
+		//listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
 		listBind.put("Connexion", connexion);		
 		listBind.put("Utilisateurs", ui);		
 		listBind.put("OperationUtilisateur", ou);
+		listBind.put("Mel", m);
 		
 		//Cr�ation du serveur
 		try{	

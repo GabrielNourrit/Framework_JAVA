@@ -15,11 +15,13 @@ import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.sgbd.SGBD;
 import BaseDeDonnee.sgbd.SGBDOracle;
 import fichier.Fichier;
+import parametrage.PropertiesServeur;
 import util.ManipulationFichier;
 
 public class Mel implements MelInterface{
 
 	private SGBD sgbd;
+	private String chemin = PropertiesServeur.getStockageMail() +"/";
 	
 	public Mel (SGBD _sgbd) throws RemoteException {  
 		sgbd = _sgbd;
@@ -46,42 +48,32 @@ public class Mel implements MelInterface{
 		 * Récupéré de la base de donnée l'id du message
 		 * 
 		 */
-		int nextval = sgbd.getNextvalMail();
+		int nextval = sgbd.ajouterMail(chemin+u,u,receveur,objet);
 		
 		/* -------------------------------------------------*/
 		
-		
-		
-		File nouveau = new File("ressources/stockage/"+u);
+		File nouveau = new File(chemin+u);
 		if(!nouveau.exists()){
 			nouveau.mkdirs();
 		}
 		
-		String path = "ressources/stockage/" + u+"/"+ nextval;
-		new ManipulationFichier().sauverFichier(path, message);
-		sgbd.ajouterMail(path,u,receveur,objet);
+		String path = chemin + u+"/"+ nextval;
+		ManipulationFichier.sauverFichier(path, message);
+		
 	}
 	
 	
-	public String chargerMessage(String chemin) {
-		return ManipulationFichier.chargerFichierTchat(chemin).toString();
+	public String chargerMessage(String exp) {
+		return ManipulationFichier.chargerFichierTchat(this.chemin+exp).toString();
 	}
 	
 	public List<MelCell> chargerMails(String receveur) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.chargerMails(receveur);
 	}
 
-	
-	/*public boolean verifierMdp(String login, String mdp) throws RemoteException, ClassNotFoundException, SQLException {
-		int n = 0;
-		
-		Connection conn = csgbd.openConnexionsgbd();
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("select count(*) from utilisateurs where login='"+ login +"' and motDePasse='" + mdp + "'");
-		if (rs.next()) n = rs.getInt(1);
-		System.out.println(n);
-		csgbd.closeConnexionsgbd(conn);
-		if(n == 1) return true;
-		return false;
-	}*/
+	public void supprMail(int id, String exp) throws RemoteException, ClassNotFoundException, SQLException {
+		System.out.println(this.chemin+exp+"/"+id);
+		new File(this.chemin+exp+"/"+id).delete();
+		sgbd.supprMail(id);
+	}
 }
