@@ -15,6 +15,7 @@ import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
 import fichier.Fichier;
 import fichier.Groupe;
+import mail.MelCell;
 import util.Utilisateur;
 
 
@@ -127,11 +128,12 @@ public class SGBDOracle extends SGBD {
 	}
 	
 	public synchronized int ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException, RemoteException {
-		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"')");
 		int i = -1;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
 		if (rs.next()) i = rs.getInt("idmai")+1;
 		return i;
+	public void ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException {
+		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet +"')");
 	}
 	
 	
@@ -222,6 +224,18 @@ public class SGBDOracle extends SGBD {
 		ResultSet rs = executeSelect("select max(idmai) from mails");
 		if (rs.next()) i = rs.getInt("idmai")+1;
 		return i;
+	}
+	
+	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
+		List<MelCell> fs = new ArrayList<>();
+		MelCell m = null;
+		ResultSet rs = executeSelect("select idMai,dateArrive,url,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL'");
+		while (rs.next()) {
+			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4),rs.getString(5));
+			fs.add(m);
+		}
+		rs.close();
+		return fs;
 	}
 	
 	/*public Fichier getFichier(int idFic) {

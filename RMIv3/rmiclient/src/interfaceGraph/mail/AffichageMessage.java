@@ -1,0 +1,141 @@
+package interfaceGraph.mail;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+
+import interfaceGraph.Composition;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import mail.MelCell;
+import mail.MelInterface;
+import util.Utilisateur;
+import tchat.TchatInterface;
+public class AffichageMessage extends Composition{
+
+	private Label expediteur;
+	private Label e;
+	private Label date;
+	private Label d;
+	private Label objet;
+	private Label o;
+	private Label msg;
+	private VBox vb;
+	private HBox hbe;
+	private HBox hbd;
+	private HBox hbo;
+	private HBox hbbutton;
+	private Utilisateur u;
+
+	private ScrollPane sp;
+	private Button retour;
+	private Button repondre;
+	private MelInterface mailInterface;
+	
+	
+	public AffichageMessage(Utilisateur u, MelCell mc) throws RemoteException, NotBoundException {
+		this.u=u;
+		Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
+		mailInterface = (MelInterface) registry.lookup("Mel");	
+		genererSousComposant();
+		lecture(mc);
+		ecouteurDefaultAction();
+		layoutDefaultParametre();
+	}
+	
+	public void lecture (MelCell mc) throws RemoteException {
+		this.e.setText(mc.getExpediteur());
+		this.d.setText(mc.getDate());
+		this.o.setText(mc.getObjet());
+		this.msg.setText(mailInterface.chargerMessage(mc.getChemin()));
+		this.vb.getChildren().add(msg);
+	}
+	
+	@Override
+	protected void genererSousComposant() {
+		// TODO Auto-generated method stub
+		this.expediteur = new Label("Expediteur : ");
+		this.e = new Label();
+		this.date = new Label("Date de reception : ");
+		this.d = new Label();
+		this.objet = new Label("Objet : ");
+		this.o = new Label();
+		this.msg = new Label();
+		this.vb = new VBox();
+		this.hbe = new HBox();
+		this.hbd = new HBox();
+		this.hbo = new HBox();
+		this.hbbutton = new HBox();
+		this.sp = new ScrollPane();
+		this.repondre = new Button("Repondre");
+		this.retour = new Button("Retour");
+		this.comp = new VBox();
+		
+		
+	}
+
+	@Override
+	protected void ecouteurDefaultAction() {
+		// TODO Auto-generated method stub
+		this.repondre.setOnAction(event ->{
+			ScrollPane sp = new ScrollPane();
+			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
+			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			
+			sp.setContent(reponse);
+			reponse.setAlignment(Pos.CENTER);
+			sp.setFitToWidth(true);
+			sp.setFitToHeight(true);
+			Scene scene = new Scene(sp, 600, 600);
+			stage.setScene(scene);
+			}
+		);
+		
+		this.retour.setOnAction(event ->{
+			ScrollPane sp = new ScrollPane();
+			VBox reponse = null;
+			try {
+				reponse = new GestionMail(this.u);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			
+			sp.setContent(reponse);
+			reponse.setAlignment(Pos.CENTER);
+			sp.setFitToWidth(true);
+			sp.setFitToHeight(true);
+			Scene scene = new Scene(sp, 600, 600);
+			stage.setScene(scene);
+		});
+	}
+
+	@Override
+	protected void layoutDefaultParametre() {
+		// TODO Auto-generated method stub
+		sp.setMinSize(700, 700);
+		sp.setContent(vb);
+		sp.setMinSize(500, 400);
+		sp.setFitToWidth(true);
+		sp.setFitToHeight(true);
+		this.msg.setWrapText(true);
+		hbe.getChildren().addAll(this.expediteur,this.e);
+		hbd.getChildren().addAll(this.date,this.d);
+		hbo.getChildren().addAll(this.objet,this.o);
+		hbbutton.getChildren().addAll(this.retour,this.repondre);
+		hbbutton.setSpacing(350);
+		comp.getChildren().addAll(hbe,hbd,hbo,this.sp,hbbutton);
+		comp.setMaxSize(500,500);
+		comp.setSpacing(3);
+		comp.setAlignment(Pos.CENTER);
+		this.getChildren().add(this.comp);
+	}
+
+}

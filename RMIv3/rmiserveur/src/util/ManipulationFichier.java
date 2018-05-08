@@ -33,7 +33,7 @@ public class ManipulationFichier {
 	public static void sauverFichier(String fichier, String texte) {
 		try {
 			FileWriter fw = new FileWriter(new File(fichier),true);
-			fw.write("\n"+texte);	
+			fw.write(texte);	
 			fw.close();
 		} catch (Exception e) {
 			e.printStackTrace();

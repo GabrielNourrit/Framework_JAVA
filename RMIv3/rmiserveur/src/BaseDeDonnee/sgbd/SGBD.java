@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
 import fichier.Groupe;
+import mail.MelCell;
 import util.Utilisateur;
 
 public abstract class SGBD {
@@ -194,6 +195,8 @@ public abstract class SGBD {
 	public void ajouterFichier(String n,String l) throws ClassNotFoundException, SQLException {
 	}
 	
+	public void ajouterMail(String path, String expediteur, String receveur,String objet) throws ClassNotFoundException, SQLException {
+	}
 	
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
 		return 0;
@@ -207,7 +210,7 @@ public abstract class SGBD {
 	public String getLibelleGroup(int id) throws ClassNotFoundException, RemoteException, SQLException {
 		return null;
 	}
-	public synchronized int ajouterMail(String path, String expediteur, String receveur) throws ClassNotFoundException, SQLException, RemoteException {
-		return 0;
+	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
 	}
 }
