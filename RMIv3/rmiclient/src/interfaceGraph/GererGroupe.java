@@ -73,7 +73,7 @@ public class GererGroupe extends Formulaire {
 			}
 		});
 		btn_ajouter.setOnAction(event ->{
-			Stage windowAjouter = new Stage();
+			Stage windowAjouter = Fenetre.newStage();
 			CreerGroup vb = new CreerGroup();
 			vb.setPostAdd(e -> {
 				refreshList();
@@ -93,7 +93,7 @@ public class GererGroupe extends Formulaire {
 		btn_modifier.setOnAction(event ->{
 			Groupe groupe = getGroupeSelected();
 			if (groupe != null) {
-				Stage windowAjouter = new Stage();
+				Stage windowAjouter = Fenetre.newStage();
 				ListUtilisateursGroupe vb = new ListUtilisateursGroupe(groupe);
 				vb.setPostAdd(e -> {
 					refreshList();

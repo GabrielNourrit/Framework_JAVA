@@ -1,5 +1,4 @@
 package interfaceGraph.mail;
-import java.rmi.registry.Registry;
 
 import interfaceGraph.Composition;
 import javafx.scene.Node;
@@ -14,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import mail.MelInterface;
+import util.Connectable;
 import util.Fenetre;
 import util.Utilisateur;
 
@@ -57,8 +57,7 @@ public class WriteMessage extends Composition implements Alertable{
     
     private void chargerMel(){
     	try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			this.mel = (MelInterface) registry.lookup("Mel");
+			this.mel = new Connectable<MelInterface>().connexion("Mel");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,13 +115,7 @@ public class WriteMessage extends Composition implements Alertable{
 			if (this.emailComboBox.getValue() != null) {
 				if (this.text.getLength() != 0) {
 					if(this.objet.getLength() != 0) {
-						//---
-						// On remplace les ";" car c'est notre délimiteur Objet;Message
-						// et si l'utilisateur entre des ; dans son objet, on va le remplacer par
-						// des blancs pour eviter de deplacer une partie de l'objet dans le message
-						//---
 						this.verif = this.objet.getText();
-						//System.out.println(verif);
 						envoyerMessage();
 						Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
 						s.close();
@@ -145,7 +138,6 @@ public class WriteMessage extends Composition implements Alertable{
 		
 	@Override
 	protected void layoutDefaultParametre() {
-		// TODO Auto-generated method stub
 		this.emailComboBox.setLayoutX(500);
 		text.setWrapText(true);
 		objet.setPrefWidth(450);
@@ -154,8 +146,6 @@ public class WriteMessage extends Composition implements Alertable{
 		comp.getChildren().addAll(hb,this.text,this.envoyer,this.message);
 		comp.setMaxSize(500,500);
 		comp.setSpacing(3);
-		//comp.setAlignment(Pos.CENTER);
-
 		this.getChildren().add(this.comp);
 	}
 

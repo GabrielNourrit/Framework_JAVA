@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
 import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 
@@ -87,6 +88,7 @@ public class AffichageMessage extends Composition{
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
+			Fenetre.paramStage(stage);
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 600, 600);

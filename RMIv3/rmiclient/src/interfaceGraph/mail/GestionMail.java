@@ -26,6 +26,7 @@ import mail.MelCell;
 import mail.MelInterface;
 import mail.MelListener;
 import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class GestionMail extends Composition{
@@ -73,12 +74,8 @@ public class GestionMail extends Composition{
 		mail = new TableColumn<MelCell,String>("Expediteur");
 		comp = new VBox();
 		this.chooseComboBox = new ComboBox<String>();
-		list = FXCollections.observableArrayList(listeMailRecu);
 
-		date.setCellValueFactory(new PropertyValueFactory<MelCell, String>("date"));
-		mail.setCellValueFactory(new PropertyValueFactory<MelCell, String>("expediteur"));
-		objet.setCellValueFactory(new PropertyValueFactory<MelCell, String>("objet"));
-
+		chargement(listeMailRecu);
 		t.setItems(list);
 
 		try{
@@ -102,7 +99,7 @@ public class GestionMail extends Composition{
 		this.snd.setOnAction(event ->{				
 			ScrollPane sp = new ScrollPane();
 			VBox reponse= new WriteMessage(this.moi);
-			Stage stage = new Stage();
+			Stage stage = Fenetre.newStage();
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
 			sp.setFitToWidth(true);
@@ -138,7 +135,6 @@ public class GestionMail extends Composition{
 					MelCell rowData = row.getItem();
 					VBox a = null;
 					try {
-						System.out.println("clic clic");
 						if (action.equals("recu")) a = new AffichageMessage(moi,rowData,"recu");
 						else a = new AffichageMessage(moi,rowData,"envoye");
 					} catch (Exception e1) {
@@ -147,7 +143,7 @@ public class GestionMail extends Composition{
 					}
 					ScrollPane sp = new ScrollPane();
 					sp.setContent(a);
-					Stage nouveauStage = new Stage();
+					Stage nouveauStage = Fenetre.newStage();
 					a.setAlignment(Pos.CENTER);
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
@@ -196,20 +192,21 @@ public class GestionMail extends Composition{
 
 	protected  void ajouterMailRecu(MelCell message) {
 		listeMailRecu.add(message);
-		list = FXCollections.observableArrayList(listeMailRecu);
-		date.setCellValueFactory(new PropertyValueFactory<MelCell, String>("date"));
-		mail.setCellValueFactory(new PropertyValueFactory<MelCell, String>("expediteur"));
-		objet.setCellValueFactory(new PropertyValueFactory<MelCell, String>("objet"));
+		chargement(listeMailRecu);
 		if (action.contentEquals("recu")) t.setItems(list);
 	}
 
 	protected  void ajouterMailEnvoye(MelCell message) {
 		listeMailEnvoye.add(message);
-		list = FXCollections.observableArrayList(listeMailEnvoye);
+		chargement(listeMailEnvoye);
+		if (action.contentEquals("envoye")) t.setItems(list);
+	}
+	
+	private void chargement(List<MelCell> mc){
+		list = FXCollections.observableArrayList(mc);
 		date.setCellValueFactory(new PropertyValueFactory<MelCell, String>("date"));
 		mail.setCellValueFactory(new PropertyValueFactory<MelCell, String>("expediteur"));
 		objet.setCellValueFactory(new PropertyValueFactory<MelCell, String>("objet"));
-		if (action.contentEquals("envoye")) t.setItems(list);
 	}
 
 	private class MailListener extends UnicastRemoteObject implements MelListener {
@@ -219,19 +216,15 @@ public class GestionMail extends Composition{
 		}
 		@Override
 		public void nouveauMailRecu(MelCell message) throws RemoteException {
-			Platform.runLater(
-					() -> {
-						ajouterMailRecu(message);
-					}
-					);			
+			Platform.runLater(() -> {
+				ajouterMailRecu(message);
+			});			
 		}
 		@Override
 		public void nouveauMailEnvoye(MelCell message) throws RemoteException {
-			Platform.runLater(
-					() -> {
-						ajouterMailEnvoye(message);
-					}
-					);	
+			Platform.runLater(() -> {
+				ajouterMailEnvoye(message);
+			});	
 		}
 	}
 
