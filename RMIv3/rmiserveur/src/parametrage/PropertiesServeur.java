@@ -40,7 +40,7 @@ public class PropertiesServeur {
 		}
 		portServeur = prop.getProperty("numero.port");
 		typeSGBD = prop.getProperty("type.sgbd.serveur");
-		stockageTchat = prop.getProperty("stockage.tachat");
+		stockageTchat = prop.getProperty("stockage.tchat");
 		stockageFichiers = prop.getProperty("stockage.fichiers");
 		stockageMail = prop.getProperty("stockage.mail");
 	}
