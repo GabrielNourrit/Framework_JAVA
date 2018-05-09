@@ -143,7 +143,7 @@ public class SGBDOracle extends SGBD {
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
 		String login;
-		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types where etat ='VALID'");
+		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types");// where etat ='VALID'");
 		while (rs.next()) {
 			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),new Type(rs.getInt(5),rs.getString(6)));
 			lesUser.add(user);
@@ -310,11 +310,13 @@ public class SGBDOracle extends SGBD {
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginReceveur='"+rec+"'");// and etat='VAL'");
+		System.out.println("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL' or etat='SUPEN'");
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL' or etat='SUPEN'");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);
 		}
+		System.out.println(fs);
 		rs.close();
 		return fs;
 	}
@@ -323,12 +325,23 @@ public class SGBDOracle extends SGBD {
 	public List<MelCell> chargerMailsExp(String exp) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginExpediteur='"+exp+"'");// and etat='VAL'");
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginExpediteur='"+exp+"' and etat='VAL' or etat='SUPRE'");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);
 		}
 		rs.close();
 		return fs;
+	}
+	
+	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		String etat="";
+		ResultSet rs = executeSelect("select etat from mails where idmai="+id);
+		if (rs.next()) etat=rs.getString(1);
+		return etat;
+	}
+	
+	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
+		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
 	}
 }

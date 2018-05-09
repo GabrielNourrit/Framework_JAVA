@@ -2,6 +2,7 @@ package BaseDeDonnee.sgbd;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -250,5 +251,11 @@ public abstract class SGBD {
 	
 	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
 		return -1;
+	}
+	
+	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		return null;
+	}
+	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 	}
 }

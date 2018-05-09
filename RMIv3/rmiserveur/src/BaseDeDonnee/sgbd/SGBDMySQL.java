@@ -306,4 +306,15 @@ public class SGBDMySQL extends SGBD {
 		rs.close();
 		return fs;
 	}
+	
+	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
+		String etat="";
+		ResultSet rs = executeSelect("select etat from mails where idmai="+id);
+		if (rs.next()) etat=rs.getString(1);
+		return etat;
+	}
+	
+	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
+		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
+	}
 }

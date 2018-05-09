@@ -139,7 +139,8 @@ public class WriteMessage extends Composition implements Alertable{
 						this.verif = this.objet.getText();
 						//System.out.println(verif);
 						envoyerMessage();
-
+						Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
+						s.close();
 						//--
 					}
 					else {

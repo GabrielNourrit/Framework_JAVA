@@ -17,31 +17,33 @@ import mail.MelCell;
 import mail.MelInterface;
 import parametrage.PropertiesClient;
 import util.Utilisateur;
-import tchat.TchatInterface;
+
+
 public class AffichageMessage extends Composition{
 
-	private Label expediteur;
-	private Label e;
-	private Label date;
-	private Label d;
-	private Label objet;
-	private Label o;
-	private Label msg;
-	private VBox vb;
-	private HBox hbe;
-	private HBox hbd;
-	private HBox hbo;
-	private HBox hbbutton;
+	protected Label expediteur;
+	protected Label e;
+	protected Label date;
+	protected Label d;
+	protected Label objet;
+	protected Label o;
+	protected Label msg;
+	protected VBox vb;
+	protected HBox hbe;
+	protected HBox hbd;
+	protected HBox hbo;
+	protected HBox hbbutton;
 	private Utilisateur u;
 
 	private ScrollPane sp;
 	private Button repondre;
 	private MelInterface mailInterface;
 	private Registry registry;
-	
-	
-	public AffichageMessage(Utilisateur u, MelCell mc) throws RemoteException, NotBoundException {
+	private String type;
+
+	public AffichageMessage(Utilisateur u, MelCell mc, String t) throws RemoteException, NotBoundException {
 		this.u=u;
+		type=t;
 		registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
 		mailInterface = (MelInterface) registry.lookup("Mel");	
 		genererSousComposant();
@@ -49,19 +51,19 @@ public class AffichageMessage extends Composition{
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
-	
+
 	public void lecture (MelCell mc) throws RemoteException {
 		this.e.setText(mc.getExpediteur());
 		this.d.setText(mc.getDate());
 		this.o.setText(mc.getObjet());
-		this.msg.setText(mailInterface.chargerMessage(mc.getExpediteur()+"/"+mc.getId()));
+		this.msg.setText(mailInterface.chargerMessage(mc.getId()+""));
 		this.vb.getChildren().add(msg);
 	}
-	
+
 	@Override
 	protected void genererSousComposant() {
-		// TODO Auto-generated method stub
-		this.expediteur = new Label("Expediteur : ");
+		if (type.equals("recu")) this.expediteur = new Label("Expediteur : ");
+		else this.expediteur = new Label("Destinataire : ");
 		this.e = new Label();
 		this.date = new Label("Date de reception : ");
 		this.d = new Label();
@@ -76,26 +78,24 @@ public class AffichageMessage extends Composition{
 		this.sp = new ScrollPane();
 		this.repondre = new Button("Repondre");
 		this.comp = new VBox();
-		
-		
+
+
 	}
 
 	@Override
 	protected void ecouteurDefaultAction() {
-		// TODO Auto-generated method stub
 		this.repondre.setOnAction(event ->{
 			ScrollPane sp = new ScrollPane();
 			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 600, 600);
 			stage.setScene(scene);
-			}
-		);
+		}
+				);
 	}
 
 	@Override

@@ -7,8 +7,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
 import util.Utilisateur;
 import BaseDeDonnee.MethodeServeur;
 import BaseDeDonnee.bd.Connexionsgbd;
@@ -16,12 +24,15 @@ import BaseDeDonnee.sgbd.SGBD;
 import BaseDeDonnee.sgbd.SGBDOracle;
 import fichier.Fichier;
 import parametrage.PropertiesServeur;
+import tchat.TchatListener;
 import util.ManipulationFichier;
 
 public class Mel implements MelInterface{
 
 	private SGBD sgbd;
 	private String chemin = PropertiesServeur.getStockageMail() +"/";
+	private Map<String ,MelListener> listRecu = new HashMap<>();
+	private Map<String ,MelListener> listEnvoye = new HashMap<>();
 	
 	public Mel (SGBD _sgbd) throws RemoteException {  
 		sgbd = _sgbd;
@@ -29,37 +40,19 @@ public class Mel implements MelInterface{
 
 	@Override
 	public List<Utilisateur> getAllUsers() throws RemoteException, ClassNotFoundException, SQLException {
-		/*ArrayList<Utilisateur>retour = new ArrayList<Utilisateur>();
-		//chargement dans la bdd :
-		Utilisateur u1 = new Utilisateur("guevarat","guevara","thomas","connard",null);
-		Utilisateur u2 = new Utilisateur("nourritg","nourrit","gabriel","Pute",null);*/
 		return sgbd.getUsers();
-		/*retour.add(u1);
-		retour.add(u2);
-		
-		return retour;*/
 	}
 
 
 	@Override
 	public void saveMessage(String u, String receveur, String message,String objet) throws RemoteException, ClassNotFoundException, SQLException{
-		
-		/*
-		 * Récupéré de la base de donnée l'id du message
-		 * 
-		 */
-		int nextval = sgbd.ajouterMail(chemin,u,receveur,objet);
-		
-		/* -------------------------------------------------*/
-		
-		/*File nouveau = new File(chemin+u);
-		if(!nouveau.exists()){
-			nouveau.mkdirs();
-		}*/
-		
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		int nextval = sgbd.ajouterMail(chemin,u,receveur,objet);	
 		String path = chemin +"/"+ nextval;
 		ManipulationFichier.sauverFichier(path, message);
-		
+		notifyListenersRecu(new MelCell(nextval,dateFormat.format(date),u,objet), receveur);
+		notifyListenersEnvoye(new MelCell(nextval,dateFormat.format(date),receveur,objet), u);
 	}
 	
 	
@@ -75,9 +68,67 @@ public class Mel implements MelInterface{
 		return sgbd.chargerMailsExp(expediteur);
 	}
 	
-	public void supprMail(int id, String exp) throws RemoteException, ClassNotFoundException, SQLException {
-		System.out.println(this.chemin+exp+"/"+id);
-		new File(this.chemin+"/"+id).delete();
-		sgbd.supprMail(id);
+	public void supprMailExp(int id) throws RemoteException, ClassNotFoundException, SQLException {
+		String etat = sgbd.etatMail(id);
+		if (etat.equals("SUPRE")) {
+			new File(this.chemin+"/"+id).delete();
+			sgbd.supprMail(id);
+		}
+		else if (etat.equals("VAL")) {
+			sgbd.modifEtatMail(id, "SUPEN");
+		}
 	}
+	
+	public void supprMailRec(int id) throws RemoteException, ClassNotFoundException, SQLException {
+		String etat = sgbd.etatMail(id);
+		if (etat.equals("SUPEN")) {
+			new File(this.chemin+"/"+id).delete();
+			sgbd.supprMail(id);
+		}
+		else if (etat.equals("VAL")) {
+			sgbd.modifEtatMail(id, "SUPRE");
+		}
+	}
+	
+	public synchronized void addMailRecuListener (MelListener listener, String login) throws java.rmi.RemoteException {
+		System.out.println("adding listener recu -"+listener);
+		listRecu.put(login,listener);
+	}
+	
+	public synchronized void addMailEnvoyeListener (MelListener listener, String login) throws java.rmi.RemoteException {
+		System.out.println("adding listener envoye -"+listener);
+		listEnvoye.put(login,listener);
+	}
+
+	public synchronized void removeMailRecuListener (MelListener listener, String login) throws java.rmi.RemoteException {
+		System.out.println("removing listener  -"+listener);
+		listRecu.remove(login);
+	}
+	
+	public synchronized void removeMailEnvoyeListener (MelListener listener, String login) throws java.rmi.RemoteException {
+		System.out.println("removing listener -"+listener);
+		listEnvoye.remove(login);
+	}
+	
+	private void notifyListenersEnvoye(MelCell message, String login) {	
+		try {
+			listEnvoye.get(login).nouveauMailEnvoye(message);
+		} catch(Exception re) {
+			re.printStackTrace();
+			System.out.println("removing listener -"+login);
+			listEnvoye.remove(login); 
+		} 
+	}
+	
+	private void notifyListenersRecu(MelCell message, String login) {
+		try {
+			System.out.println(login);
+			listRecu.get(login).nouveauMailRecu(message);
+		} catch(Exception re) {
+			re.printStackTrace();
+			//System.out.println("removing listener -"+login);
+			//listRecu.remove(login); 
+		} 
+	}
+		
 }
