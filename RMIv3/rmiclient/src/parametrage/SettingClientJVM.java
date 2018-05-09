@@ -4,6 +4,7 @@ import java.rmi.RMISecurityManager;
 /**
  * Classe de paramètrage de la Java Virtial Machine du Client
  */
+@SuppressWarnings("deprecation")
 public class SettingClientJVM {
 	/**
 	 * Localisation des propriétés de sécurité définit

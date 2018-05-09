@@ -15,7 +15,7 @@ public class Fenetre {
 	
 	public static Stage newStage(){
 		Stage stage = new Stage();
-		Fenetre.paramStage(stage);
+		//Fenetre.paramStage(stage);
 		return stage;
 	}
 	

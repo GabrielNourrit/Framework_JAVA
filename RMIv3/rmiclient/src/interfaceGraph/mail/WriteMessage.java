@@ -19,53 +19,50 @@ import util.Utilisateur;
 
 public class WriteMessage extends Composition implements Alertable{
 
-    private Button envoyer;
-    private Label notification;
-    private TextField objet;
-    private TextArea text;
+	private Button envoyer;
+	private Label notification;
+	private TextField objet;
+	private TextArea text;
 	private ComboBox<String> emailComboBox;
 	private HBox hb;
 	private Label message;
 	private MelInterface mel;
 	private Utilisateur moi;
 	private String verif;
-	//private MelCell mc;
-	
-    
-    public WriteMessage(Utilisateur u) {
-    	this.moi = u;
+
+	public WriteMessage(Utilisateur u) {
+		this.moi = u;
 		chargerMel();
 		genererSousComposant();
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
-    
-    public WriteMessage(Utilisateur u, String adr, String obj) {
+
+	public WriteMessage(Utilisateur u, String adr, String obj) {
 		this(u);
 		this.emailComboBox.setValue(adr);
 		this.objet.setText("[RE]: " + obj);
 	}
-    
 
-    public void methode(String mesg) {
-    	VBox alerte = new Alerte(mesg,this);
+
+	public void methode(String mesg) {
+		VBox alerte = new Alerte(mesg,this);
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,100);
 		s.setScene(scene);
 		s.show();
-    }
-    
-    private void chargerMel(){
-    	try {
+	}
+
+	private void chargerMel(){
+		try {
 			this.mel = new Connectable<MelInterface>().connexion("Mel");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
-    
+	}
+
 	@Override
 	protected void genererSousComposant() {
-		
 		this.comp= new VBox();
 		this.envoyer = new Button ("Envoyer");
 		this.notification = new Label();
@@ -74,43 +71,44 @@ public class WriteMessage extends Composition implements Alertable{
 		this.emailComboBox = new ComboBox<String>();
 		this.hb = new HBox();
 		this.message = new Label();
-    	this.verif = "[Sans objet]";
-    	
+		this.verif = "[Sans objet]";
+
 		try{
-		initialiserComboBox();
+			initialiserComboBox();
 		}catch(Exception e){
 			System.out.println("Oups : SOD is in a lonely day");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void initialiserComboBox() throws Exception{
 		this.emailComboBox.setPromptText("Contact");
-		this.emailComboBox.setEditable(false);
+		emailComboBox.setEditable(true);
+		emailComboBox.getEditor().setEditable(false);
 		for (Utilisateur u : this.mel.getAllUsers()){
 			this.emailComboBox.getItems().add(u.contact());
 		}
-        this.emailComboBox.setEditable(true);  
-        this.notification.setText("Objet : ");
+		this.emailComboBox.setEditable(true);  
+		this.notification.setText("Objet : ");
+		emailComboBox.getSelectionModel().select(0);
 	}
-	
+
 	private void envoyerMessage(){
 		String contenu = this.text.getText();
 		try{
-		this.mel.saveMessage(this.moi.getLogin(),this.emailComboBox.getValue().split("#")[1],contenu,verif);
-		 message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
-         emailComboBox.setValue(null);
-         this.text.clear();
-         this.objet.clear();
+			this.mel.saveMessage(this.moi.getLogin(),this.emailComboBox.getValue().split("#")[1],contenu,verif);
+			message.setText("Votre message a bien etait envoye a : " + this.emailComboBox.getValue());   
+			emailComboBox.setValue(null);
+			this.text.clear();
+			this.objet.clear();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	protected void ecouteurDefaultAction() {
-		
 		this.envoyer.setOnAction(event ->{
 			if (this.emailComboBox.getValue() != null) {
 				if (this.text.getLength() != 0) {
@@ -119,23 +117,15 @@ public class WriteMessage extends Composition implements Alertable{
 						envoyerMessage();
 						Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
 						s.close();
-						//--
 					}
-					else {
-						methode("Vous avez oublier de mettre un objet");
-					}
+					else methode("Vous avez oublier de mettre un objet");
 				}
-				else {
-					Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas serieux");
-				}
+				else Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas serieux");
 			}
-			else {
-				Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Vous n'avez pas choisis de destinataire");
-			}
-			});
-			
+			else Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Vous n'avez pas choisis de destinataire");
+		});
 	}
-		
+
 	@Override
 	protected void layoutDefaultParametre() {
 		this.emailComboBox.setLayoutX(500);

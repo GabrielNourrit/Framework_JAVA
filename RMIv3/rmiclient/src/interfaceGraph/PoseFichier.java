@@ -33,10 +33,7 @@ public class PoseFichier extends VBox {
 	private GestionFichierInterface connex;
 	
 	public PoseFichier(Utilisateur u) throws Exception {
-		this.u=u;
-		/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-		connex = (GestionFichierInterface) registry.lookup("Fichier");*/
-		
+		this.u=u;	
 		connex = new Connectable<GestionFichierInterface>().connexion("Fichier");
 		genererSousComposant();
 		ecouteurDefaultAction();
@@ -64,12 +61,18 @@ public class PoseFichier extends VBox {
             }else {
                 label.setText("please choose a file!");
             }
-			try {				
-				byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
-				connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
-			} catch (Exception e) {
-				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
+			if(chosenFile.length()>20000000) {
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Le fichier doit faire moins de 20Mo");
 			}
+			else {
+				try {				
+					byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
+					connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+				} catch (Exception e) {
+					Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
+				}
+			}
+			
 		});
 	}
 

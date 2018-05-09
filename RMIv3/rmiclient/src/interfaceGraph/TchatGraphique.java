@@ -47,10 +47,12 @@ public class TchatGraphique extends VBox {
 	
 
 	private void execute(TchatInterface tchat) throws RemoteException{ 
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "|",cbgroupe.getSelectionModel().getSelectedItem().getidGr());
-		ZoneText.setText("");
+		if (!ZoneText.getText().trim().isEmpty()) {
+			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			Date date = new Date();
+			tchat.envoyerMessage(dateFormat.format(date) + "~" + util.getPrenom() + " " + util.getNom() + "~" + ZoneText.getText() + "|",cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+			ZoneText.setText("");
+		}
 	}
 
 	/**

@@ -22,6 +22,7 @@ public class Connectable<T extends Remote> {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public T connexion(String lookup) throws Exception {
 		try {
 			return (T) registry.lookup(lookup);
