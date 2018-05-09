@@ -1,7 +1,5 @@
 package fichier;
 
-
-import java.io.File;
 import java.io.IOException;
 import java.rmi.*;
 import java.sql.SQLException;

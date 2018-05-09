@@ -1,10 +1,7 @@
 package interfaceGraph.mail;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +10,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -29,7 +25,7 @@ import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
 import mail.MelListener;
-import tchat.TchatListener;
+import util.Connectable;
 import util.Utilisateur;
 
 public class GestionMail extends Composition{
@@ -49,10 +45,10 @@ public class GestionMail extends Composition{
 	private List<MelCell> listeMailEnvoye = new ArrayList<>();
 	private String action = "recu";
 
-	public GestionMail(Utilisateur u) throws RemoteException, NotBoundException, ClassNotFoundException, SQLException{
+	public GestionMail(Utilisateur u) throws Exception{
 		this.moi = u;
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-		this.mel = (MelInterface) registry.lookup("Mel");
+		//this.mel = (MelInterface) registry.lookup("Mel");
+		this.mel = new Connectable<MelInterface>().connexion("Mel");
 		listeMailRecu = mel.chargerMails(moi.getLogin());
 		listeMailEnvoye = mel.chargerMailsExp(moi.getLogin());
 		mel.addMailEnvoyeListener(new MailListener(), u.getLogin());
@@ -99,20 +95,6 @@ public class GestionMail extends Composition{
 		this.chooseComboBox.getItems().add("Envoyer");
 		this.chooseComboBox.setEditable(false);  
 		this.chooseComboBox.setValue("Reception");
-	}
-
-	private ObservableList<MelCell> chargement(){
-		List<MelCell> m = new ArrayList<>();
-		try {
-			m = mel.chargerMails(moi.getLogin());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ObservableList<MelCell> list = FXCollections.observableArrayList(m);
-		date.setCellValueFactory(new PropertyValueFactory<MelCell, String>("date"));
-		mail.setCellValueFactory(new PropertyValueFactory<MelCell, String>("expediteur"));
-		objet.setCellValueFactory(new PropertyValueFactory<MelCell, String>("objet"));
-		return list; 
 	}
 
 	@Override

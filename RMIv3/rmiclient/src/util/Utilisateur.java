@@ -1,16 +1,10 @@
 package util;
 
 import java.io.Serializable;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import groupes.GroupesInterface;
-import tchat.TchatInterface;
 
 public class Utilisateur implements Serializable {
 	private static final long serialVersionUID = 447192624987987345L;
@@ -24,14 +18,12 @@ public class Utilisateur implements Serializable {
 	private String mdp;
 	private ArrayList<Groupe> groupe;
 	private GroupesInterface connex;
-	private Registry registry;
 	
 	public Utilisateur(String _login) {
 		login = _login;
 	}
 	
 	public Utilisateur(String _login, String _nom, String _prenom, Type _type) throws RemoteException {	
-		registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
 		this.login = _login;
 		this.nom = _nom;
 		this.prenom = _prenom;
@@ -63,8 +55,8 @@ public class Utilisateur implements Serializable {
 		return type;
 	}
 	
-	public List<Groupe> getGroupe() throws AccessException, RemoteException, NotBoundException, ClassNotFoundException, SQLException {
-		connex = (GroupesInterface) registry.lookup("Groupes");	
+	public List<Groupe> getGroupe() throws Exception {
+		connex = new Connectable<GroupesInterface>().connexion("Groupes");
 		return connex.getGroupeLogin(login);
 	}
 	

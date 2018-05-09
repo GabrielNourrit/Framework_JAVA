@@ -1,8 +1,6 @@
 package interfaceGraph.mail;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 
+import java.rmi.RemoteException;
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -15,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
-import parametrage.PropertiesClient;
+import util.Connectable;
 import util.Utilisateur;
 
 
@@ -38,14 +36,13 @@ public class AffichageMessage extends Composition{
 	private ScrollPane sp;
 	private Button repondre;
 	private MelInterface mailInterface;
-	private Registry registry;
 	private String type;
 
-	public AffichageMessage(Utilisateur u, MelCell mc, String t) throws RemoteException, NotBoundException {
+	public AffichageMessage(Utilisateur u, MelCell mc, String t) throws Exception {
 		this.u=u;
 		type=t;
-		registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
-		mailInterface = (MelInterface) registry.lookup("Mel");	
+		//mailInterface = (MelInterface) registry.lookup("Mel");
+		mailInterface = new Connectable<MelInterface>().connexion("Mel");
 		genererSousComposant();
 		lecture(mc);
 		ecouteurDefaultAction();

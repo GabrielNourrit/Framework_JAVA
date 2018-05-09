@@ -1,18 +1,16 @@
 package interfaceGraph;
 
-import java.rmi.registry.Registry;
-
 import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import parametrage.PropertiesClient;
+import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class ConnexionStyle extends Formulaire{
@@ -54,8 +52,8 @@ public class ConnexionStyle extends Formulaire{
 			
 			ConnexionInterface connex;
 			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
-	            connex = (ConnexionInterface) registry.lookup("Connexion");
+				//connex = (ConnexionInterface) registry.lookup("Connexion");
+	            connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
@@ -72,19 +70,10 @@ public class ConnexionStyle extends Formulaire{
 					nouveauStage.setScene(scene);*/
 				}
 				else {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("Login ou mot de passe incorrect");
-
-					alert.showAndWait();
+					Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Login ou mot de passe incorrect");
 				}
 			} catch (Exception e) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Erreur");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog","Erreur");
 			}
 			
 			/*On efface les anciennes valeures une fois finie*/

@@ -1,16 +1,12 @@
 package interfaceGraph;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Connectable;
+import util.Fenetre;
 import util.LimitedTextField;
 import util.Utilisateur;
 
@@ -33,7 +31,6 @@ public class ModifierUtilisateur extends Formulaire {
 	private TextField t_prenom;
 	private Button b_mdp;
 	private Button b_valider;
-	private int choix;
 	
 	/**
 	 * Constructeur de la classe ModifierUtilisateur
@@ -88,12 +85,8 @@ public class ModifierUtilisateur extends Formulaire {
 			try {
 				connex = connectToServeur();
 				connex.ModifierUtilisateur(utilisateur, uNew);
-			} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Erreur");
-				alert.showAndWait();
+			} catch (Exception e) {
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur :" + e.getMessage());
 			}
 			
 		});
@@ -131,12 +124,13 @@ public class ModifierUtilisateur extends Formulaire {
 		this.getChildren().add(form);	
 	}
 	
-	private OperationUtilisateurInterface connectToServeur() throws RemoteException, NotBoundException {
-		Registry registry;
+	private OperationUtilisateurInterface connectToServeur() throws Exception {
+		/*Registry registry;
 		
 		registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
 		OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
-		return connex;
+		return connex;*/
+		return new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 		
 
 	}

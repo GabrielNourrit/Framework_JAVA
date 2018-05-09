@@ -3,19 +3,18 @@ package interfaceGraph;
 import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import fichier.Fichier;
 import fichier.GestionFichierInterface;
+import util.Connectable;
+import util.Fenetre;
 import util.Groupe;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -36,7 +35,6 @@ public class TelechargerFichier extends VBox {
 	protected Label label;
 	private Stage stage;
 	protected ListView<Fichier> list;
-	private Registry registry;
 	private GestionFichierInterface connex;
 	private Utilisateur u;
 	protected ChoiceBox<Groupe> cbgroupe;
@@ -44,17 +42,19 @@ public class TelechargerFichier extends VBox {
 	private ObservableList<Fichier> items;
 	protected DirectoryChooser directorychooser;
 
-	public TelechargerFichier(Utilisateur utilisateur) throws RemoteException, ClassNotFoundException, NotBoundException, SQLException {
+	public TelechargerFichier(Utilisateur utilisateur) throws Exception {
 		this.u=utilisateur;
-		registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
+		/*registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
 		connex = (GestionFichierInterface) registry.lookup("Fichier");
+		*/
+		connex = new Connectable<GestionFichierInterface>().connexion("Fichier");
 		genererSousComposant();
 		layoutDefaultParametre();
 		ecouteurChoixGroupe();
 		ecouteurDefaultAction();	
 	}
 
-	protected void genererSousComposant() throws ClassNotFoundException, RemoteException, SQLException {
+	protected void genererSousComposant() throws Exception {
 		button = new Button("Download");
 		label = new Label("Filename");
 		form = new HBox();
@@ -83,11 +83,7 @@ public class TelechargerFichier extends VBox {
 				items.addAll(fs);
 				System.out.println(fs);
 			} catch (Exception e) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Erreur");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 			}
 		});
 	}
@@ -98,11 +94,7 @@ public class TelechargerFichier extends VBox {
 			directorychooser = new DirectoryChooser();
 			File selectedDirectory = directorychooser.showDialog(stage);
 			if(selectedDirectory == null){
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Veuillez choisir un dossier");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Veuillez choisir un dossier");
 			}
 			else{
 				try {

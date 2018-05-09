@@ -1,19 +1,17 @@
 package interfaceGraph;
 
 import java.io.File;
-import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import fichier.GestionFichierInterface;
+import util.Connectable;
+import util.Fenetre;
 import util.Groupe;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -34,17 +32,19 @@ public class PoseFichier extends VBox {
 	protected ChoiceBox<Groupe> cbgroupe;
 	private GestionFichierInterface connex;
 	
-	public PoseFichier(Utilisateur u) throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
+	public PoseFichier(Utilisateur u) throws Exception {
 		this.u=u;
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-		connex = (GestionFichierInterface) registry.lookup("Fichier");
+		/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
+		connex = (GestionFichierInterface) registry.lookup("Fichier");*/
+		
+		connex = new Connectable<GestionFichierInterface>().connexion("Fichier");
 		genererSousComposant();
 		ecouteurDefaultAction();
 		layoutDefaultParametre();
 	}
 
 
-	protected void genererSousComposant() throws ClassNotFoundException, RemoteException, SQLException {
+	protected void genererSousComposant() throws Exception {
 		button = new Button("upload");
 		label = new Label();
 		try {
@@ -68,11 +68,7 @@ public class PoseFichier extends VBox {
 				byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
 				connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 			} catch (Exception e) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Erreur");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 			}
 		});
 	}

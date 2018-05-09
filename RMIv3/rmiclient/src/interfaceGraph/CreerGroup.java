@@ -1,23 +1,15 @@
 package interfaceGraph;
 
-import java.io.File;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
-import fichier.GestionFichierInterface;
 import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -25,8 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import util.TransformerFichier;
+import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class CreerGroup extends Formulaire{
@@ -96,10 +88,9 @@ public class CreerGroup extends Formulaire{
 					for (Utilisateur u: olstUserInscrit) {
 						listLogin.add(u.getLogin());
 					}
-					Registry registry;
 					try {
-						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-						GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");
+						//GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");
+						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 						connex.ajouterGroupe(text1.getText(), listLogin);
 						text1.setText("");
 						for (Utilisateur u: olstUserInscrit) {
@@ -109,9 +100,8 @@ public class CreerGroup extends Formulaire{
 						olstUserInscrit = FXCollections.observableArrayList(lstUserNonInscrit);
 						utilisateurInscrit.setItems((ObservableList<Utilisateur>) olstUserInscrit);
 						utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
-					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (Exception e) {
+						Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Serveur chargement des groupes");
 					}
 				}
 				
@@ -162,22 +152,15 @@ public class CreerGroup extends Formulaire{
 	protected void refreshList() {
 		UtilisateursInterface connex;
 		try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
+            //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
+			connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lstUserInscrit = connex.getUsers();
 			olstUser = FXCollections.observableArrayList(lstUserInscrit);
 			
 			utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Impossible de ce connecter");
-			alert.setHeaderText(null);
-			alert.setContentText("Impossible de ce connecter");
-
-			alert.showAndWait();
-			e.printStackTrace();
+			Fenetre.creatAlert(AlertType.WARNING, "Impossible de ce connecter", "Impossible de ce connecter");
 		}
-		
 	}
 	
 	public Utilisateur getUserInscritSelected() {

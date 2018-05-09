@@ -1,13 +1,12 @@
 package interfaceGraph;
 
-import java.rmi.registry.Registry;
-
 import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
+import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class ConnexionStyle2 extends ConnexionStyle{
@@ -45,8 +44,8 @@ public class ConnexionStyle2 extends ConnexionStyle{
 			System.out.println("id est "+this.id.getText());
 			System.out.print("mdp est "+this.mdp.getText());
 			try {
-				Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-	            connex = (ConnexionInterface) registry.lookup("Connexion");
+	            //connex = (ConnexionInterface) registry.lookup("Connexion");
+				connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
 					System.out.println(utilisateur);
@@ -62,18 +61,10 @@ public class ConnexionStyle2 extends ConnexionStyle{
 					nouveauStage.setScene(scene);*/
 				}
 				else {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("Login ou mot de passe incorrect");
-					alert.showAndWait();
+					Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Login ou mot de passe incorrect");
 				}
-			} catch (Exception e) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Erreur");
-				alert.showAndWait();
+			} catch(Exception e){
+				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog","Erreur");
 			}	
 			/*On efface les anciennes valeures une fois finie*/
 			this.id.setText("");

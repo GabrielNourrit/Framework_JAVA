@@ -1,14 +1,8 @@
 package client;
 
-import java.rmi.*;
-
 import interfaceGraph.ConnexionStyle;
-import interfaceGraph.ConnexionStyle2;
-import interfaceGraph.Inscription;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import parametrage.SettingClientJVM;
@@ -61,6 +55,8 @@ public class Client extends Application {
 		sp.setFitToHeight(true);
 		Scene scene = new Scene(sp, 200, 200);
 		stage.setTitle("test");
+		//System.out.println(PropertiesClient.getLogoImage());
+		//stage.getIcons().add(new Image(PropertiesClient.getLogoImage()));
 		stage.setScene(scene);
 		stage.show();
 		

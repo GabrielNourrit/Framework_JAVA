@@ -2,7 +2,6 @@ package util;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -31,29 +30,17 @@ public class LimitedTextField extends TextField {
     		int index = getText().indexOf("~");
     		if (index != 0) index--;
     		setText(getText().substring(0, index));
-    		Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Caractere ~ interdit");
-			alert.showAndWait();
+    		Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Caractere ~ interdit");
     	}
     	if (getText().contains("|")) {   
     		int index = getText().indexOf("|");
     		if (index != 0) index--;
     		setText(getText().substring(0, index));
-    		Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Caractere | interdit");
-			alert.showAndWait();
+			Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Caractere | interdit");
     	}
         if (getText().length() > limit) {
             setText(getText().substring(0, limit));
-            Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Les messages doivent faire moins de 256 caracteres");
-			alert.showAndWait();
+			Fenetre.creatAlert(AlertType.INFORMATION,"Information Dialog", "Les messages doivent faire moins de 256 caracteres");
         }
     }
     

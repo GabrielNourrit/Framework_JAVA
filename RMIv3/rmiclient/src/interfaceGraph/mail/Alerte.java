@@ -1,18 +1,15 @@
 package interfaceGraph.mail;
+
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import mail.MelInterface;
-import util.Utilisateur;
 
 public class Alerte extends Composition{
 

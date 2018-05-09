@@ -1,9 +1,7 @@
 package interfaceGraph;
 
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -14,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import fichier.FichierInterface;
 import fichier.GestionFichierInterface;
+import util.Connectable;
 import util.Groupe;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -27,7 +25,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import parametrage.PropertiesClient;
 import tchat.TchatInterface;
 import tchat.TchatListener;
 import util.LimitedTextField;
@@ -59,18 +56,19 @@ public class TchatGraphique extends VBox {
 	/**
 	 * Constructeur du tchat graphique
 	 * @param util l l'utilisateur courant qui va utiliser le tchat, grace a cela on connaitra les droits de l'utilisateur et ses groupes
-	 * @throws AccessException
-	 * @throws RemoteException
-	 * @throws NotBoundException
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @throws Exception 
 	 */
-	public TchatGraphique(Utilisateur util) throws AccessException, RemoteException, NotBoundException, ClassNotFoundException, SQLException{
+	public TchatGraphique(Utilisateur util) throws Exception{
 		super();
 		this.util=util;
-		Registry registry = java.rmi.registry.LocateRegistry.getRegistry(PropertiesClient.getAdresseServeur(),1099);
-		connex = (TchatInterface) registry.lookup("Tchat");	
-		connexG = (GestionFichierInterface) registry.lookup("Fichier");
+		
+		//Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);		
+		/*connex = (TchatInterface) registry.lookup("Tchat");
+		connexG = (GestionFichierInterface) registry.lookup("Fichier");	*/
+		
+		connex = new Connectable<TchatInterface>().connexion("Tchat");	
+		connexG = new Connectable<GestionFichierInterface>().connexion("Fichier");
+		
 		genererSousComposant();
 		layoutDefaultParametre();
 		ecouteurDefaultAction();
@@ -84,7 +82,7 @@ public class TchatGraphique extends VBox {
 		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr()));		
 	}
 
-	private void genererSousComposant() {
+	private void genererSousComposant() throws Exception {
 		ZoneText= new LimitedTextField(256);
 		BouttonEnv= new Button("Envoyer");
 		hbTextFButton= new HBox();

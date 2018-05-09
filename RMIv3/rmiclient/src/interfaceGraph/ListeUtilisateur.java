@@ -1,9 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +7,6 @@ import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -25,7 +19,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Fenetre;
 import util.Utilisateur;
+import util.Connectable;
 
 public class ListeUtilisateur extends Formulaire {
 	private ListView<Utilisateur> lst_user;
@@ -33,7 +29,6 @@ public class ListeUtilisateur extends Formulaire {
 	private Button btn_modifier;
 	private Button btn_supprimer;
 	private Button btn_ajouter;
-	
 	private HBox hBox;
 	
 	
@@ -65,7 +60,7 @@ public class ListeUtilisateur extends Formulaire {
 		}
 	}
 	
-	public ListeUtilisateur() {
+	public ListeUtilisateur(){
 		super();
 		genererSousComposant();
 		layoutDefaultParametre();
@@ -133,48 +128,28 @@ public class ListeUtilisateur extends Formulaire {
 				windowModifier.setScene(scene);
 				windowModifier.show();
 			}else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Attention !");
-				alert.setHeaderText(null);
-				alert.setContentText("Veuillez selectionnez un utilisateur");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.WARNING,"Attention !","Veuillez selectionnez un utilisateur");
 			}
 		});
 		
 		btn_supprimer.setOnAction(event ->{
 			Utilisateur user = getUserSelected();
-			if (user!= null) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("Confirmation");
-				alert.setHeaderText(null);
-				alert.setContentText("Voulez vous vraiment supprimer cet utilisateur ?");
-				
-				Optional<ButtonType> result = alert.showAndWait();
+			if (user!= null) {			
+				Optional<ButtonType> result = Fenetre.creatAlert(AlertType.CONFIRMATION, "Confirmation", "Voulez vous vraiment supprimer cet utilisateur ?");		
 				if (result.get() == ButtonType.OK){
 				    //Suprimer cet utilisateur
 					OperationUtilisateurInterface connex;
-					Registry registry;
+					
 					try {
-						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-						connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+						connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 						if (connex.SupprimerUtilisateur(user.getLogin())) {
 							refreshList();
 						} else {
-							alert = new Alert(AlertType.WARNING);
-							alert.setTitle("Attention !");
-							alert.setHeaderText(null);
-							alert.setContentText("Fail");
-							alert.showAndWait();
+							Fenetre.creatAlert(AlertType.WARNING,"Attention !","Fail");
 						}
-					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-						Alert alert1 = new Alert(AlertType.ERROR);
-						alert1.setTitle("Information Dialog");
-						alert1.setHeaderText(null);
-						alert1.setContentText("Erreur");
-						alert1.showAndWait();
+					} catch (Exception e) {
+						Fenetre.creatAlert(AlertType.ERROR,"Information Dialog","Erreur");
 					}
-		            
-					
 				}
 				
 			} 
@@ -214,21 +189,15 @@ public class ListeUtilisateur extends Formulaire {
 	private void refreshList() {
 		UtilisateursInterface connex;
 		try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
+            //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
+            connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lesUser = connex.getUsers();
 			olstUser = FXCollections.observableArrayList(lesUser);
 			
 			//ObservableList<String> l = lesUser;
 			lst_user.setItems((ObservableList<Utilisateur>) olstUser);
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Impossible de ce connecter");
-			alert.setHeaderText(null);
-			alert.setContentText("Impossible de ce connecter");
-
-			alert.showAndWait();
-			e.printStackTrace();
+			Fenetre.creatAlert(AlertType.WARNING, "Impossible de ce connecter", "Impossible de ce connecter");
 		}
 		
 	}
@@ -248,8 +217,9 @@ public class ListeUtilisateur extends Formulaire {
 	}
 	
 	
-	
-	/* @return retourne le formulaire Graphique modifiable a la guise du client.*/
+	/**
+	 *  @return retourne le formulaire Graphique modifiable a la guise du client.
+	 */
 	public VBox getStyleForm(){
 		return this.form;
 	}

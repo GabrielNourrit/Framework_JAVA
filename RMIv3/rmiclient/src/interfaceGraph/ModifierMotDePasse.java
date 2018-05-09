@@ -13,22 +13,22 @@ import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class ModifierMotDePasse extends Formulaire {
 	
 	private Utilisateur utilisateur;
-	private Label l_mdpOld;
+	//private Label l_mdpOld;
 	private Label l_mdpNew1;
 	private Label l_mdpNew2;
-	private PasswordField t_mdpOld;
+	//private PasswordField t_mdpOld;
 	private PasswordField t_mdpNew1;
 	private PasswordField t_mdpNew2;
 	
@@ -50,11 +50,11 @@ public class ModifierMotDePasse extends Formulaire {
 	@Override
 	protected void genererSousComposant() {
 		form = new VBox();
-		l_mdpOld = new Label("Ancien mot de passe");
+		//l_mdpOld = new Label("Ancien mot de passe");
 		l_mdpNew1 = new Label("Nouveau mot de passe");
 		l_mdpNew2 = new Label("Confirmation");
 		t_mdpNew1 = new PasswordField();
-		t_mdpOld = new PasswordField();
+		//t_mdpOld = new PasswordField();
 		t_mdpNew2 = new PasswordField();
 		
 		b_valider = new Button("Valider");
@@ -76,28 +76,14 @@ public class ModifierMotDePasse extends Formulaire {
 						OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
 						connex.ModifierMdpUtilisateur(utilisateur.getLogin(), mdp);
 					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Information Dialog");
-						alert.setHeaderText(null);
-						alert.setContentText("Erreur");
-						alert.showAndWait();
+						Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 					}
 					
 				} else {
-					Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Attention !");
-					alert.setHeaderText(null);
-					alert.setContentText("Les mots de passe doivent etre identique");
-	
-					alert.showAndWait();
+					Fenetre.creatAlert(AlertType.WARNING, "Attention !", "Les mots de passe doivent etre identique");
 				}
 			} else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Attention !");
-				alert.setHeaderText(null);
-				alert.setContentText("Le mot de passe ne peut pas être vide");
-
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.WARNING, "Attention !", "Les mots de passe ne peut pas etre vide");
 			}
 		});
 		

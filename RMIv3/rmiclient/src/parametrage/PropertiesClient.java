@@ -14,7 +14,8 @@ public class PropertiesClient {
 	 * Valeurs utilisables par l'application
 	 */
 	private static String adressServeur;
-	
+	private static String logoImage;
+	private static int port;
 	
 	
 	/**
@@ -36,6 +37,14 @@ public class PropertiesClient {
 			e.printStackTrace();
 		}
 		adressServeur = prop.getProperty("adresse.serveur.defaut");
+		logoImage = prop.getProperty("logo.application");
+		try{
+			port = Integer.parseInt(prop.getProperty("port.utilise"));
+		}catch(NumberFormatException e){
+			// Le port par defaut
+			port = 1099;
+		}
+		
 	}
 	
 	/**
@@ -48,6 +57,24 @@ public class PropertiesClient {
 	}
 	
 	/* Methodes visibles du dehort */
+	
+	/**
+	 * Le numero de port
+	 * @return String
+	 */
+	public static int getNumeroPort(){
+		initialiseProperties();
+		return port;
+	}
+	
+	/**
+	 * Le logo de l'application
+	 * @return String
+	 */
+	public static String getLogoImage(){
+		initialiseProperties();
+		return logoImage;
+	}
 	
 	/**
 	 * L'ardesse du serveur

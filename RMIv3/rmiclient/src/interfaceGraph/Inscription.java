@@ -10,20 +10,18 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import BaseDeDonnee.gestionUtilisateur.TypesInterface;
-import util.Groupe;
-import javafx.beans.value.ChangeListener;
+import util.Connectable;
+import util.Fenetre;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -128,7 +126,6 @@ public class Inscription extends Formulaire {
 			
 			if (t_login.getText()!="" && t_mdp.getText()!="") {
 				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
-				List<Groupe> l=null;
 				try {
 					utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
 				} catch (RemoteException e1) {
@@ -137,29 +134,20 @@ public class Inscription extends Formulaire {
 				}
 				utilisateur.setMdp(mdp);
 				OperationUtilisateurInterface connex;
-				Registry registry;
 				try {
-					registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-					connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+					
+					//connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+					connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 					if (!(connex.AjouterUtilisateur(utilisateur))) {
-						Alert alert = new Alert(AlertType.WARNING);
-						alert.setTitle("Attention !");
-						alert.setHeaderText(null);
-						alert.setContentText("Fail");
-						alert.showAndWait();
-						
+						Fenetre.creatAlert(AlertType.WARNING, "Attention !", "Fail");				
 					} else {
 						t_login.setText("");
 						t_mdp.setText("");
 						t_nom.setText("");
 						t_prenom.setText("");
 					}
-				} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("Erreur");
-					alert.showAndWait();
+				} catch (Exception e) {
+					Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 				}
 			}
 			

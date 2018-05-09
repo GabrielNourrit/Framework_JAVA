@@ -1,32 +1,20 @@
 package interfaceGraph.mail;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 
-import connexion.ConnexionInterface;
 import interfaceGraph.Composition;
-import interfaceGraph.Inscription;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import mail.MelInterface;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class WriteMessage extends Composition implements Alertable{
@@ -36,7 +24,6 @@ public class WriteMessage extends Composition implements Alertable{
     private TextField objet;
     private TextArea text;
 	private ComboBox<String> emailComboBox;
-	private VBox alert;
 	private HBox hb;
 	private Label message;
 	private MelInterface mel;
@@ -61,7 +48,6 @@ public class WriteMessage extends Composition implements Alertable{
     
 
     public void methode(String mesg) {
-    	String contenu = this.text.getText();
     	VBox alerte = new Alerte(mesg,this);
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,100);
@@ -89,7 +75,6 @@ public class WriteMessage extends Composition implements Alertable{
 		this.emailComboBox = new ComboBox<String>();
 		this.hb = new HBox();
 		this.message = new Label();
-		this.alert = new VBox();
     	this.verif = "[Sans objet]";
     	
 		try{
@@ -148,19 +133,11 @@ public class WriteMessage extends Composition implements Alertable{
 					}
 				}
 				else {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas serieux");
-					alert.showAndWait();
+					Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Votre text est vide, vous ne pouvez pas envoyer un message vide ce n'est pas serieux");
 				}
 			}
 			else {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Vous n'avez pas choisis de destinataire");
-				alert.showAndWait();
+				Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Vous n'avez pas choisis de destinataire");
 			}
 			});
 			
