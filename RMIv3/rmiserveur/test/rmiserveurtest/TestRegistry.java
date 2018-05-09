@@ -11,7 +11,9 @@ import java.util.HashMap;
 
 public class TestRegistry extends HashMap<String,Remote> implements Registry { 
 	 
-	 public TestRegistry () { 
+	private static final long serialVersionUID = 1L;
+
+	public TestRegistry () { 
 	  super(); 
 	 } 
 	 

@@ -2,7 +2,6 @@ package util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Utilisateur implements Serializable {
 	private static final long serialVersionUID = 447192624987987345L;

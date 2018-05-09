@@ -16,6 +16,9 @@ public class MelCell implements Serializable {
 		this.expediteur = expediteur;
 	}
 
+	public int getId(){
+		return id;
+	}	
 	public String getDate() {
 		return date;
 	}

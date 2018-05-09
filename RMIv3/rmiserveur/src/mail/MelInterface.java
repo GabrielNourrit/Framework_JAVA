@@ -3,11 +3,9 @@ package mail;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import util.Utilisateur;
 import BaseDeDonnee.MethodeServeur;
-import fichier.Fichier;
 
 public interface MelInterface extends Remote, MethodeServeur{
 

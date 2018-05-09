@@ -53,7 +53,7 @@ public class SGBDOracle extends SGBD {
 		Statement stmt = conn.createStatement();
 		int r = stmt.executeUpdate(requete);
 		stmt.close();
-		csgbd.closeConnexionsgbd(conn);
+		conn.close();
 		return r;
 	}
 
@@ -72,7 +72,7 @@ public class SGBDOracle extends SGBD {
 			mdpCrypt = rs.getString(1);
 			if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		}
-		rs.close();
+		closeReq(rs);
 		//if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
 		return false;
 	}
@@ -80,10 +80,10 @@ public class SGBDOracle extends SGBD {
 	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
 		ResultSet rs = executeSelect("select login, nom, prenom, idType, libelle from utilisateurs natural join types where login='"+ login +"'");
 		if (rs.next()) {
-			List<Groupe> l = getGroupeUtilisateur(login);
 			Utilisateur user =  new Utilisateur(login,rs.getString(2),rs.getString(3),new Type(rs.getInt(4),rs.getString(5)));
 			return user;
 		}
+		closeReq(rs);
 		return null;
 	}
 
@@ -142,13 +142,12 @@ public class SGBDOracle extends SGBD {
 
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
-		String login;
 		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types");// where etat ='VALID'");
 		while (rs.next()) {
 			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),new Type(rs.getInt(5),rs.getString(6)));
 			lesUser.add(user);
 		}
-		rs.close();
+		closeReq(rs);
 		return lesUser;
 	}
 
@@ -161,7 +160,7 @@ public class SGBDOracle extends SGBD {
 			Groupe g = new Groupe(id, getLibelleGroup(id));
 			groupes.add(g);
 		}
-		rs.close();
+		closeReq(rs);
 		return groupes;
 	}
 
@@ -170,7 +169,7 @@ public class SGBDOracle extends SGBD {
 		ResultSet rs = executeSelect("select libelle from groupes where idgr="+id);
 
 		if (rs.next()) libelle = rs.getString(1);
-		rs.close();
+		closeReq(rs);
 		return libelle;
 	}
 
@@ -187,7 +186,7 @@ public class SGBDOracle extends SGBD {
 			f = new Fichier(i,n,u);
 			fs.add(f);
 		}
-		rs.close();
+		closeReq(rs);
 		return fs;
 	}
 
@@ -204,7 +203,7 @@ public class SGBDOracle extends SGBD {
 			f = new Fichier(i,n,u);
 			fs.add(f);
 		}
-		rs.close();
+		closeReq(rs);
 		return fs;
 	}
 
@@ -217,7 +216,7 @@ public class SGBDOracle extends SGBD {
 			url = rs.getString("url");
 			f = new Fichier(id,nom,url);
 		}
-		rs.close();
+		closeReq(rs);
 		return f;
 	}
 
@@ -225,16 +224,9 @@ public class SGBDOracle extends SGBD {
 		int i = -1;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
 		if (rs.next()) i = rs.getInt(1);
+		closeReq(rs);
 		return i;
 	}
-
-	/*public Fichier getFichier(int idFic) {
-		int i=-1;
-		ResultSet rs = executeSelect("select ");
-		if (rs.next()) i = rs.getInt("idMes");
-		Fichier f = new Fichier(i,nom,"");
-		return f;
-	}*/
 
 	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
 		List<Groupe> lesGroupes = new ArrayList<>();
@@ -243,6 +235,7 @@ public class SGBDOracle extends SGBD {
 			Groupe g = new Groupe(rs.getInt(1), rs.getString(2));
 			lesGroupes.add(g);
 		}
+		closeReq(rs);
 		return lesGroupes;
 	}
 
@@ -258,6 +251,7 @@ public class SGBDOracle extends SGBD {
 				}
 			}	
 		}
+		closeReq(rs);
 	}
 
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
@@ -271,6 +265,7 @@ public class SGBDOracle extends SGBD {
 			String login = rs.getString(1);
 			utilisateurs.add(login);
 		}
+		closeReq(rs);
 		return utilisateurs;
 	}
 
@@ -281,6 +276,7 @@ public class SGBDOracle extends SGBD {
 			String login = rs.getString(1);
 			utilisateurs.add(login);
 		}
+		closeReq(rs);
 		return utilisateurs;
 	}
 
@@ -299,7 +295,7 @@ public class SGBDOracle extends SGBD {
 			Type type = new Type(rs.getInt(1), rs.getString(2));
 			types.add(type);
 		}
-
+		closeReq(rs);
 		return types; 
 	}
 
@@ -316,8 +312,7 @@ public class SGBDOracle extends SGBD {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);
 		}
-		System.out.println(fs);
-		rs.close();
+		closeReq(rs);
 		return fs;
 	}
 
@@ -330,7 +325,7 @@ public class SGBDOracle extends SGBD {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);
 		}
-		rs.close();
+		closeReq(rs);
 		return fs;
 	}
 	
@@ -338,6 +333,7 @@ public class SGBDOracle extends SGBD {
 		String etat="";
 		ResultSet rs = executeSelect("select etat from mails where idmai="+id);
 		if (rs.next()) etat=rs.getString(1);
+		closeReq(rs);
 		return etat;
 	}
 	

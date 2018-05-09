@@ -1,30 +1,18 @@
 package mail;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.rmi.RemoteException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import util.Utilisateur;
-import BaseDeDonnee.MethodeServeur;
-import BaseDeDonnee.bd.Connexionsgbd;
 import BaseDeDonnee.sgbd.SGBD;
-import BaseDeDonnee.sgbd.SGBDOracle;
-import fichier.Fichier;
 import parametrage.PropertiesServeur;
-import tchat.TchatListener;
 import util.ManipulationFichier;
 
 public class Mel implements MelInterface{
