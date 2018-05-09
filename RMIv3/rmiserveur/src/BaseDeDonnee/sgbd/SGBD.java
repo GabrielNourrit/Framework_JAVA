@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
-import fichier.Groupe;
 import mail.MelCell;
 import util.Groupe;
 import util.Type;

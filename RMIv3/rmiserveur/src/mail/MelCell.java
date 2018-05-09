@@ -2,9 +2,6 @@ package mail;
 
 import java.io.Serializable;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
 public class MelCell implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;

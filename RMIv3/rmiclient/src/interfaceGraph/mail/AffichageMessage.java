@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mail.MelCell;
 import mail.MelInterface;
+import parametrage.PropertiesClient;
 import util.Utilisateur;
 import tchat.TchatInterface;
 public class AffichageMessage extends Composition{
