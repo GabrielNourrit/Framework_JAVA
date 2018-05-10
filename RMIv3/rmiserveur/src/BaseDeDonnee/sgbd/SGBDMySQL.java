@@ -15,6 +15,7 @@ import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionMySQL;
 import fichier.Fichier;
 import mail.MelCell;
+import util.Droit;
 import util.Groupe;
 import util.Type;
 import util.Utilisateur;
@@ -321,5 +322,13 @@ public class SGBDMySQL extends SGBD {
 	
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
+	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Droit> droits = new ArrayList<>();
+		ResultSet rs = executeSelect("select idD, libelle from droits natural join possede where idType ="+type);
+		while(rs.next()) {
+			Droit d = new Droit(rs.getString(1), rs.getString(2));
+			droits.add(d);
+		}
+		return droits; 
 	}
 }

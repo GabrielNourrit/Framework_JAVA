@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
 import mail.MelCell;
+import util.Droit;
 import util.Groupe;
 import util.Type;
 import util.Utilisateur;
@@ -253,6 +254,8 @@ public abstract class SGBD {
 	}
 	
 	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
+
+	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
 		return null;
 	}
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import BaseDeDonnee.sgbd.SGBD;
+import util.Droit;
 import util.Type;
 
 public class Types implements TypesInterface {
@@ -24,6 +25,11 @@ public class Types implements TypesInterface {
 	@Override
 	public void addType(String type) throws RemoteException, ClassNotFoundException, SQLException {
 		sgbd.ajouterType(type);
+	}
+
+	@Override
+	public List<Droit> getDroit(int type) throws RemoteException, ClassNotFoundException, SQLException {
+		return sgbd.getDroits(type);
 	}
 
 }

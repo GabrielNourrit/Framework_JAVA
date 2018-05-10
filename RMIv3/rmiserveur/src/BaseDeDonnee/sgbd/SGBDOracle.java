@@ -15,6 +15,7 @@ import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
 import fichier.Fichier;
 import mail.MelCell;
+import util.Droit;
 import util.Groupe;
 import util.Type;
 import util.Utilisateur;
@@ -80,7 +81,10 @@ public class SGBDOracle extends SGBD {
 	public Utilisateur getUse(String login) throws ClassNotFoundException, RemoteException, SQLException {
 		ResultSet rs = executeSelect("select login, nom, prenom, idType, libelle from utilisateurs natural join types where login='"+ login +"'");
 		if (rs.next()) {
+			List<Groupe> l = getGroupeUtilisateur(login);
 			Utilisateur user =  new Utilisateur(login,rs.getString(2),rs.getString(3),new Type(rs.getInt(4),rs.getString(5)));
+			user.setGroup(l);
+			user.setDroits(getDroits(rs.getInt(4)));
 			return user;
 		}
 		closeReq(rs);
@@ -143,6 +147,8 @@ public class SGBDOracle extends SGBD {
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
 		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types");// where etat ='VALID'");
+		String login;
+		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types where etat ='VALID'");
 		while (rs.next()) {
 			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),new Type(rs.getInt(5),rs.getString(6)));
 			lesUser.add(user);
@@ -306,7 +312,6 @@ public class SGBDOracle extends SGBD {
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		System.out.println("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL' or etat='SUPEN'");
 		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL' or etat='SUPEN'");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
@@ -339,5 +344,15 @@ public class SGBDOracle extends SGBD {
 	
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
+	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
+		List<Droit> droits = new ArrayList<>();
+		ResultSet rs = executeSelect("select idD, libelle from droits natural join possede where idType ="+type);
+		if (rs != null) {
+			while(rs.next()) {
+				Droit d = new Droit(rs.getString(1), rs.getString(2));
+				droits.add(d);
+			}
+		}
+		return droits; 
 	}
 }
