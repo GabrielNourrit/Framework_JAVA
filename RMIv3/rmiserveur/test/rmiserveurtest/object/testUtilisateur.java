@@ -2,6 +2,10 @@ package rmiserveurtest.object;
 
 import static org.junit.Assert.*;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,16 +86,12 @@ public class testUtilisateur {
 	}
 	
 	@Test
-	public void test_getGroupe(){
+	public void test_getGroupe() throws AccessException, RemoteException, ClassNotFoundException, NotBoundException, SQLException{
 		List<Groupe> array = Arrays.asList(new Groupe(1,"groupe1")
 										  ,new Groupe(2,"groupe2"));
 		assertEquals(utilComplet.getGroupe().size(),array.size());
 		for(int i = 0; i<utilComplet.getGroupe().size();i++ ){
 			assertEquals(utilComplet.getGroupe().get(i).toString(),array.get(i).toString());
 		}
-		
 	}
-	
-	
-	
 }

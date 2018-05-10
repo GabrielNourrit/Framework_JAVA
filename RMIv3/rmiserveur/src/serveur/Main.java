@@ -49,6 +49,7 @@ public class Main {
 		List<Integer> s = new ArrayList<>();
 		s.add(1);
 		s.add(2);
+		s.add(3);
 		
 		TchatInterface tchat = new Tchat(s);
 		GestionFichierInterface fichier = new GestionFichier(sgbd);
@@ -67,13 +68,13 @@ public class Main {
 		listBind.put("Groupes", gi);
 		listBind.put("Types", ti);
 		listBind.put("Mel", m);
-		//Cr�ation du serveur
+		//Creation du serveur
 		try{	
 			new Serveur(listBind);
 			System.out.println("Lancement du Serveur");
 			
 		}catch(NumberFormatException e){
-			System.err.println("Num�ro de port non d�finit");
+			System.err.println("Numero de port non definit");
 		} catch (Exception e) {
 			System.err.println("Erreur Aux lancement du Serveur : "+e.getMessage());
 			e.printStackTrace();

@@ -41,6 +41,7 @@ public class Tchat implements TchatInterface  {
 	public synchronized void addTchatListener (TchatListener listener, Integer groupe) throws java.rmi.RemoteException {
 		System.out.println("adding listener -"+listener);
 		Vector<TchatListener> newlistener = list.get(groupe);
+		System.out.println(newlistener);
 		newlistener.add(listener);
 		list.put(groupe,newlistener);
 	}

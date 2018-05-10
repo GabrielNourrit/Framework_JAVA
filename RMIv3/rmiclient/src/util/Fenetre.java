@@ -29,7 +29,6 @@ public class Fenetre {
 		alert.setTitle(titre);
 		alert.setHeaderText(null);
 		alert.setContentText(msg);
-		alert.showAndWait();
 		return alert.showAndWait();
 	}
 	

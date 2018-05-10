@@ -254,7 +254,8 @@ public abstract class SGBD {
 	}
 	
 	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
-
+		return null;
+	}
 	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
 		return null;
 	}

@@ -110,6 +110,9 @@ public class Main extends Application{
 				} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				titreConnexion.setText("Bonjour "+utilisateur.getLogin());
 			});

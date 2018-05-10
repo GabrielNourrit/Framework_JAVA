@@ -146,8 +146,6 @@ public class SGBDOracle extends SGBD {
 
 	public List<Utilisateur> getUsers() throws RemoteException, ClassNotFoundException, SQLException {
 		List<Utilisateur> lesUser = new ArrayList<>();
-		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types");// where etat ='VALID'");
-		String login;
 		ResultSet rs = executeSelect("select login, nom, prenom,dateNaissance, description, idType, libelle from utilisateurs natural join Types where etat ='VALID'");
 		while (rs.next()) {
 			Utilisateur user = new Utilisateur(rs.getString(1), rs.getString(2),rs.getString(3),new Type(rs.getInt(5),rs.getString(6)));
@@ -344,6 +342,8 @@ public class SGBDOracle extends SGBD {
 	
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
+	}
+	
 	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
 		List<Droit> droits = new ArrayList<>();
 		ResultSet rs = executeSelect("select idD, libelle from droits natural join possede where idType ="+type);

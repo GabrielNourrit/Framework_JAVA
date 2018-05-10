@@ -322,6 +322,7 @@ public class SGBDMySQL extends SGBD {
 	
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 		executeUpdate("update mails set etat='"+newEtat+"' where idmai="+id);
+	}
 	public List<Droit> getDroits(int type) throws ClassNotFoundException, RemoteException, SQLException {
 		List<Droit> droits = new ArrayList<>();
 		ResultSet rs = executeSelect("select idD, libelle from droits natural join possede where idType ="+type);
