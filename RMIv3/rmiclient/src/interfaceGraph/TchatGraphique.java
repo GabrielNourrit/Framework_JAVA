@@ -18,14 +18,16 @@ import util.Groupe;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import tchat.TchatInterface;
 import tchat.TchatListener;
 import util.LimitedTextField;
@@ -152,15 +154,36 @@ public class TchatGraphique extends VBox {
 		String[] str = message.split(Pattern.quote("|"));	
 		String[] s;
 		String nom;
-		TextArea t;
+		VBox v;
+		Label t;
+		Text text1;
+		Text text2;
+		Text textMsg;
 		for (String u : str) {
 			if (!u.equals("")) {
 				s = u.split("~");
 				if (s[1].equals(util.getPrenom() + " " + util.getNom())) nom = "Moi";
 				else nom = s[1];
-				t = new TextArea();
-				t.setText(s[0]+ " " + nom + " : " + s[2]);
-				vboxTextTchat.getChildren().add(t);
+				
+				text2 = new Text();
+				text2.setText("["+s[0] + "] "+ nom + " : ");
+				text2.getStyleClass().add("tchat-nom");
+				
+				textMsg = new Text();
+				textMsg.setText(s[2]);
+				textMsg.getStyleClass().add("tchat-msg");
+				
+				textMsg.setWrappingWidth(590);
+				v=new VBox();
+				//t = new Label();
+				//t.setWrapText(true);
+				//t.setText(text1.getText()+ " " + text2.getText()+ " : " + textMsg.getText());
+				
+				//v.getChildren().add(t);
+				
+				v.getChildren().addAll(text2,textMsg);
+				v.getStyleClass().add("tchat-contenu");
+				vboxTextTchat.getChildren().add(v);
 			}
 		}
 	}

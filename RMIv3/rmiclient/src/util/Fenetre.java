@@ -19,7 +19,7 @@ public class Fenetre {
 	}
 	
 	public static void paramStageCssRelatif(Stage stage, Scene scene, String nomFile){
-		launchWindow(stage,scene,nomFile);
+		launchWindow(stage,scene,PropertiesClient.getLocalisationCss() +nomFile);
 	}
 	
 	public static void paramStageCssAbsolut(Stage stage, Scene scene, String url){

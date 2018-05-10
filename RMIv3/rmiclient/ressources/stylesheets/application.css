@@ -1,3 +1,16 @@
+.tchat-contenu  {
+	-fx-border-style: solid;
+	-fx-border-width: 1;
+	-fx-border-color: grey;
+	-fx-background: rgba(230,230,230); 
+}
+.tchat-nom{
+	 -fx-text-fill: rgba(50,50,50);
+}
+
+.tchat-heure{
+	-fx-text-fill: blue;
+}
 /*.root{
     -fx-font-size: 16pt;
     -fx-font-family: "Courier New";
@@ -9,3 +22,4 @@
     -fx-text-fill: white;
     -fx-background-color: black;
 }*/
+

@@ -4,10 +4,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-import com.sun.javafx.geom.Rectangle;
-
 import interfaceGraph.ConnexionStyle2;
-import interfaceGraph.Inscription;
 import interfaceGraph.TchatGraphique;
 import interfaceGraph.mail.GestionMail;
 import javafx.application.Application;
