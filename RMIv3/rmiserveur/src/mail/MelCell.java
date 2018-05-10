@@ -16,15 +16,34 @@ public class MelCell implements Serializable {
 		this.expediteur = expediteur;
 	}
 
+	/**
+     * Fonction pour retourner l'identifiant
+     * @return id
+     */
 	public int getId(){
 		return id;
 	}	
+	
+	/**
+     * Fonction pour retourner la date
+     * @return date
+     */
 	public String getDate() {
 		return date;
 	}
+	
+	/**
+     * Fonction pour retourner l'objet
+     * @return objet
+     */
 	public String getObjet() {
 		return objet;
 	}
+	
+	/**
+     * Fonction pour retourner l'expediteur
+     * @return expediteur
+     */
 	public String getExpediteur() {
 		return expediteur;
 	}

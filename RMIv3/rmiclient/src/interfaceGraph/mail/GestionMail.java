@@ -89,6 +89,10 @@ public class GestionMail extends Composition{
 		}
 	}
 
+	/**
+	 * Remplissage d'un comboBox pour avoir le choix entre voire la liste des message re�u et ceux envoyer
+	 * @throws Exception
+	 */
 	private void initialiserComboBox() throws Exception{
 		this.chooseComboBox.setEditable(false);
 		this.chooseComboBox.getItems().add("Reception");
@@ -193,18 +197,31 @@ public class GestionMail extends Composition{
 		this.getChildren().add(comp);
 	}
 
+	/**
+	 * Ajout en temps et en heure des messages que l'on re�ois sans avoir a relancer le serveur
+	 * @param message
+	 */
 	protected  void ajouterMailRecu(MelCell message) {
 		listeMailRecu.add(message);
 		chargement(listeMailRecu);
 		if (action.contentEquals("recu")) t.setItems(list);
 	}
 
+	/**
+	 * Ajout en temps et en heure des messages que l'on a envoyer sans avoir a relancer le serveur
+	 * @param message
+	 */
 	protected  void ajouterMailEnvoye(MelCell message) {
 		listeMailEnvoye.add(message);
 		chargement(listeMailEnvoye);
 		if (action.contentEquals("envoye")) t.setItems(list);
 	}
 	
+	/**
+	 * On affiche la liste des messages re�u selon notre identifiant
+	 * Les information que l'on affiche sont: La date, l'expediteur et l'objet
+	 * @param mc
+	 */
 	private void chargement(List<MelCell> mc){
 		list = FXCollections.observableArrayList(mc);
 		date.setCellValueFactory(new PropertyValueFactory<MelCell, String>("date"));

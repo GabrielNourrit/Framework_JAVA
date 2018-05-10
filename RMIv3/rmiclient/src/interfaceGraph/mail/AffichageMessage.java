@@ -50,6 +50,12 @@ public class AffichageMessage extends Composition{
 		layoutDefaultParametre();
 	}
 
+	/**
+	 * Remplissage des labels avec les information du mail que l'on affiche
+	 * Expediteur/Receveur, la date d'envoi, l'objet du mail et le mail
+	 * @param mc qui possède toute les informations sur la personne
+	 * @throws RemoteException
+	 */
 	public void lecture (MelCell mc) throws RemoteException {
 		this.e.setText(mc.getExpediteur());
 		this.d.setText(mc.getDate());

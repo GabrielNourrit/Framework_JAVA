@@ -47,6 +47,11 @@ public class WriteMessage extends Composition implements Alertable{
 
 	public void methode(String mesg) {
 		VBox alerte = new Alerte(mesg,this);
+    /**
+     * Creation d'une alerte pour informer l'utilisateur quand il manque une information 
+     * lors de l'envoi d'un mail, tel que le nom du recepteur ou que le mail est manquant
+     * @param mesg
+     */
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,100);
 		s.setScene(scene);
@@ -55,6 +60,9 @@ public class WriteMessage extends Composition implements Alertable{
 
 	private void chargerMel(){
 		try {
+    /**
+     * Creation de la liaison avec le serveur par le biais du MelInterface
+     */
 			this.mel = new Connectable<MelInterface>().connexion("Mel");
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -82,6 +90,10 @@ public class WriteMessage extends Composition implements Alertable{
 
 	}
 
+	/**
+	 * Remplissage de la comboBox des utilisateurs inscrit dans la base de donn�es
+	 * @throws Exception
+	 */
 	private void initialiserComboBox() throws Exception{
 		this.emailComboBox.setPromptText("Contact");
 		emailComboBox.setEditable(true);
@@ -94,6 +106,11 @@ public class WriteMessage extends Composition implements Alertable{
 		emailComboBox.getSelectionModel().select(0);
 	}
 
+	/**
+	 * Enregistrement du message que l'on envoi dans la base de donn�es
+	 * Ainsi que la cr�ation du fichier dans la dossier "stockage"
+	 * Apr�s l'envoi du message on efface tout les zones de text
+	 */
 	private void envoyerMessage(){
 		String contenu = this.text.getText();
 		try{

@@ -26,30 +26,60 @@ public class Utilisateur implements Serializable {
 		mdp= _mdp;
 	}
 	
+	/**
+     * Fonction pour retourner le mot de passe
+     * @return mdp
+     */
 	public String getMdp() {
 		return mdp;
 	}
 	
+	/**
+     * Fonction pour retourner le login
+     * @return login
+     */
 	public String getLogin() {
 		return login;
 	}
 	
+	/**
+     * Fonction pour retourner le nom
+     * @return nom
+     */
 	public String getNom(){
 		return nom;
 	}
 	
+	/**
+     * Fonction pour retourner le prenom
+     * @return prenom
+     */
 	public String getPrenom(){
 		return prenom;
 	}
 
+	/**
+     * Fonction pour retourner le type
+     * @return type
+     */
 	public String getType(){
 		return type;
 	}
 	
+	/**
+     * Fonction pour retourner une liste d'information
+     * contenant "login nom prenom type"
+     * @return login nom prenom type
+     */
 	public String toString(){
 		return login+" " +nom+" "+prenom+" "+type;
 	}
 	
+	/**
+     * Fonction pour retourner une liste d'information
+     * contenant "prenom nom #login"
+     * @return prenom nom #login
+     */
 	public String contact(){
 		return prenom+" "+nom+" #"+login;
 	}

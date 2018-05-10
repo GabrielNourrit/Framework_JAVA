@@ -55,6 +55,9 @@ public class Alerte extends Composition{
 		});
 	}
 
+	/**
+	 * Fermeture de la fenetre d'alerte que l'on a ouvert
+	 */
 	protected void fermerFenetre() {
 		Stage stage = (Stage) this.changer.getScene().getWindow();
 	    stage.close();

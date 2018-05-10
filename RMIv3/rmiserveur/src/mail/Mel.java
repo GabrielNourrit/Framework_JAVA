@@ -44,18 +44,34 @@ public class Mel implements MelInterface{
 	}
 	
 	
+	/**
+	 * 
+	 */
 	public String chargerMessage(String exp) {
 		return ManipulationFichier.chargerFichierTchat(this.chemin+exp).toString();
 	}
 	
+	/**
+	 * Recuperation de la liste de mail re�u selon un utilisateur
+	 * param receveur
+	 */
 	public List<MelCell> chargerMails(String receveur) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.chargerMails(receveur);
 	}
 
+	/**
+	 * Recuperation de la liste de mail emis selon un utilisateur
+	 * param receveur
+	 */
 	public List<MelCell> chargerMailsExp(String expediteur) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.chargerMailsExp(expediteur);
 	}
 	
+	/**
+	 * Suppression de chemin pour atteindre un mail que l'on a envoyer
+	 * Il n'apparaitras plus dans la liste des mails envoyer
+	 * param id
+	 */
 	public void supprMailExp(int id) throws RemoteException, ClassNotFoundException, SQLException {
 		String etat = sgbd.etatMail(id);
 		if (etat.equals("SUPRE")) {
@@ -67,6 +83,11 @@ public class Mel implements MelInterface{
 		}
 	}
 	
+	/**
+	 * Suppression de chemin pour atteindre un mail que l'on a re�u
+	 * Il n'apparaitras plus dans la liste des mails re�u
+	 * param id
+	 */
 	public void supprMailRec(int id) throws RemoteException, ClassNotFoundException, SQLException {
 		String etat = sgbd.etatMail(id);
 		if (etat.equals("SUPEN")) {
