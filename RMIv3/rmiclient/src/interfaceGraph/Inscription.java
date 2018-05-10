@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -120,12 +119,7 @@ public class Inscription extends Formulaire {
 			
 			if (t_login.getText()!="" && t_mdp.getText()!="") {
 				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
-				try {
-					utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
 				utilisateur.setMdp(mdp);
 				try {
 					

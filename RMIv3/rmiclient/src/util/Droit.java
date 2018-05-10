@@ -31,4 +31,8 @@ public class Droit implements Serializable{
 		libelle=_libelle;
 		id=_id;
 	}
+	
+	public String toString() {
+		return id;
+	}
 }

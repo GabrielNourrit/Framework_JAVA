@@ -1,14 +1,10 @@
 package util;
 
 import java.io.Serializable;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import BaseDeDonnee.gestionUtilisateur.TypesInterface;
 import groupes.GroupesInterface;
 
 public class Utilisateur implements Serializable {
@@ -23,14 +19,14 @@ public class Utilisateur implements Serializable {
 	private String mdp;
 	private List<Groupe> groupe;
 	private List<Droit> droits;
-	private GroupesInterface connex;
-	private Registry registry;
+	private GroupesInterface connexGroupe;
+	private TypesInterface connexType;
 	
 	public Utilisateur(String _login) {
 		login = _login;
 	}
 	
-	public Utilisateur(String _login, String _nom, String _prenom, Type _type) throws RemoteException {		
+	public Utilisateur(String _login, String _nom, String _prenom, Type _type) {		
 		this.login = _login;
 		this.nom = _nom;
 		this.prenom = _prenom;
@@ -63,10 +59,9 @@ public class Utilisateur implements Serializable {
 		return type;
 	}
 	
-	public List<Groupe> getGroupe() throws AccessException, RemoteException, NotBoundException, ClassNotFoundException, SQLException {
-		registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-		connex = (GroupesInterface) registry.lookup("Groupes");	
-		return connex.getGroupeLogin(login);
+	public List<Groupe> getGroupe() throws Exception {
+		connexGroupe = new Connectable<GroupesInterface>().connexion("Groupes");
+		return connexGroupe.getGroupeLogin(login);
 	}
 	
 	
@@ -89,8 +84,13 @@ public class Utilisateur implements Serializable {
 		return droits;
 	}
 	
-	public boolean hasRight(String droit) {
-		return droits.contains(droit);
+	public boolean hasRight(String droit) throws Exception {
+		connexType = new Connectable<TypesInterface>().connexion("Types");
+		droits = connexType.getDroit(type.getIdType());
+		for (Droit d : droits) {
+			if (d.getId().equals(droit)) return true;
+		}
+		return false;
 	}
 	
 	public void setGroup(List<Groupe> _groupes) {

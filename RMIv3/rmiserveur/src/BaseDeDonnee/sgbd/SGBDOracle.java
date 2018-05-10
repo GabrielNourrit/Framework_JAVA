@@ -353,6 +353,7 @@ public class SGBDOracle extends SGBD {
 				droits.add(d);
 			}
 		}
+		closeReq(rs);
 		return droits; 
 	}
 }

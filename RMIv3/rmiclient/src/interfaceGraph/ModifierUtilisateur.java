@@ -1,7 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
-
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -75,12 +73,7 @@ public class ModifierUtilisateur extends Formulaire {
 	protected void ecouteurDefaultAction() {
 		b_valider.addEventHandler(ActionEvent.ACTION,event ->{
 			Utilisateur uNew = null;
-			try {
-				uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
 			OperationUtilisateurInterface connex;
 			try {
 				connex = connectToServeur();

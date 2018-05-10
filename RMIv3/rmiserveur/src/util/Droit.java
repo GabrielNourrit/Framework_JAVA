@@ -27,7 +27,7 @@ public class Droit implements Serializable{
 		this.libelle = libelle;
 	}
 	
-	public Droit(String _libelle, String _id) {
+	public Droit(String _id, String _libelle) {
 		libelle=_libelle;
 		id=_id;
 	}

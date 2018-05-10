@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 import fichier.GestionFichierInterface;
 import util.Connectable;
-import util.Droit;
 import util.Groupe;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +23,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import tchat.TchatInterface;
@@ -36,7 +36,7 @@ public class TchatGraphique extends VBox {
 	protected LimitedTextField ZoneText;
 	protected Button BouttonEnv;
 	protected HBox hbTextFButton;
-	protected HBox hboxTextTchat;
+	protected VBox vboxTextTchat;
 	protected VBox vboxInfo;
 	protected VBox vboxContenu;
 	protected ScrollPane sp;
@@ -45,7 +45,7 @@ public class TchatGraphique extends VBox {
 	private ChoiceBox<Groupe> cbgroupe;
 	private Map<Integer ,Tchat> listener = new HashMap<>();
 	private Utilisateur util;
-	private boolean droit = false;
+	private boolean droit;
 	
 
 	private void execute(TchatInterface tchat) throws RemoteException{ 
@@ -65,13 +65,8 @@ public class TchatGraphique extends VBox {
 	public TchatGraphique(Utilisateur util) throws Exception{
 		super();
 		this.util=util;
-		for (Droit d : util.getDroits()) {
-			if (d.getId().equals("DEC")) droit=true;break;
-		}
-		//Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);		
-		/*connex = (TchatInterface) registry.lookup("Tchat");
-		connexG = (GestionFichierInterface) registry.lookup("Fichier");	*/
-		
+		if (util.hasRight("DEC")) droit = true;
+		else droit=false;
 		connex = new Connectable<TchatInterface>().connexion("Tchat");	
 		connexG = new Connectable<GestionFichierInterface>().connexion("Fichier");
 		
@@ -81,7 +76,6 @@ public class TchatGraphique extends VBox {
 		ecouteurChoixGroupe();
 		for (Groupe g : connexG.recupererGroupe(util.getLogin())) {
 			Tchat l = new Tchat();
-			System.out.println(g.getidGr());
 			int gr = g.getidGr();
 			listener.put(gr,l);
 			connex.addTchatListener(l,gr);
@@ -93,11 +87,10 @@ public class TchatGraphique extends VBox {
 		ZoneText= new LimitedTextField(256);
 		BouttonEnv= new Button("Envoyer");
 		hbTextFButton= new HBox();
-		hboxTextTchat = new HBox();
+		vboxTextTchat = new VBox();
 		vboxInfo = new VBox();
 		vboxContenu = new VBox();
 		sp = new ScrollPane();	
-		System.out.println(util.getGroupe());
 		try {
 			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(util.getGroupe()));
 		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
@@ -109,9 +102,10 @@ public class TchatGraphique extends VBox {
 	private void layoutDefaultParametre() {
 		ZoneText.setMinSize(550, 10);
 		vboxInfo.setStyle("-fx-border-style: solid; -fx-border-width: 0 1 0 0; -fx-border-color: grey; -fx-padding: 0 10 0 0");
-		vboxContenu.setStyle("-fx-padding: 0 0 0 5");	
-		hboxTextTchat.getChildren().addAll(vboxInfo,vboxContenu);
-		sp.setContent(hboxTextTchat);
+		vboxContenu.setStyle("-fx-padding: 0 0 0 5");
+		vboxContenu.setMaxWidth(200);
+		//vboxTextTchat.getChildren().addAll(vboxInfo,vboxContenu);
+		sp.setContent(vboxTextTchat);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		sp.setMinSize(500, 400);
 		sp.setFitToWidth(true);
@@ -158,13 +152,15 @@ public class TchatGraphique extends VBox {
 		String[] str = message.split(Pattern.quote("|"));	
 		String[] s;
 		String nom;
+		TextArea t;
 		for (String u : str) {
 			if (!u.equals("")) {
 				s = u.split("~");
 				if (s[1].equals(util.getPrenom() + " " + util.getNom())) nom = "Moi";
 				else nom = s[1];
-				vboxInfo.getChildren().addAll(new Label(s[0]+ " " + nom));
-				vboxContenu.getChildren().add(new Label(s[2]));
+				t = new TextArea();
+				t.setText(s[0]+ " " + nom + " : " + s[2]);
+				vboxTextTchat.getChildren().add(t);
 			}
 		}
 	}

@@ -39,15 +39,12 @@ public class Tchat implements TchatInterface  {
 	}	
 
 	public synchronized void addTchatListener (TchatListener listener, Integer groupe) throws java.rmi.RemoteException {
-		System.out.println("adding listener -"+listener);
 		Vector<TchatListener> newlistener = list.get(groupe);
-		System.out.println(newlistener);
 		newlistener.add(listener);
 		list.put(groupe,newlistener);
 	}
 
 	public synchronized void removeTchatListener (TchatListener listener, Integer groupe) throws java.rmi.RemoteException {
-		System.out.println("removing listener -"+listener);
 		list.get(groupe).remove(listener);
 	}
 	
@@ -64,7 +61,6 @@ public class Tchat implements TchatInterface  {
 				listener.nouveauMessage(message, groupe);
 			} catch(Exception re) {
 				re.printStackTrace();
-				System.out.println("removing listener -"+listener);
 				v.remove(listener); 
 			} 
 		} 
