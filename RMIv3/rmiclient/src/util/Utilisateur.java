@@ -89,7 +89,6 @@ public class Utilisateur implements Serializable {
 		return droits;
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public boolean hasRight(String droit) {
 		return droits.contains(droit);
 	}

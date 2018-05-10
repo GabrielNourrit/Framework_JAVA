@@ -106,13 +106,13 @@ public class GestionMail extends Composition{
 		this.snd.setOnAction(event ->{				
 			ScrollPane sp = new ScrollPane();
 			VBox reponse= new WriteMessage(this.moi);
-			Stage stage = Fenetre.newStage();
+			Stage stage = new Stage();
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 600, 600);
-			stage.setScene(scene);
+			Fenetre.paramStage(stage,scene);
 			stage.show();
 		});
 
@@ -145,17 +145,16 @@ public class GestionMail extends Composition{
 						if (action.equals("recu")) a = new AffichageMessage(moi,rowData,"recu");
 						else a = new AffichageMessage(moi,rowData,"envoye");
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					ScrollPane sp = new ScrollPane();
 					sp.setContent(a);
-					Stage nouveauStage = Fenetre.newStage();
+					Stage nouveauStage = new Stage();
 					a.setAlignment(Pos.CENTER);
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
 					Scene scene = new Scene(sp, 550, 550);
-					nouveauStage.setScene(scene);
+					Fenetre.paramStage(nouveauStage,scene);
 					nouveauStage.show();
 				}
 				MelCell rowData = row.getItem();

@@ -54,7 +54,7 @@ public class WriteMessage extends Composition implements Alertable{
      */
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,100);
-		s.setScene(scene);
+		Fenetre.paramStage(s, scene);
 		s.show();
 	}
 

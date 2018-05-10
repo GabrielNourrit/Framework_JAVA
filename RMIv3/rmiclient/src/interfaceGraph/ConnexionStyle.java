@@ -27,7 +27,7 @@ public class ConnexionStyle extends Formulaire{
 		super();
 		genererSousComposant();
 		layoutDefaultParametre();
-		ecouteurDefaultAction();	
+		ecouteurDefaultAction();
 		utilisateur = null;
 	}
 
@@ -46,18 +46,11 @@ public class ConnexionStyle extends Formulaire{
 	protected void ecouteurDefaultAction() {
 		/*Definie le comportement par defaut de notre interface*/
 		this.mdp.addEventHandler(ActionEvent.ACTION, event ->{
-			/*Traitement de l'appli*/
-			System.out.println("id est "+this.id.getText());
-			System.out.print("mdp est "+this.mdp.getText());
-			
-			ConnexionInterface connex;
 			try {
-				//connex = (ConnexionInterface) registry.lookup("Connexion");
-	            connex = new Connectable<ConnexionInterface>().connexion("Connexion");
-				//connex = (ConnexionInterface)Naming.lookup("rmi://localhost/Connexion");
+				ConnexionInterface connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
-					System.out.println(utilisateur);
+					
 					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;
@@ -67,6 +60,7 @@ public class ConnexionStyle extends Formulaire{
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
 					Scene scene = new Scene(sp, 200, 250);
+					Fenetre.paramStage(nouveauStage);
 					nouveauStage.setScene(scene);*/
 				}
 				else {
@@ -80,8 +74,7 @@ public class ConnexionStyle extends Formulaire{
 			this.id.setText("");
 			this.mdp.setText("");
 			//value;
-		});
-		
+		});		
 	}
 	
 	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
@@ -95,7 +88,7 @@ public class ConnexionStyle extends Formulaire{
 		form.setMaxSize(120, 100);
 		form.setSpacing(3);
 		form.setAlignment(Pos.CENTER);
-		this.getChildren().add(form);		
+		this.getChildren().add(form);
 	}
 
 	public Utilisateur getUtilisateur() {

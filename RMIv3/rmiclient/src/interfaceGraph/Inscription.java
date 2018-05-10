@@ -1,11 +1,7 @@
 package interfaceGraph;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
 import java.util.List;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
@@ -100,13 +96,11 @@ public class Inscription extends Formulaire {
 		hb_validerAnnuler.setAlignment(Pos.CENTER);
 		l_groupe = new Label("Groupe : ");
 		TypesInterface connex;
-		Registry registry;
 		try {
-			registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			connex = (TypesInterface) registry.lookup("Types");
+			connex = new Connectable<TypesInterface>().connexion("Types");
 			List<Type> lesTypes = connex.getAllTypes();
 			cb_type = new ChoiceBox<>(FXCollections.observableArrayList(lesTypes));
-		} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//cb_type = new ChoiceBox<String>(FXCollections.observableArrayList("user","Admin"));
@@ -133,11 +127,9 @@ public class Inscription extends Formulaire {
 					e1.printStackTrace();
 				}
 				utilisateur.setMdp(mdp);
-				OperationUtilisateurInterface connex;
 				try {
 					
-					//connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
-					connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
+					OperationUtilisateurInterface connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 					if (!(connex.AjouterUtilisateur(utilisateur))) {
 						Fenetre.creatAlert(AlertType.WARNING, "Attention !", "Fail");				
 					} else {

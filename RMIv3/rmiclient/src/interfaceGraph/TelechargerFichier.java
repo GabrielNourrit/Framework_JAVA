@@ -44,9 +44,6 @@ public class TelechargerFichier extends VBox {
 
 	public TelechargerFichier(Utilisateur utilisateur) throws Exception {
 		this.u=utilisateur;
-		/*registry = java.rmi.registry.LocateRegistry.getRegistry("127.0.0.1",1099);
-		connex = (GestionFichierInterface) registry.lookup("Fichier");
-		*/
 		connex = new Connectable<GestionFichierInterface>().connexion("Fichier");
 		genererSousComposant();
 		layoutDefaultParametre();
@@ -63,9 +60,7 @@ public class TelechargerFichier extends VBox {
 		list = new ListView<Fichier>();
 		try {
 			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
-			System.out.println(u.getGroupe());
 		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
-			//cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(new ArrayList<Groupe>()));
 			e.printStackTrace();
 		}
 		cbgroupe.getSelectionModel().select(0);

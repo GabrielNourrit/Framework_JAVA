@@ -1,14 +1,6 @@
 package interfaceGraph;
 
-
-
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import util.Connectable;
 import util.Fenetre;
 import util.Utilisateur;
 
@@ -70,12 +63,11 @@ public class ModifierMotDePasse extends Formulaire {
 			if (t_mdpNew2.getText() != "") {
 				if (t_mdpNew1.getText().equals(t_mdpNew2.getText())) {
 					String mdp = BCrypt.hashpw(t_mdpNew2.getText(), BCrypt.gensalt());
-					Registry registry;
 					try {
-						registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-						OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+						//OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
+						OperationUtilisateurInterface connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 						connex.ModifierMdpUtilisateur(utilisateur.getLogin(), mdp);
-					} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+					} catch (Exception e) {
 						Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 					}
 					

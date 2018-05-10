@@ -58,6 +58,7 @@ public class ConnexionStyle2 extends ConnexionStyle{
 					sp.setFitToWidth(true);
 					sp.setFitToHeight(true);
 					Scene scene = new Scene(sp, 200, 250);
+					Fenetre.paramStage(nouveauStage);
 					nouveauStage.setScene(scene);*/
 				}
 				else {

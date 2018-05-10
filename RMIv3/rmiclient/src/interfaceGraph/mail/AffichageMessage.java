@@ -94,11 +94,11 @@ public class AffichageMessage extends Composition{
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
-			Fenetre.paramStage(stage);
+			
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 600, 600);
-			stage.setScene(scene);
+			Fenetre.paramStage(stage, scene);
 		}
 				);
 	}

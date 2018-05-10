@@ -4,6 +4,7 @@ import java.rmi.NotBoundException;
 import java.sql.SQLException;
 
 import interfaceGraph.mail.GestionMail;
+import util.Fenetre;
 import util.Groupe;
 import util.Type;
 import javafx.application.Application;
@@ -29,7 +30,7 @@ public class Main extends Application {
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);
 		stage.setTitle("ChatBox");
-		stage.setScene(scene);
+		Fenetre.paramStage(stage,scene);
 		stage.show();		
 	}
 

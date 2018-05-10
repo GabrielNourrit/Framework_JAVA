@@ -58,9 +58,6 @@ public class GererGroupe extends Formulaire {
 				Optional<ButtonType> result = Fenetre.creatAlert(AlertType.CONFIRMATION, "Confirmation", "Voulez vous vraiment supprimer ce groupe ?");
 				if (result.get() == ButtonType.OK){
 					try {
-						/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-						GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");*/
-						
 						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 						connex.suprimerGroupe(groupe.getidGr());
 						refreshList();
@@ -73,7 +70,7 @@ public class GererGroupe extends Formulaire {
 			}
 		});
 		btn_ajouter.setOnAction(event ->{
-			Stage windowAjouter = Fenetre.newStage();
+			Stage windowAjouter = new Stage();
 			CreerGroup vb = new CreerGroup();
 			vb.setPostAdd(e -> {
 				refreshList();
@@ -87,13 +84,13 @@ public class GererGroupe extends Formulaire {
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 700, 400);
 			windowAjouter.setTitle("Ajouter groupe");
-			windowAjouter.setScene(scene);
+			Fenetre.paramStage(windowAjouter,scene);
 			windowAjouter.show();
 		});
 		btn_modifier.setOnAction(event ->{
 			Groupe groupe = getGroupeSelected();
 			if (groupe != null) {
-				Stage windowAjouter = Fenetre.newStage();
+				Stage windowAjouter = new Stage();
 				ListUtilisateursGroupe vb = new ListUtilisateursGroupe(groupe);
 				vb.setPostAdd(e -> {
 					refreshList();
@@ -107,7 +104,7 @@ public class GererGroupe extends Formulaire {
 				sp.setFitToHeight(true);
 				Scene scene = new Scene(sp, 700, 400);
 				windowAjouter.setTitle("Modifier un groupe");
-				windowAjouter.setScene(scene);
+				Fenetre.paramStage(windowAjouter,scene);
 				windowAjouter.show();
 			}
 			

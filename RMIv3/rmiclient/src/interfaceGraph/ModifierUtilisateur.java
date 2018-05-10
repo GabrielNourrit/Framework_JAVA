@@ -105,7 +105,7 @@ public class ModifierUtilisateur extends Formulaire {
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 400, 400);
 			windowModifier.setTitle("Modification");
-			windowModifier.setScene(scene);
+			Fenetre.paramStage(windowModifier,scene);
 			windowModifier.show();
 		});
 	}
@@ -125,15 +125,7 @@ public class ModifierUtilisateur extends Formulaire {
 	}
 	
 	private OperationUtilisateurInterface connectToServeur() throws Exception {
-		/*Registry registry;
-		
-		registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-		OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
-		return connex;*/
 		return new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
-		
-
 	}
 	
-
 }

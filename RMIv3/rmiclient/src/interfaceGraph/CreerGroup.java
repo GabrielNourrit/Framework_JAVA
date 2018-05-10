@@ -183,4 +183,5 @@ public class CreerGroup extends Formulaire{
 		b_valider.addEventHandler(ActionEvent.ACTION, value);
 		
 	}
+	
 }

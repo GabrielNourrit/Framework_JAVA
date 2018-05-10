@@ -125,7 +125,7 @@ public class ListeUtilisateur extends Formulaire {
 				sp.setFitToHeight(true);
 				Scene scene = new Scene(sp, 400, 400);
 				windowModifier.setTitle("Modification");
-				windowModifier.setScene(scene);
+				Fenetre.paramStage(windowModifier,scene);
 				windowModifier.show();
 			}else {
 				Fenetre.creatAlert(AlertType.WARNING,"Attention !","Veuillez selectionnez un utilisateur");
@@ -178,7 +178,7 @@ public class ListeUtilisateur extends Formulaire {
 			sp.setFitToHeight(true);
 			Scene scene = new Scene(sp, 400, 400);
 			windowModifier.setTitle("Modification");
-			windowModifier.setScene(scene);
+			Fenetre.paramStage(windowModifier,scene);
 			windowModifier.show();
 		});
 	}

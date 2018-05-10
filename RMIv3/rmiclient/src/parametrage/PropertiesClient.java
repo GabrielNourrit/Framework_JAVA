@@ -15,6 +15,8 @@ public class PropertiesClient {
 	 */
 	private static String adressServeur;
 	private static String logoImage;
+	private static String cssDefaut;
+	private static String localisationCss;
 	private static int port;
 	
 	
@@ -38,6 +40,8 @@ public class PropertiesClient {
 		}
 		adressServeur = prop.getProperty("adresse.serveur.defaut");
 		logoImage = prop.getProperty("logo.application");
+		cssDefaut = prop.getProperty("default.css");
+		localisationCss = prop.getProperty("localisation.css.dossiers");
 		try{
 			port = Integer.parseInt(prop.getProperty("port.utilise"));
 		}catch(NumberFormatException e){
@@ -57,6 +61,24 @@ public class PropertiesClient {
 	}
 	
 	/* Methodes visibles du dehort */
+	
+	/**
+	 * L'url de l'localisation du dossier fichier css
+	 * @return String
+	 */
+	public static String getLocalisationCss(){
+		initialiseProperties();
+		return localisationCss;
+	}
+	
+	/**
+	 * le Css par defaut
+	 * @return String
+	 */
+	public static String getCssDefaut(){
+		initialiseProperties();
+		return cssDefaut;
+	}
 	
 	/**
 	 * Le numero de port
