@@ -30,6 +30,7 @@ import util.Fenetre;
 import util.Utilisateur;
 
 public class GestionMail extends Composition{
+	protected ScrollPane sp;
 	protected TableView<MelCell> t;
 	protected TableColumn<MelCell,String> date;
 	protected TableColumn<MelCell,String> objet;
@@ -62,6 +63,7 @@ public class GestionMail extends Composition{
 
 	@Override
 	protected void genererSousComposant() {
+		sp = new ScrollPane();
 		sup = new Button("supprimer");
 		snd = new Button("nouveau");
 		toolb = new HBox();
@@ -77,7 +79,8 @@ public class GestionMail extends Composition{
 
 		chargement(listeMailRecu);
 		t.setItems(list);
-
+		sp.setContent(t);
+		
 		try{
 			initialiserComboBox();
 		}catch(Exception e){
