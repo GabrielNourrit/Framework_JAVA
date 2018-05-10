@@ -53,7 +53,7 @@ public class TelechargerFichier extends VBox {
 
 	protected void genererSousComposant() throws Exception {
 		button = new Button("Download");
-		label = new Label("Filename");
+		label = new Label();
 		form = new HBox();
 		vb1 = new VBox();
 		vb2 = new VBox();
@@ -92,10 +92,13 @@ public class TelechargerFichier extends VBox {
 				Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog", "Veuillez choisir un dossier");
 			}
 			else{
+				label.setText(selectedDirectory.getAbsolutePath()+"/"+f.getNom());
 				try {
-					TransformerFichier.byteToFile(connex.download(f.getidFic()), selectedDirectory.getAbsolutePath()+"/"+f.getNom());//f.getNom());
+					TransformerFichier.byteToFile(connex.download(f.getidFic()), selectedDirectory.getAbsolutePath()+"/"+f.getNom());
+					label.setText("Fichier correctement telecharge");
 				} catch (Exception e) {
 					e.printStackTrace();
+					label.setText("Erreur lors du telechargement");
 				}
 			     System.out.println(selectedDirectory.getAbsolutePath());
 			}

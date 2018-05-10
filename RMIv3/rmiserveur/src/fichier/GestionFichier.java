@@ -12,27 +12,29 @@ import java.util.logging.Logger;
 import javax.management.remote.rmi.RMIServer;
 
 import BaseDeDonnee.sgbd.SGBD;
+import parametrage.PropertiesServeur;
 import util.Groupe;
 
 
 public class GestionFichier implements GestionFichierInterface {
 
 	private SGBD sgbd;
+	private String chemin = PropertiesServeur.getStockageMail() +"/";
 	
 	public GestionFichier (SGBD sgbd) throws RemoteException {  
 		super();
 		this.sgbd=sgbd;
 	}
 	
-	public String upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException {
+	public boolean upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException {
 		 try{
-	            Files.write(Paths.get(nom),contenu);
-	            sgbd.ajouterFichier(nom, l, id);
+	            Files.write(Paths.get(chemin+nom),contenu);
+	            sgbd.ajouterFichier(chemin+nom, l, id);
 	        } catch (IOException ex) {
 	            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
-	            return "Non recu";
+	            return false;
 	        }
-	        return "Bien recu";
+	        return true;
 	}
 	
 	public byte[] download(int id) throws ClassNotFoundException, SQLException, IOException {

@@ -1,5 +1,6 @@
 package interfaceGraph;
 
+import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -15,19 +16,31 @@ import java.util.regex.Pattern;
 import fichier.GestionFichierInterface;
 import util.Connectable;
 import util.Groupe;
+import util.LimitedTextArea;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import tchat.TchatInterface;
 import tchat.TchatListener;
 import util.LimitedTextField;
@@ -35,7 +48,7 @@ import util.Utilisateur;
 
 public class TchatGraphique extends VBox {
 
-	protected LimitedTextField ZoneText;
+	protected LimitedTextArea ZoneText;
 	protected Button BouttonEnv;
 	protected HBox hbTextFButton;
 	protected VBox vboxTextTchat;
@@ -86,7 +99,7 @@ public class TchatGraphique extends VBox {
 	}
 
 	private void genererSousComposant() throws Exception {
-		ZoneText= new LimitedTextField(256);
+		ZoneText= new LimitedTextArea(256);
 		BouttonEnv= new Button("Envoyer");
 		hbTextFButton= new HBox();
 		vboxTextTchat = new VBox();
@@ -102,10 +115,14 @@ public class TchatGraphique extends VBox {
 	}
 
 	private void layoutDefaultParametre() {
-		ZoneText.setMinSize(550, 10);
+		ZoneText.setMinSize(535, 70);
+		ZoneText.setWrapText(true);
 		vboxInfo.setStyle("-fx-border-style: solid; -fx-border-width: 0 1 0 0; -fx-border-color: grey; -fx-padding: 0 10 0 0");
 		vboxContenu.setStyle("-fx-padding: 0 0 0 5");
 		vboxContenu.setMaxWidth(200);
+		vboxTextTchat.setSpacing(5);
+		vboxTextTchat.setId("hbox");
+		//vboxTextTchat.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
 		//vboxTextTchat.getChildren().addAll(vboxInfo,vboxContenu);
 		sp.setContent(vboxTextTchat);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
@@ -113,18 +130,20 @@ public class TchatGraphique extends VBox {
 		sp.setFitToWidth(true);
 		sp.setFitToHeight(true);
 		if (droit) hbTextFButton.getChildren().addAll(ZoneText,BouttonEnv);
+		this.setSpacing(3);
+		this.setPadding(new Insets(3, 3, 3, 3));
 		this.getChildren().addAll(sp,hbTextFButton,cbgroupe);
 	}
 
 	private void ecouteurDefaultAction() {
-		ZoneText.setOnAction(event-> {
+		/*ZoneText.setOnAction(event-> {
 			try {
 				execute(connex);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
 			ZoneText.setText("");
-		});
+		});*/
 
 		BouttonEnv.setOnAction(event ->{
 			/*Traitement de l'appli*/
@@ -140,8 +159,9 @@ public class TchatGraphique extends VBox {
 	private void ecouteurChoixGroupe() {
 		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
 			try {				
-				vboxInfo.getChildren().removeAll(vboxInfo.getChildren());
-				vboxContenu.getChildren().removeAll(vboxContenu.getChildren());
+				/*vboxInfo.getChildren().removeAll(vboxInfo.getChildren());
+				vboxContenu.getChildren().removeAll(vboxContenu.getChildren());*/
+				vboxTextTchat.getChildren().removeAll(vboxTextTchat.getChildren());
 				cbgroupe.getSelectionModel().select((int) new_value);
 				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr())));
 			} catch (Exception e) {
@@ -155,35 +175,38 @@ public class TchatGraphique extends VBox {
 		String[] s;
 		String nom;
 		VBox v;
-		Label t;
-		Text text1;
-		Text text2;
+		Label t1;
 		Text textMsg;
 		for (String u : str) {
 			if (!u.equals("")) {
+				v=new VBox();
 				s = u.split("~");
-				if (s[1].equals(util.getPrenom() + " " + util.getNom())) nom = "Moi";
-				else nom = s[1];
+				HBox h = new HBox();
+				if (s[1].equals(util.getPrenom() + " " + util.getNom())) {
+					nom = "Moi";
+					v.setId("v2");
+					h.setAlignment(Pos.BASELINE_RIGHT);
+				}
+				else {
+					v.setId("v");
+					nom = s[1];
+					h.setAlignment(Pos.BASELINE_LEFT);
+				}
 				
-				text2 = new Text();
-				text2.setText("["+s[0] + "] "+ nom + " : ");
-				text2.getStyleClass().add("tchat-nom");
+				t1 = new Label("["+s[0] + "] "+ nom + " : ");
+				t1.setId("tchat-nom");
 				
 				textMsg = new Text();
 				textMsg.setText(s[2]);
-				textMsg.getStyleClass().add("tchat-msg");
+				textMsg.getStyleClass().clear();
+				textMsg.setId("tchat-msg");
+				textMsg.setWrappingWidth(300);
 				
-				textMsg.setWrappingWidth(590);
-				v=new VBox();
-				//t = new Label();
-				//t.setWrapText(true);
-				//t.setText(text1.getText()+ " " + text2.getText()+ " : " + textMsg.getText());
-				
-				//v.getChildren().add(t);
-				
-				v.getChildren().addAll(text2,textMsg);
-				v.getStyleClass().add("tchat-contenu");
-				vboxTextTchat.getChildren().add(v);
+				v.getChildren().addAll(t1,textMsg);
+				h.getChildren().add(v);
+				//v.getStyleClass().add("tchat-contenu");
+				v.setMaxWidth(300);
+				vboxTextTchat.getChildren().add(h);
 			}
 		}
 	}

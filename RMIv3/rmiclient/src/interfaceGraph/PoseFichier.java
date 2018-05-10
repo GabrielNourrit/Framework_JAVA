@@ -67,7 +67,9 @@ public class PoseFichier extends VBox {
 			else {
 				try {				
 					byte[] b = TransformerFichier.fileToByte(chosenFile.getAbsolutePath());
-					connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+					boolean bo = connex.upload(chosenFile.getName(),b,u.getLogin(),cbgroupe.getSelectionModel().getSelectedItem().getidGr());
+					if (bo) label.setText("Fichier correctement envoye");
+					else label.setText("Erreur lors de l'envoie du fichier");
 				} catch (Exception e) {
 					Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 				}

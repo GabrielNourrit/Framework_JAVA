@@ -21,7 +21,6 @@ public class Groupes implements GroupesInterface {
 	}
 	
 	public List<Groupe> getGroupeLogin(String login) throws ClassNotFoundException, RemoteException, SQLException {
-		System.out.println(sgbd.getGroupeUtilisateur(login));
 		return sgbd.getGroupeUtilisateur(login);
 	}
 

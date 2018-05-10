@@ -100,22 +100,18 @@ public class Mel implements MelInterface{
 	}
 	
 	public synchronized void addMailRecuListener (MelListener listener, String login) throws java.rmi.RemoteException {
-		System.out.println("adding listener recu -"+listener);
 		listRecu.put(login,listener);
 	}
 	
 	public synchronized void addMailEnvoyeListener (MelListener listener, String login) throws java.rmi.RemoteException {
-		System.out.println("adding listener envoye -"+listener);
 		listEnvoye.put(login,listener);
 	}
 
 	public synchronized void removeMailRecuListener (MelListener listener, String login) throws java.rmi.RemoteException {
-		System.out.println("removing listener  -"+listener);
 		listRecu.remove(login);
 	}
 	
 	public synchronized void removeMailEnvoyeListener (MelListener listener, String login) throws java.rmi.RemoteException {
-		System.out.println("removing listener -"+listener);
 		listEnvoye.remove(login);
 	}
 	
@@ -124,14 +120,12 @@ public class Mel implements MelInterface{
 			listEnvoye.get(login).nouveauMailEnvoye(message);
 		} catch(Exception re) {
 			re.printStackTrace();
-			System.out.println("removing listener -"+login);
 			listEnvoye.remove(login); 
 		} 
 	}
 	
 	private void notifyListenersRecu(MelCell message, String login) {
 		try {
-			System.out.println(login);
 			listRecu.get(login).nouveauMailRecu(message);
 		} catch(Exception re) {
 			re.printStackTrace();

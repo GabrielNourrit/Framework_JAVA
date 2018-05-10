@@ -43,22 +43,42 @@ public class Utilisateur implements Serializable {
 		mdp= _mdp;
 	}
 	
+	/**
+     * Fonction pour retourner le mot de passe
+     * @return mdp
+     */
 	public String getMdp() {
 		return mdp;
 	}
 	
+	/**
+     * Fonction pour retourner le login
+     * @return login
+     */
 	public String getLogin() {
 		return login;
 	}
 	
+	/**
+     * Fonction pour retourner le nom
+     * @return nom
+     */
 	public String getNom(){
 		return nom;
 	}
 	
+	/**
+     * Fonction pour retourner le prenom
+     * @return prenom
+     */
 	public String getPrenom(){
 		return prenom;
 	}
 
+	/**
+     * Fonction pour retourner le type d'utilisateur
+     * @return type
+     */
 	public Type getType(){
 		return type;
 	}
@@ -73,8 +93,13 @@ public class Utilisateur implements Serializable {
 		groupe.add(_groupe);
 	}
 	
+	/**
+     * Fonction pour retourner une liste d'information
+     * contenant "login nom prenom type"
+     * @return login nom prenom type
+     */
 	public String toString(){
-		return login;
+		return login+" " +nom+" "+prenom+" "+type;
 	}
 	
 
@@ -88,17 +113,31 @@ public class Utilisateur implements Serializable {
 		return droits;
 	}
 	
+	/**
+	 * 
+	 * @param droit
+	 * @return
+	 */
 	@SuppressWarnings("unlikely-arg-type")
 	public boolean hasRight(String droit) {
 		return droits.contains(droit);
 	}
 	
+	/**
+	 * Methode pour mettre a jour les groupes
+	 * @param _groupes une liste de groupe
+	 */
 	public void setGroup(List<Groupe> _groupes) {
 		if (_groupes != null) {
 			groupe = _groupes;
 		}
 	}
 	
+	/**
+     * Fonction pour retourner une liste d'information
+     * contenant "prenom nom #login"
+     * @return prenom nom #login
+     */
 	public String contact(){
 		return prenom+" "+nom+" #"+login;
 	}

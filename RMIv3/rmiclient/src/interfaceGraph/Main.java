@@ -25,7 +25,7 @@ public class Main extends Application {
 		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
 		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
 		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
-		VBox vb = new TchatGraphique(user);
+		VBox vb = new TelechargerFichier(user);
 		vb.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb, 600, 600);
 		stage.setResizable(false);

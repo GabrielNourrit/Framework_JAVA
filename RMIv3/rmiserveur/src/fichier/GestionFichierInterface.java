@@ -9,7 +9,7 @@ import BaseDeDonnee.MethodeServeur;
 import util.Groupe;
 
 public interface GestionFichierInterface extends Remote,MethodeServeur {
-	public String upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException;
+	public boolean upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException;
 	public byte[] download(int id) throws ClassNotFoundException, SQLException, IOException;
 	public List<Fichier> recupererTousFichiers() throws RemoteException, ClassNotFoundException, SQLException;
 	public Fichier recupererFichier(int id) throws RemoteException, ClassNotFoundException, SQLException;
