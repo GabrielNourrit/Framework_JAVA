@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -27,23 +26,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import tchat.TchatInterface;
 import tchat.TchatListener;
-import util.LimitedTextField;
 import util.Utilisateur;
 
 public class TchatGraphique extends VBox {
@@ -52,8 +39,6 @@ public class TchatGraphique extends VBox {
 	protected Button BouttonEnv;
 	protected HBox hbTextFButton;
 	protected VBox vboxTextTchat;
-	protected VBox vboxInfo;
-	protected VBox vboxContenu;
 	protected ScrollPane sp;
 	private TchatInterface connex;
 	private GestionFichierInterface connexG;
@@ -103,8 +88,6 @@ public class TchatGraphique extends VBox {
 		BouttonEnv= new Button("Envoyer");
 		hbTextFButton= new HBox();
 		vboxTextTchat = new VBox();
-		vboxInfo = new VBox();
-		vboxContenu = new VBox();
 		sp = new ScrollPane();	
 		try {
 			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(util.getGroupe()));
@@ -117,11 +100,8 @@ public class TchatGraphique extends VBox {
 	private void layoutDefaultParametre() {
 		ZoneText.setMinSize(535, 70);
 		ZoneText.setWrapText(true);
-		vboxInfo.setStyle("-fx-border-style: solid; -fx-border-width: 0 1 0 0; -fx-border-color: grey; -fx-padding: 0 10 0 0");
-		vboxContenu.setStyle("-fx-padding: 0 0 0 5");
-		vboxContenu.setMaxWidth(200);
 		vboxTextTchat.setSpacing(5);
-		vboxTextTchat.setId("hbox");
+		vboxTextTchat.setId("tchat-list");
 		//vboxTextTchat.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
 		//vboxTextTchat.getChildren().addAll(vboxInfo,vboxContenu);
 		sp.setContent(vboxTextTchat);
@@ -158,9 +138,7 @@ public class TchatGraphique extends VBox {
 	
 	private void ecouteurChoixGroupe() {
 		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
-			try {				
-				/*vboxInfo.getChildren().removeAll(vboxInfo.getChildren());
-				vboxContenu.getChildren().removeAll(vboxContenu.getChildren());*/
+			try {
 				vboxTextTchat.getChildren().removeAll(vboxTextTchat.getChildren());
 				cbgroupe.getSelectionModel().select((int) new_value);
 				ajouterMessage((connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr())));
@@ -173,42 +151,42 @@ public class TchatGraphique extends VBox {
 	public void ajouterMessage(String message) {
 		String[] str = message.split(Pattern.quote("|"));	
 		String[] s;
-		String nom;
-		VBox v;
-		Label t1;
-		Text textMsg;
 		for (String u : str) {
 			if (!u.equals("")) {
-				v=new VBox();
 				s = u.split("~");
-				HBox h = new HBox();
-				if (s[1].equals(util.getPrenom() + " " + util.getNom())) {
-					nom = "Moi";
-					v.setId("v2");
-					h.setAlignment(Pos.BASELINE_RIGHT);
-				}
-				else {
-					v.setId("v");
-					nom = s[1];
-					h.setAlignment(Pos.BASELINE_LEFT);
-				}
-				
-				t1 = new Label("["+s[0] + "] "+ nom + " : ");
-				t1.setId("tchat-nom");
-				
-				textMsg = new Text();
-				textMsg.setText(s[2]);
-				textMsg.getStyleClass().clear();
-				textMsg.setId("tchat-msg");
-				textMsg.setWrappingWidth(300);
-				
-				v.getChildren().addAll(t1,textMsg);
-				h.getChildren().add(v);
-				//v.getStyleClass().add("tchat-contenu");
-				v.setMaxWidth(300);
-				vboxTextTchat.getChildren().add(h);
+				vboxTextTchat.getChildren().add(creatMessageTchat(s[0],s[1],s[2]));
 			}
 		}
+	}
+	
+	private HBox creatMessageTchat(String heure,String nomATest,String msg){
+		VBox v=new VBox();
+		String nom;
+		HBox h = new HBox();
+		if (nomATest.equals(util.getPrenom() + " " + util.getNom())) {
+			nom = "Moi";
+			v.setId("v2");
+			h.setAlignment(Pos.BASELINE_RIGHT);
+		}
+		else {
+			v.setId("v");
+			nom = nomATest;
+			h.setAlignment(Pos.BASELINE_LEFT);
+		}
+		
+		Label t1 = new Label("["+ heure + "] "+ nom + " : ");
+		t1.setId("tchat-nom");
+		
+		Text textMsg = new Text(msg);
+		textMsg.getStyleClass().clear();
+		textMsg.setId("tchat-msg");
+		textMsg.setWrappingWidth(300);
+		
+		v.getChildren().addAll(t1,textMsg);
+		h.getChildren().add(v);
+		//v.getStyleClass().add("tchat-contenu");
+		v.setMaxWidth(300);
+		return h;
 	}
 
 	private class Tchat extends UnicastRemoteObject implements TchatListener {

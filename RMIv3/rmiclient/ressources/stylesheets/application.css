@@ -1,3 +1,16 @@
+
+/*****************************************************************************************/
+/*                                                                                       */
+/*                                                                                       */
+/*                                     DOUCUMENT CSS                                     */
+/*                                       (JavaFx)                                        */
+/*                                                                                       */
+/*                                                                                       */
+/*****************************************************************************************/
+
+
+
+/* --------------------------------------- Tchat --------------------------------------- */
 .tchat-contenu  {
 	-fx-border-style: solid;
 	-fx-border-width: 1;
@@ -35,6 +48,50 @@
 	-fx-background-radius: 10px;
 }
 
-/*#hBox {
+/*#tchat-list {
 -fx-background-color: linear-gradient(#04B45F, #81F79F);
 }*/
+
+
+/* -------------------------------------- Button -------------------------------------- */
+.button {    
+	-fx-text-fill: white;
+	-fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+
+/* ------------------------------------- ChoiceBox ------------------------------------- */
+.choice-box .context-menu { 
+	-fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 ); 
+    }
+
+.choice-box .menu-item:focused { 
+	-fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.choice-box .menu-item > .label { 
+	-fx-text-fill: white;
+}
+
+.choice-box .menu-item:focused > .label { 
+	-fx-text-fill: black;
+}
+
+.choice-box:hover {
+	-fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.choice-box {
+	-fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+	-fx-mark-color: #2A5058; /*  arrow color*/
+}
+
+.choice-box > .label { 
+	-fx-text-fill: white;
+}
