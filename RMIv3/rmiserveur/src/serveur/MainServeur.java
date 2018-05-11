@@ -32,7 +32,7 @@ import parametrage.SettingServeurJVM;
 import tchat.Tchat;
 import tchat.TchatInterface;
 
-public class Main {
+public class MainServeur {
 	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException, ClassNotFoundException, SQLException {
 		SettingServeurJVM.configureProperty();

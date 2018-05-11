@@ -95,3 +95,10 @@
 .choice-box > .label { 
 	-fx-text-fill: white;
 }
+
+/* --------------------------------------- Alert --------------------------------------- */
+
+.alertFenetre > *.label.content{
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}

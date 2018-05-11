@@ -10,6 +10,8 @@ import util.Type;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.Utilisateur;
@@ -22,7 +24,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
+		/*Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
 		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
 		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
 		//VBox vb = new TelechargerFichier(user);
@@ -32,7 +34,8 @@ public class Main extends Application {
 		stage.setResizable(false);
 		stage.setTitle("ChatBox");
 		Fenetre.paramStage(stage,scene);
-		stage.show();		
+		stage.show();*/
+		Fenetre.creatAlert(AlertType.INFORMATION, "test", "Il y a du style ?");
 	}
 
 }
