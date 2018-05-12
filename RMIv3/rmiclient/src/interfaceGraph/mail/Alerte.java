@@ -20,6 +20,11 @@ public class Alerte extends Composition{
 	
 	Alertable a;
 	
+	/**
+	 * Constructeur d'un message d'alerte avec un choix de continuer ou de revenir en arriere
+	 * @param probleme
+	 * @param a
+	 */
 	public Alerte(String probleme, Alertable a) {
 		this.a = a;
 		genererSousComposant();
