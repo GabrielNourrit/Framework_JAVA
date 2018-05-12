@@ -30,6 +30,11 @@ public class WriteMessage extends Composition implements Alertable{
 	private Utilisateur moi;
 	private String verif;
 
+	/**
+	 * Premier constructeur de l'�criture d'un mail ou on a besoin de l'utilisateur (qui on est)
+	 * Utiliser pour cree un nouveau message vierge de toute information
+	 * @param u
+	 */
 	public WriteMessage(Utilisateur u) {
 		this.moi = u;
 		chargerMel();
@@ -38,6 +43,13 @@ public class WriteMessage extends Composition implements Alertable{
 		layoutDefaultParametre();
 	}
 
+	/**
+	 * Second constructeur de l'�criture d'un mail ou on a besoin de l'utilisateur, l'adresse et l'objet
+	 * Utiliser pour repondre a un message que l'on a re�u
+	 * @param u
+	 * @param adr
+	 * @param obj
+	 */
 	public WriteMessage(Utilisateur u, String adr, String obj) {
 		this(u);
 		this.emailComboBox.setValue(adr);
@@ -45,24 +57,24 @@ public class WriteMessage extends Composition implements Alertable{
 	}
 
 
-	public void methode(String mesg) {
-		VBox alerte = new Alerte(mesg,this);
-    /**
+	/**
      * Creation d'une alerte pour informer l'utilisateur quand il manque une information 
      * lors de l'envoi d'un mail, tel que le nom du recepteur ou que le mail est manquant
      * @param mesg
      */
+	public void methode(String mesg) {
+		VBox alerte = new Alerte(mesg,this);
 		Stage s = new Stage();
 		Scene scene = new Scene(alerte,800,100);
 		Fenetre.paramStage(s, scene);
 		s.show();
 	}
 
-	private void chargerMel(){
-		try {
     /**
      * Creation de la liaison avec le serveur par le biais du MelInterface
      */
+	private void chargerMel(){
+		try {
 			this.mel = new Connectable<MelInterface>().connexion("Mel");
 		}catch (Exception e) {
 			e.printStackTrace();
