@@ -22,6 +22,11 @@ public class Mel implements MelInterface{
 	private Map<String ,MelListener> listRecu = new HashMap<>();
 	private Map<String ,MelListener> listEnvoye = new HashMap<>();
 	
+	/**
+	 * On recupere le sgbd du mail
+	 * @param _sgbd
+	 * @throws RemoteException
+	 */
 	public Mel (SGBD _sgbd) throws RemoteException {  
 		sgbd = _sgbd;
 	}
@@ -45,7 +50,8 @@ public class Mel implements MelInterface{
 	
 	
 	/**
-	 * 
+	 * Recuperation des messages des tchats dans les fichiers
+	 * @param exp renseigne le login de l'expediteur
 	 */
 	public String chargerMessage(String exp) {
 		return ManipulationFichier.chargerFichierTchat(this.chemin+exp).toString();
@@ -53,7 +59,10 @@ public class Mel implements MelInterface{
 	
 	/**
 	 * Recuperation de la liste de mail re�u selon un utilisateur
-	 * param receveur
+	 * @param receveur renseigne le login du receveur
+	 * @throws ClassNotFoundException
+	 * @throws RemoteException
+	 * @throws SQLException
 	 */
 	public List<MelCell> chargerMails(String receveur) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.chargerMails(receveur);
@@ -62,6 +71,10 @@ public class Mel implements MelInterface{
 	/**
 	 * Recuperation de la liste de mail emis selon un utilisateur
 	 * param receveur
+	 * @param receveur le login du receveur
+	 * @throws ClassNotFoundException
+	 * @throws RemoteException
+	 * @throws SQLException
 	 */
 	public List<MelCell> chargerMailsExp(String expediteur) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.chargerMailsExp(expediteur);
@@ -70,7 +83,10 @@ public class Mel implements MelInterface{
 	/**
 	 * Suppression de chemin pour atteindre un mail que l'on a envoyer
 	 * Il n'apparaitras plus dans la liste des mails envoyer
-	 * param id
+	 * @param id l'identifiant du mail
+	 * @throws ClassNotFoundException
+	 * @throws RemoteException
+	 * @throws SQLException
 	 */
 	public void supprMailExp(int id) throws RemoteException, ClassNotFoundException, SQLException {
 		String etat = sgbd.etatMail(id);
@@ -86,7 +102,10 @@ public class Mel implements MelInterface{
 	/**
 	 * Suppression de chemin pour atteindre un mail que l'on a re�u
 	 * Il n'apparaitras plus dans la liste des mails re�u
-	 * param id
+	 * @param id l'identifiant du mail
+	 * @throws ClassNotFoundException
+	 * @throws RemoteException
+	 * @throws SQLException
 	 */
 	public void supprMailRec(int id) throws RemoteException, ClassNotFoundException, SQLException {
 		String etat = sgbd.etatMail(id);
