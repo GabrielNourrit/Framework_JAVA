@@ -39,6 +39,15 @@ public class AffichageMessage extends Composition{
 	private MelInterface mailInterface;
 	private String type;
 
+	/**
+	 * Constructeur de l'affichage du message
+	 * On initialise l'utilisateur, le type 
+	 * Appelle des methodes pour l'affichage du message selectionne
+	 * @param u reference l'utilisateur
+	 * @param mc reference les informations du mail
+	 * @param t reference le type de l'utilisateur
+	 * @throws Exception
+	 */
 	public AffichageMessage(Utilisateur u, MelCell mc, String t) throws Exception {
 		this.u=u;
 		type=t;
