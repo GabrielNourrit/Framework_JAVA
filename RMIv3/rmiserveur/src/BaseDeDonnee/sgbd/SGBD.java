@@ -225,7 +225,7 @@ public abstract class SGBD {
 		return null;
 	}
 	
-	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { }
+	public int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { return -1;}
 	
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException { }
 	

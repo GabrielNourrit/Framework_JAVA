@@ -14,7 +14,7 @@ public interface GroupesInterface  extends Remote {
 	
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException;
 	
-	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException;
+	public int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	public List<String> getAllLogin(int idGr) throws RemoteException, ClassNotFoundException, SQLException;
 	

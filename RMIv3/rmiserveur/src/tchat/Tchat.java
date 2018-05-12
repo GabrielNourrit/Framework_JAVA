@@ -9,21 +9,22 @@ import java.util.Map;
 import java.util.Vector;
 
 import parametrage.PropertiesServeur;
+import util.Groupe;
 import util.ManipulationFichier;
 
 public class Tchat implements TchatInterface  {
 	static final long serialVersionUID = 42L;
-	private Map<Integer ,Vector <TchatListener>> list = new HashMap<>();
-	private Map<Integer ,StringBuffer> historique = new HashMap<>();
-	private String path;
+	private  Map<Integer ,Vector <TchatListener>> list = new HashMap<>();
+	private  Map<Integer ,StringBuffer> historique = new HashMap<>();
+	private  String path;
 
-	public Tchat(List<Integer> fichier)  throws RemoteException { 
+	public Tchat(List<Groupe> groups)  throws RemoteException { 
 		super();
 		this.path=PropertiesServeur.getStockageTchat();
-		for (Integer s : fichier) {
-			String c = path+"/"+s;
-			historique.put(s, ManipulationFichier.chargerFichierTchat(c));
-			list.put(s, new Vector <TchatListener> ());
+		for (Groupe s : groups) {
+			String c = path+"/"+s.getidGr();
+			historique.put(s.getidGr(), ManipulationFichier.chargerFichierTchat(c));
+			list.put(s.getidGr(), new Vector <TchatListener> ());
 		}
 	}
 
@@ -48,8 +49,9 @@ public class Tchat implements TchatInterface  {
 		list.get(groupe).remove(listener);
 	}
 	
-	public void ajouterGroupeTchat(Integer idGr) {
-		new File(path+idGr);
+	public void ajouterGroupeTchat(Integer idGr) throws java.rmi.RemoteException {
+		list.put(idGr, new Vector <TchatListener> ());
+		ManipulationFichier.sauverFichier(path+"/"+idGr, "");
 		historique.put(idGr, new StringBuffer(""));
 	}
 

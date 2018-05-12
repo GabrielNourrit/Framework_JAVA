@@ -2,9 +2,12 @@ package interfaceGraph;
 
 import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.VBox;
 import util.Connectable;
 import util.Fenetre;
 import util.Utilisateur;
@@ -48,7 +51,9 @@ public class ConnexionStyle2 extends ConnexionStyle{
 				connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
-					System.out.println(utilisateur);
+					this.id.setText("");
+					this.mdp.setText("");
+					
 					/*ScrollPane sp = new ScrollPane();
 					Inscription i = new Inscription();
 					Stage nouveauStage;
@@ -68,9 +73,12 @@ public class ConnexionStyle2 extends ConnexionStyle{
 				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog","Erreur");
 			}	
 			/*On efface les anciennes valeures une fois finie*/
-			this.id.setText("");
-			this.mdp.setText("");
+			
 		});
+	}
+	
+	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
+		this.boutonOk.addEventHandler(ActionEvent.ACTION, value);
 	}
 }
 

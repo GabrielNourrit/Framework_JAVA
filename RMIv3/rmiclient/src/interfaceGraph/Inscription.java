@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -36,7 +35,6 @@ public class Inscription extends Formulaire {
 	private TextField t_nom;
 	private TextField t_prenom;
 	private Button b_valider;
-	private Button b_annuler;
 	private Label l_groupe;
 	private ChoiceBox<Type> cb_type;
 	private Utilisateur utilisateur;
@@ -91,8 +89,7 @@ public class Inscription extends Formulaire {
 		t_nom = new TextField();
 		t_prenom = new TextField();
 		b_valider = new Button("Valider");
-		b_annuler = new Button("Annuler");
-		hb_validerAnnuler = new HBox(b_valider,b_annuler);
+		hb_validerAnnuler = new HBox(b_valider);
 		hb_validerAnnuler.setAlignment(Pos.CENTER);
 		l_groupe = new Label("Groupe : ");
 		TypesInterface connex;
@@ -120,12 +117,7 @@ public class Inscription extends Formulaire {
 			
 			if (t_login.getText()!="" && t_mdp.getText()!="") {
 				String mdp = BCrypt.hashpw(t_mdp.getText(), BCrypt.gensalt());
-				try {
-					utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				utilisateur = new Utilisateur(t_login.getText(), t_nom.getText(), t_prenom.getText(), cb_type.getSelectionModel().getSelectedItem());
 				utilisateur.setMdp(mdp);
 				try {
 					
@@ -150,9 +142,6 @@ public class Inscription extends Formulaire {
 		this.b_valider.addEventHandler(ActionEvent.ACTION, value);
 	}
 	
-	public void setAnnulerEvent(EventHandler<ActionEvent> value) {
-		b_annuler.addEventHandler(ActionEvent.ACTION, value);
-	}
 	
 	/**
 	 * Ecouteur d'evenement sur le choix du groupe

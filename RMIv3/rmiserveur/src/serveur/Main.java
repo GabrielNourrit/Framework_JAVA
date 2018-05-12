@@ -38,6 +38,16 @@ import tchat.TchatInterface;
 
 public class Main {
 	
+	private static TchatInterface tchat;
+	
+	private static GestionFichierInterface fichier;
+	private static ConnexionInterface connexion;
+	private static OperationUtilisateurInterface ou ;
+	private static UtilisateursInterface ui;
+	private static GroupesInterface gi;
+	private static TypesInterface ti;
+	private static MelInterface m;
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException, ClassNotFoundException, SQLException {
 		SettingServeurJVM.configureProperty();
 		SettingServeurJVM.useSecurityManager();
@@ -50,20 +60,19 @@ public class Main {
 		System.out.println(PropertiesServeur.getTypeSGBD());
 		SGBD sgbd = SGBD.determine(PropertiesServeur.getTypeSGBD());
 		
-		List<Integer> s = new ArrayList<>();
-		s.add(1);
-		s.add(2);
-		s.add(3);
+		List<Groupe> s = sgbd.getGroupes();
 		
-		TchatInterface tchat = new Tchat(s);
-		GestionFichierInterface fichier = new GestionFichier(sgbd);
-		ConnexionInterface connexion = new Connexion(sgbd);
-		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
-		UtilisateursInterface ui = new Utilisateurs(sgbd);
-		GroupesInterface gi = new Groupes(sgbd);
-		GestionTypeInterface ti = new GestionType(sgbd);
-		MelInterface m = new Mel(sgbd);
+		
+		
 		SondageInterface so = new Sondage(sgbd);
+		tchat = new Tchat(s);
+		fichier = new GestionFichier(sgbd);
+		connexion = new Connexion(sgbd);
+		ou = new OperationUtilisateur(sgbd);
+		ui = new Utilisateurs(sgbd);
+		gi = new Groupes(sgbd);
+		ti = new Types(sgbd);
+		m = new Mel(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);

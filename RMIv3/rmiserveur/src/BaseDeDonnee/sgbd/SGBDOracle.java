@@ -28,10 +28,12 @@ public class SGBDOracle extends SGBD {
 
 	private int j = -1;
 	private int t = -1;
+	private int idGr;
 	
 	public SGBDOracle() throws RemoteException {
 		super();
 		i = -1;
+		idGr= -1;
 	}
 
 	private static final String LINK_SETTING_ORACLE = "ressources/bdd/BDOracle.properties";
@@ -101,8 +103,9 @@ public class SGBDOracle extends SGBD {
 		executeUpdate("insert into utilisateurs (login,motDePasse,idType,etat) values ('"+login+"','"+mdp+"','"+type.getIdType()+"','VALID')");
 	}
 
-	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {
+	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {	
 		executeUpdate("insert into utilisateurs (login,nom,prenom,motDePasse,idType,etat) values ('"+login+"','"+nom+"','"+prenom+"','"+mdp+"','"+type.getIdType()+"','VALID')");
+		executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) values ('"+login+"',1, SYSDATE)");
 	}
 
 	public void modifAttriUser(String loginUse, String attribut,String valeur) throws ClassNotFoundException, SQLException {
@@ -251,8 +254,12 @@ public class SGBDOracle extends SGBD {
 		int t = 0;
 		ResultSet rs = executeSelect("select max(idtype) from types");
 		if (rs.next()) t = rs.getInt(1);
+	public int getNextvalGroupe() throws ClassNotFoundException, RemoteException, SQLException {
+		int i = -1;
+		ResultSet rs = executeSelect("select max(idGr) from groupes");
+		if (rs.next()) i = rs.getInt(1);
 		closeReq(rs);
-		return t;
+		return i;
 	}
 
 	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
@@ -266,23 +273,25 @@ public class SGBDOracle extends SGBD {
 		return lesGroupes;
 	}
 
-	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { 
-		executeUpdate("insert into groupes (idGr, libelle) values (groupes_id.NEXTVAL ,'"+groupe+"')");
-		ResultSet rs = executeSelect("select groupes_id.NEXTVAL from dual");
-		int idGr=-1;
-		if (rs.next()) { 
-			idGr=rs.getInt(1)-1;
-			if (lstUser != null ) {
-				for (String u: lstUser) {
-					executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+u+"',"+idGr+",SYSDATE)");
-				}
-			}	
+	public synchronized int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { 
+		if (idGr == -1) {
+			idGr = getNextvalGroupe();
 		}
-		closeReq(rs);
+		idGr++;
+		executeUpdate("insert into groupes (idGr, libelle) values (groupes_id.NEXTVAL ,'"+groupe+"')");
+		
+		if (lstUser != null ) {
+			for (String u: lstUser) {
+				executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+u+"',"+idGr+",SYSDATE)");
+			}
+		
+		}
+		return idGr;
 	}
 
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
-		executeUpdate("delete from groupe where idGr="+idGr);
+		executeUpdate("delete from faitPartieGroupe where idGr="+idGr);
+		executeUpdate("delete from groupes where idGr="+idGr);
 	}
 
 	public List<String> getAllLoginGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {

@@ -1,11 +1,12 @@
 package applicationTest;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
-
+import interfaceGraph.ConnexionStyle;
 import interfaceGraph.ConnexionStyle2;
+import interfaceGraph.GererGroupe;
+import interfaceGraph.ListeUtilisateur;
+import interfaceGraph.PoseFichier;
 import interfaceGraph.TchatGraphique;
+import interfaceGraph.TelechargerFichier;
 import interfaceGraph.mail.GestionMail;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -18,6 +19,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class Main extends Application{
@@ -29,58 +31,72 @@ public class Main extends Application{
 	private TabPane tab;
 	private Tab tchatTab;
 	private Tab mailTab;
+	private Tab ficPosTab;
+	private Tab ficDlTab;
 	
 	private TchatGraphique tchat;
 	private GestionMail gestionMail;
+	private PoseFichier poseFichier;
+	private GererGroupe gererGroupe;
+	private TelechargerFichier telechargerFichier;
+	private Button btnGroupe;
+	private Button btnUtilisateur;
+	private VBox vbButton;
+	private Scene scene;
 	
+	private ConnexionStyle connexion; 
+	private Label titreConnexion;
+	
+	private boolean modifierUtil;
 	
 	private Button deconnexion;
+	
+	private ScrollPane spConnexion;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			//VBox vb = new Inscription();
-			//VBox vb = new ConnexionStyle();
 			ScrollPane sp = new ScrollPane();
-			//VBox vb = new ModifierUtilisateur(new Utilisateur("metzgegu","Guillaume","metzger",null));
-			//VBox vb = new Inscription();
-			//sp.setContent(vb);
-			//vb.setAlignment(Pos.CENTER);
-			/*sp.setContent(p);
-			//p.setAlignment(Pos.CENTER);*/
 			
-			Label titreConnexion = new Label("Connexion");
+			titreConnexion = new Label("Connexion");
 			titreConnexion.setStyle("-fx-font: 16px \"Serif\"; -fx-padding: 10;");
 			titreConnexion.setAlignment(Pos.TOP_CENTER);
-			ConnexionStyle2 connexion = new ConnexionStyle2();
+			connexion = new ConnexionStyle();
 			connexion.setAlignment(Pos.BOTTOM_CENTER);
-			ScrollPane spConnexion = new ScrollPane();
+			spConnexion = new ScrollPane();
 			deconnexion =  new Button("se déconnecter");
+			deconnexion.setMinWidth(180);
 			deconnexion.setOnAction(event -> {
 				utilisateur = null;
 				vbConnexion = new VBox(titreConnexion, connexion);
 				spConnexion.setContent(vbConnexion);
 				vbConnexion.setAlignment(Pos.CENTER);
 				tab.getTabs().clear();
-				vbConnexion.setStyle("-fx-background-color: #cc1212;");
+				//vbConnexion.setStyle("-fx-background-color: #cc1212;");
+				titreConnexion.setText("Connexion");
+				connexion.setPostConnectEvent(e ->{
+					functionBtnCo();
+				});
 			});
 			vbConnexion = new VBox(titreConnexion, connexion);
 			spConnexion.setContent(vbConnexion);
 			spConnexion.setFitToWidth(true);
 			spConnexion.setFitToHeight(true);
 			vbConnexion.setAlignment(Pos.CENTER);
+			vbConnexion.setMinHeight(0);
 			
-			vbConnexion.setStyle("-fx-background-color: #cc1212;");
+			//vbConnexion.setStyle("-fx-background-color: #cc1212;");
 			VBox vbleft = new VBox(spConnexion);
 			
 			tab= new TabPane();
 			tchatTab = new Tab("Tchat");
 			mailTab = new Tab("Mail");
+			ficPosTab = new Tab("Pose Fichiers");
+			ficDlTab = new Tab("Telecharger Fichiers");
+			
 			//tab.getTabs().add(tchatTab);
 			
 			VBox vbright = new VBox(tab);
-			
-			
 			
 			HBox hbMain = new HBox(vbleft, vbright);
 			hbMain.setMinWidth(1100);
@@ -90,33 +106,18 @@ public class Main extends Application{
 			sp.setContent(hbMain);
 			sp.setFitToWidth(true);
 			sp.setFitToHeight(true);
-			connexion.setPostConnectEvent(event ->{
-				vbConnexion = new VBox(titreConnexion, deconnexion);
-				vbConnexion.setStyle("-fx-background-color: #00ea36;");
-				vbConnexion.setAlignment(Pos.CENTER);
-				spConnexion.setContent(vbConnexion);
+			
+		//	ActionEvent e = new ActionEvent(event -> {
 				
-				utilisateur = connexion.getUtilisateur();
-				try {
-					tchat = new TchatGraphique(utilisateur);
-					gestionMail = new GestionMail(utilisateur);
-					tchatTab.setContent(tchat);
-					mailTab.setContent(gestionMail);
-					tab.getTabs().add(tchatTab);
-					tab.getTabs().add(mailTab);
-				} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				titreConnexion.setText("Bonjour "+utilisateur.getLogin());
+		//	});
+			
+			connexion.setPostConnectEvent(event ->{
+				functionBtnCo();
 			});
-			Scene scene = new Scene(sp, 1100, 700);
-			//scene.getStylesheets().add("ressources/style.css");
+			scene = new Scene(sp, 1100, 700);
+			
 			primaryStage.setTitle("test");
-			primaryStage.setScene(scene);
+			Fenetre.paramStage(primaryStage, scene);
 			primaryStage.show();
 			
 		} catch(Exception e) {
@@ -127,6 +128,95 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		launch(args);
 		
+	}
+	
+	private void functionBtnCo() {
+		utilisateur = connexion.getUtilisateur();
+		if (utilisateur != null) {
+			
+			try {
+				
+				if (utilisateur.hasRight("DVC")) {
+					tchat = new TchatGraphique(utilisateur);
+					tchatTab.setContent(tchat);
+					tab.getTabs().add(tchatTab);
+				}
+				if (utilisateur.hasRight("DM")) {
+					gestionMail = new GestionMail(utilisateur);
+					mailTab.setContent(gestionMail);
+					tab.getTabs().add(mailTab);
+				}
+				if (utilisateur.hasRight("DTF")) {
+					telechargerFichier = new TelechargerFichier(utilisateur);
+					ficDlTab.setContent(telechargerFichier);
+					tab.getTabs().add(ficDlTab);
+				}
+				if (utilisateur.hasRight("DPF")) {
+					poseFichier = new PoseFichier(utilisateur);
+					ficPosTab.setContent(poseFichier);
+					tab.getTabs().add(ficPosTab);
+				}
+				
+				modifierUtil = false;
+				if (utilisateur.hasRight("DMG")) {
+					btnGroupe = new Button("Modifier Groupes");
+					btnGroupe.setStyle("-fx-padding: 10; -fx-margin: 10;");
+					btnGroupe.setMinWidth(180);
+					btnGroupe.setOnAction(e -> {
+						Stage windowModifier = new Stage();
+						GererGroupe gererGroupe = new GererGroupe();
+						ScrollPane spListUtilisateur = new ScrollPane();
+						spListUtilisateur.setContent(gererGroupe);
+						gererGroupe.setAlignment(Pos.CENTER);
+						spListUtilisateur.setFitToWidth(true);
+						spListUtilisateur.setFitToHeight(true);
+						Scene scene = new Scene(spListUtilisateur, 400, 400);
+						windowModifier.setTitle("Modification");
+						windowModifier.setScene(scene);
+						windowModifier.show();
+						
+					});
+					modifierUtil = true;
+				}
+				if (utilisateur.hasRight("DMU")) {
+					btnUtilisateur = new Button("Modifier utilisateur");
+					btnUtilisateur.setStyle("-fx-padding: 10; -fx-margin: 10;");
+					btnUtilisateur.setMinWidth(180);
+					btnUtilisateur.setOnAction(e -> {
+						Stage windowModifier = new Stage();
+						ListeUtilisateur listeUtilisateur = new ListeUtilisateur();
+						ScrollPane spListUtilisateur = new ScrollPane();
+						spListUtilisateur.setContent(listeUtilisateur);
+						listeUtilisateur.setAlignment(Pos.CENTER);
+						spListUtilisateur.setFitToWidth(true);
+						spListUtilisateur.setFitToHeight(true);
+						Scene scene = new Scene(spListUtilisateur, 400, 400);
+						windowModifier.setTitle("Modification");
+						windowModifier.setScene(scene);
+						windowModifier.show();
+						
+					});
+					if (modifierUtil) {
+						vbConnexion = new VBox(titreConnexion, deconnexion,btnUtilisateur, btnGroupe);
+					} else {
+						vbConnexion = new VBox(titreConnexion, deconnexion,btnUtilisateur);
+					}
+				} else {
+					vbConnexion = new VBox(titreConnexion, deconnexion);
+				}
+				//vbConnexion.setStyle("-fx-background-color: #00ea36;");
+				vbConnexion.setAlignment(Pos.CENTER);
+				spConnexion.setContent(vbConnexion);
+				
+				
+				
+				titreConnexion.setText("Bonjour "+utilisateur.getLogin());
+			} catch ( Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 
 }

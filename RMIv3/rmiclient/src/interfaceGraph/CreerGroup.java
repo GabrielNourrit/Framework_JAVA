@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import tchat.TchatInterface;
 import util.Connectable;
 import util.Fenetre;
 import util.Utilisateur;
@@ -44,13 +45,15 @@ public class CreerGroup extends Formulaire{
 	
 	
 	public CreerGroup() {
-		//GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 		genererSousComposant();
 		if (!(this instanceof ListUtilisateursGroupe)) {
 			refreshList();
 			ecouteurDefaultAction();
 		}
+		
+		
 		layoutDefaultParametre();
+		
 	}
 
 	protected void genererSousComposant() {
@@ -89,7 +92,9 @@ public class CreerGroup extends Formulaire{
 					try {
 						//GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");
 						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
-						connex.ajouterGroupe(text1.getText(), listLogin);
+						int idGr = connex.ajouterGroupe(text1.getText(), listLogin);
+						TchatInterface connex2 = new Connectable<TchatInterface>().connexion("Tchat");
+						connex2.ajouterGroupeTchat(idGr);
 						text1.setText("");
 						for (Utilisateur u: olstUserInscrit) {
 							olstUser.add(u);
@@ -153,7 +158,6 @@ public class CreerGroup extends Formulaire{
             //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
 			connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lstUserInscrit = connex.getUsers();
-			System.out.println(lstUserInscrit);
 			olstUser = FXCollections.observableArrayList(lstUserInscrit);
 			
 			utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
@@ -179,7 +183,8 @@ public class CreerGroup extends Formulaire{
 	}
 
 	public void setPostAdd(EventHandler<ActionEvent> value) {
-		b_valider.addEventHandler(ActionEvent.ACTION, value);	
+		b_valider.addEventHandler(ActionEvent.ACTION, value);
+		
 	}
 	
 }

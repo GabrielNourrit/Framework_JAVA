@@ -30,8 +30,9 @@ public class Groupes implements GroupesInterface {
 	}
 
 	@Override
-	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException {
-		sgbd.ajouterGroupe(groupe, lstUser);
+	public int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException {
+		int idGr = sgbd.ajouterGroupe(groupe, lstUser);
+		return idGr;
 	}
 
 	@Override

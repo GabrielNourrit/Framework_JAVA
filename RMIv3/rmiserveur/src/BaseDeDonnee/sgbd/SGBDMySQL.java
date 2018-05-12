@@ -68,7 +68,7 @@ public class SGBDMySQL extends SGBD {
 	
 	public boolean verifierMdp(String login, String mdp) throws SQLException, ClassNotFoundException, RemoteException {
 		String mdpCrypt="";
-		ResultSet rs = executeSelect("select motDePasse from utilisateurs where login='"+ login +"'");
+		ResultSet rs = executeSelect("select motDePasse from utilisateurs where login='"+ login +"' and etat='VALID'");
 		if (rs.next()) mdpCrypt = rs.getString(1);
 		closeReq(rs);
 		if(BCrypt.checkpw(mdp, mdpCrypt)) return true;
@@ -89,8 +89,9 @@ public class SGBDMySQL extends SGBD {
 		executeUpdate("insert into utilisateurs (login,motDePasse,idType,etat) values ('"+login+"','"+mdp+"','"+type.getIdType()+"','VALID')");
 	}
 	
-	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {
+	public void creaUse (String login,String mdp,String nom,String prenom,Type type) throws ClassNotFoundException, SQLException {	
 		executeUpdate("insert into utilisateurs (login,nom,prenom,motDePasse,idType,etat) values ('"+login+"','"+nom+"','"+prenom+"','"+mdp+"','"+type.getIdType()+"','VALID')");
+		executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) values ("+login+",1, '12-SEP-2017');");
 	}
 	
 	public void modifAttriUser(String loginUse, String attribut,String valeur) throws ClassNotFoundException, SQLException {
@@ -237,19 +238,25 @@ public class SGBDMySQL extends SGBD {
 		return lesGroupes;
 	}
 	
-	public void ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { 
-		executeUpdate("insert into groupes (idGr, libelle) values (groupes_id.NEXTVAL ,'"+groupe+"')");
-		ResultSet rs = executeSelect("select groupes_id.NEXTVAL from dual");
-		int idGr=-1;
-		if (rs.next()) { 
-			idGr=rs.getInt(1)-1;
-			if (lstUser != null ) {
-				for (String u: lstUser) {
-					executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+u+"',"+idGr+",SYSDATE)");
-				}
-			}	
-		}
+	public int getNextvalGroupe() throws ClassNotFoundException, RemoteException, SQLException {
+		int i = -1;
+		ResultSet rs = executeSelect("select max(idGr) from groupess");
+		if (rs.next()) i = rs.getInt(1);
 		closeReq(rs);
+		return i;
+	}
+	
+	public int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException { 
+		int idGr = getNextvalGroupe();
+		executeUpdate("insert into groupes (idGr, libelle) values (groupes_id.NEXTVAL ,'"+groupe+"')");
+		
+		if (lstUser != null ) {
+			for (String u: lstUser) {
+				executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+u+"',"+idGr+",SYSDATE)");
+			}
+		
+		}
+		return i;
 	}
 	
 	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {

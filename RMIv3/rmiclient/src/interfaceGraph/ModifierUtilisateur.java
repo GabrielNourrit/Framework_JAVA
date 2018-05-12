@@ -1,13 +1,16 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
+import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
+import BaseDeDonnee.gestionUtilisateur.TypesInterface;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -17,6 +20,7 @@ import javafx.stage.Stage;
 import util.Connectable;
 import util.Fenetre;
 import util.LimitedTextField;
+import util.Type;
 import util.Utilisateur;
 
 public class ModifierUtilisateur extends Formulaire {
@@ -56,6 +60,8 @@ public class ModifierUtilisateur extends Formulaire {
 			
 			t_nom = new TextField(utilisateur.getNom());
 			t_prenom = new TextField(utilisateur.getPrenom());
+			
+			//cbxType.getSelectionModel().select(utilisateur.getType());
 			LimitedTextField.addTextLimiter(t_nom, 50);
 			LimitedTextField.addTextLimiter(t_prenom, 50);
 		} catch (Exception e) {
@@ -75,11 +81,7 @@ public class ModifierUtilisateur extends Formulaire {
 	protected void ecouteurDefaultAction() {
 		b_valider.addEventHandler(ActionEvent.ACTION,event ->{
 			Utilisateur uNew = null;
-			try {
-				uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
-			} catch (RemoteException e1) {
-				e1.printStackTrace();
-			}
+			uNew = new Utilisateur(utilisateur.getLogin(), t_nom.getText(), t_prenom.getText(), utilisateur.getType());
 			OperationUtilisateurInterface connex;
 			try {
 				connex = connectToServeur();
