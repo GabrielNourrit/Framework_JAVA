@@ -47,6 +47,13 @@ public class GestionMail extends Composition{
 	private List<MelCell> listeMailEnvoye = new ArrayList<>();
 	private String action = "recu";
 
+	/**
+	 * Constructeur de la gestion des mails que l'on a receptionner ou envoyer
+	 * Initialisation de de l'utilisateur, de la liste des mails re�u et celle envoyer
+	 * Appelle des diff�rentes methodes
+	 * @param u reference l'utilisateur
+	 * @throws Exception
+	 */
 	public GestionMail(Utilisateur u) throws Exception{
 		this.moi = u;
 		//this.mel = (MelInterface) registry.lookup("Mel");
@@ -198,7 +205,7 @@ public class GestionMail extends Composition{
 
 	/**
 	 * Ajout en temps et en heure des messages que l'on re�ois sans avoir a relancer le serveur
-	 * @param message
+	 * @param message reference les informations d'un mail
 	 */
 	protected  void ajouterMailRecu(MelCell message) {
 		listeMailRecu.add(message);
@@ -208,7 +215,7 @@ public class GestionMail extends Composition{
 
 	/**
 	 * Ajout en temps et en heure des messages que l'on a envoyer sans avoir a relancer le serveur
-	 * @param message
+	 * @param message reference les informations d'un mail
 	 */
 	protected  void ajouterMailEnvoye(MelCell message) {
 		listeMailEnvoye.add(message);
@@ -219,7 +226,7 @@ public class GestionMail extends Composition{
 	/**
 	 * On affiche la liste des messages re�u selon notre identifiant
 	 * Les information que l'on affiche sont: La date, l'expediteur et l'objet
-	 * @param mc
+	 * @param mc reference une liste de mail
 	 */
 	private void chargement(List<MelCell> mc){
 		list = FXCollections.observableArrayList(mc);
