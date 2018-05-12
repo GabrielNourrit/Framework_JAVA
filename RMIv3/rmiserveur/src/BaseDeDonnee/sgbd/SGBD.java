@@ -88,8 +88,9 @@ public abstract class SGBD {
 	
 	/**
 	 * Cr�ation d'un utilisateur avec les deux informations principales et obligatoires (login et mot de passe et type).
-	 * @param login
-	 * @param mdp
+	 * @param login de l'utilisateur
+	 * @param mdp de l'utilisateur
+	 * @param type de l'utilisateur
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
@@ -101,11 +102,11 @@ public abstract class SGBD {
 	}
 	/**
 	 * Cr�ation d'un utilisateur avec les infos principale + nom et pr�nom
-	 * @param login
-	 * @param mdp
-	 * @param nom
-	 * @param prenom
-	 * @param type
+	 * @param login de l'utilisateur
+	 * @param mdp de l'utilisateur
+	 * @param nom de l'utilisateur
+	 * @param prenom de l'utilisateur
+	 * @param type de l'utilisateur
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
@@ -114,9 +115,9 @@ public abstract class SGBD {
 	
 	/**
 	 * Fonction permettant de rentrer un utilisateur puis un attribut que l'on veut modifier et enfin la valeur que l'attribut doit prendre
-	 * @param loginUse
-	 * @param attribut
-	 * @param valeur
+	 * @param loginUse de l'utilisateur
+	 * @param attribut de l'utilisateur
+	 * @param valeur de l'utilisateur
 	 * @throws ClassNotFoundException 
 	 * @throws SQLException 
 	 */
