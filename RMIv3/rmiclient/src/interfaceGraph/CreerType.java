@@ -1,12 +1,9 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
-import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
-import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +19,6 @@ import javafx.scene.layout.VBox;
 import util.Connectable;
 import util.Droit;
 import util.Fenetre;
-import util.Type;
-import util.Utilisateur;
 
 public class CreerType extends Formulaire{
 
@@ -58,9 +53,7 @@ public class CreerType extends Formulaire{
 		layoutDefaultParametre();
 	}
 
-	protected void genererSousComposant() {
-		//VBox vb = new VBox();
-		
+	protected void genererSousComposant() {	
 		b_valider = new Button("ajouter");
 		text1 = new TextField();
 		label1 = new Label("Droit :");
@@ -84,7 +77,6 @@ public class CreerType extends Formulaire{
 	}
 
 	protected void ecouteurDefaultAction() {
-		// TODO Auto-generated method stub
 		
 			b_valider.addEventHandler(ActionEvent.ACTION, event -> {
 				if (!("".equals(text1.getText()))) {

@@ -1,16 +1,11 @@
 package interfaceGraph;
 
-import java.util.List;
-
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
-import BaseDeDonnee.gestionUtilisateur.TypesInterface;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -20,7 +15,6 @@ import javafx.stage.Stage;
 import util.Connectable;
 import util.Fenetre;
 import util.LimitedTextField;
-import util.Type;
 import util.Utilisateur;
 
 public class ModifierUtilisateur extends Formulaire {

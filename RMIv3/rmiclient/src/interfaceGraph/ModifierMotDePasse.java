@@ -64,7 +64,6 @@ public class ModifierMotDePasse extends Formulaire {
 				if (t_mdpNew1.getText().equals(t_mdpNew2.getText())) {
 					String mdp = BCrypt.hashpw(t_mdpNew2.getText(), BCrypt.gensalt());
 					try {
-						//OperationUtilisateurInterface connex = (OperationUtilisateurInterface) registry.lookup("OperationUtilisateur");
 						OperationUtilisateurInterface connex = new Connectable<OperationUtilisateurInterface>().connexion("OperationUtilisateur");
 						connex.ModifierMdpUtilisateur(utilisateur.getLogin(), mdp);
 					} catch (Exception e) {

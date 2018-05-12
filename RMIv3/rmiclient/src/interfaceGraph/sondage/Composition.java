@@ -1,6 +1,5 @@
 package interfaceGraph.sondage;
 
-import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 

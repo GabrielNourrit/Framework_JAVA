@@ -1,12 +1,13 @@
 package interfaceGraph.sondage;
+
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class SondageBouton extends Composition{
@@ -44,7 +45,7 @@ public class SondageBouton extends Composition{
 						sp.setFitToWidth(true);
 						sp.setFitToHeight(true);
 						Scene scene = new Scene(sp, 300, 250);
-						nouveauStage.setScene(scene);
+						Fenetre.paramStage(nouveauStage, scene);
 						nouveauStage.show();
 
 		});

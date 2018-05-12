@@ -1,7 +1,6 @@
 package interfaceGraph.sondage;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,18 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.layout.VBox;
 import sondage.SondageInterface;
 import sondage.SondageListener;
 import sondage.SondageObj;
-import tchat.TchatInterface;
 import util.Connectable;
-import util.Groupe;
 import util.Utilisateur;
 
 public class SondaGeneral extends Composition{
@@ -147,13 +142,14 @@ public class SondaGeneral extends Composition{
 	
 	private class Listener extends UnicastRemoteObject implements SondageListener {
 
+		private static final long serialVersionUID = 1L;
+
 		public Listener() throws RemoteException {
 			super();
 		}
 
 		@Override
 		public void nouveauVote(String resultat, Integer sondage) {
-			// TODO Auto-generated method stub
 			Platform.runLater(
 					() -> {
 						ajouterVote(resultat,sondage);
@@ -168,7 +164,6 @@ public class SondaGeneral extends Composition{
 						try {
 							ajouterSondage(sondage);
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

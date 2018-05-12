@@ -1,21 +1,16 @@
 package interfaceGraph;
 
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
-import BaseDeDonnee.gestionUtilisateur.TypesInterface;
-import fichier.GestionFichierInterface;
-import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import util.Connectable;
 import util.Droit;
+import util.Fenetre;
 import util.Type;
-import util.Utilisateur;
 
 public class ListDroitsType extends CreerType{
 private Type type;
@@ -34,10 +29,8 @@ private Type type;
 	
 	@Override
 	protected void refreshList() {
-		GestionTypeInterface connex;
 		try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (GestionTypeInterface) registry.lookup("Types");
+			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
 			lstDroitNonInscrit = connex.getAllDroitNotInType(type.getIdType());
 			lstDroitInscrit = connex.getAllDroitInType(type.getIdType());
 			
@@ -50,13 +43,7 @@ private Type type;
 			olstDroitInscrit = FXCollections.observableArrayList(lstDroitInscrit);
 			droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Impossible de se connecter");
-			alert.setHeaderText(null);
-			alert.setContentText("Impossible de se connecter");
-
-			alert.showAndWait();
-			e.printStackTrace();
+			Fenetre.creatAlert(AlertType.WARNING, "Impossible de se connecter", "Impossible de se connecter");
 		}
 		
 	}
@@ -66,24 +53,8 @@ private Type type;
 			Droit d = getDroitNonInscritSelected();
 			if (d != null) {
 				olstDroitInscrit.add(d);
-				olstDroit.remove(d);
-				
+				olstDroit.remove(d);				
 				droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
-				
-				GroupesInterface connex;
-				try {
-					/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-		            connex = (GroupesInterface) registry.lookup("Groupes");
-		            connex.ajouterUtilisateur(type.getIdType(), d.getLibelle());*/
-				} catch (Exception e) {
-					Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Impossible de ce connecter");
-					alert.setHeaderText(null);
-					alert.setContentText("Impossible de ce connecter");
-
-					alert.showAndWait();
-					e.printStackTrace();
-				}
 			} 
 		});
 		
@@ -93,23 +64,9 @@ private Type type;
 				olstDroit.add(d);
 				olstDroitInscrit.remove(d);
 				droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
-				
-				/*try {
-					Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-		            connex = (GroupesInterface) registry.lookup("Groupes");
-		            connex.supprimerUtilisateur(type.getIdType(), d.getLibelle());
-				} catch (Exception e) {
-					Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Impossible de ce connecter");
-					alert.setHeaderText(null);
-					alert.setContentText("Impossible de ce connecter");
-
-					alert.showAndWait();
-					e.printStackTrace();
-				}*/
-				
 			} 
 		});
+		
 		b_valider.setOnAction(event->{
 			GestionTypeInterface connex;
 			List<String> l = new ArrayList<>();

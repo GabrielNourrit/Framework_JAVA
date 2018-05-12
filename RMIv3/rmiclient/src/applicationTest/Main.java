@@ -1,7 +1,6 @@
 package applicationTest;
 
 import interfaceGraph.ConnexionStyle;
-import interfaceGraph.ConnexionStyle2;
 import interfaceGraph.GererGroupe;
 import interfaceGraph.ListeUtilisateur;
 import interfaceGraph.PoseFichier;
@@ -11,6 +10,7 @@ import interfaceGraph.mail.GestionMail;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -121,7 +121,7 @@ public class Main extends Application{
 			primaryStage.show();
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Impossible de ce connecter");
 		}
 	}
 	
@@ -172,7 +172,7 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						windowModifier.setScene(scene);
+						Fenetre.paramStage(windowModifier, scene);
 						windowModifier.show();
 						
 					});
@@ -192,7 +192,7 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						windowModifier.setScene(scene);
+						Fenetre.paramStage(windowModifier, scene);
 						windowModifier.show();
 						
 					});
@@ -212,8 +212,7 @@ public class Main extends Application{
 				
 				titreConnexion.setText("Bonjour "+utilisateur.getLogin());
 			} catch ( Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Impossible de ce connecter");
 			}
 			
 		}

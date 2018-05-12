@@ -1,6 +1,5 @@
 package tchat;
 
-import java.io.File;
 import java.rmi.*;
 import java.util.Enumeration;
 import java.util.HashMap;

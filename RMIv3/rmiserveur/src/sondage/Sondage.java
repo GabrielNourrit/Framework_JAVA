@@ -1,6 +1,5 @@
 package sondage;
 
-import java.io.File;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,11 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import BaseDeDonnee.MethodeServeur;
 import BaseDeDonnee.sgbd.SGBD;
-import oracle.net.aso.s;
-import tchat.TchatInterface;
-import tchat.TchatListener;
 import util.Utilisateur;
 
 public class Sondage  implements SondageInterface{
@@ -42,7 +37,7 @@ public class Sondage  implements SondageInterface{
 			ok = true;
 			resultat.put(i, reponses);
 			list.put(i, new Vector <SondageListener> ());
-			System.out.println(i);
+			//System.out.println(i);
 			notifyListenersNew(new SondageObj(i, owner,question,reponses,multiple,date,0));
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -52,9 +47,9 @@ public class Sondage  implements SondageInterface{
 	}
 
 	public synchronized boolean updateSondage(String actor,int id, ArrayList<String> ret) throws RemoteException {
-		System.out.println(id);
+		//System.out.println(id);
 		boolean ok = false;
-		System.out.println(resultat.get(id));
+		//System.out.println(resultat.get(id));
 		String[] str = resultat.get(id).split(";");
 		String res = "";
 		for (int i=0,j=1; j<=str.length;i+=2,j+=2) {
@@ -62,7 +57,7 @@ public class Sondage  implements SondageInterface{
 			else  res+= str[i] + ";" + str[j] + ";";
 		}
 		try {
-			System.out.println(actor + " " + id);
+			//System.out.println(actor + " " + id);
 			sgbd.modifierVotes(actor,id,res);
 			resultat.put(id,res);
 			notifyListeners(res, id);
@@ -71,7 +66,7 @@ public class Sondage  implements SondageInterface{
 			e.printStackTrace();
 		}
 		
-		System.out.println(res);
+		//System.out.println(res);
 		return ok;
 	}
 
@@ -90,7 +85,7 @@ public class Sondage  implements SondageInterface{
 	@Override
 	public List<SondageObj> getSondageNew(Utilisateur owner) throws RemoteException {
 		try {
-			System.out.println( sgbd.getSondage(owner,0));
+			//System.out.println( sgbd.getSondage(owner,0));
 			return sgbd.getSondage(owner,0);		
 		}catch(Exception e) {
 			e.printStackTrace();

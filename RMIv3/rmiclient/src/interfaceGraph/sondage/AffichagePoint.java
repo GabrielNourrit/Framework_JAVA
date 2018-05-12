@@ -1,20 +1,12 @@
 package interfaceGraph.sondage;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -23,6 +15,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import sondage.SondageInterface;
 import sondage.SondageObj;
+import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class AffichagePoint extends Composition{
@@ -33,7 +27,6 @@ public class AffichagePoint extends Composition{
 	private VBox vb;
 	private ToggleGroup group;
 	private Utilisateur user;
-	Registry registry=null;	
 	SondageObj so;
 	private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
 	
@@ -98,8 +91,7 @@ public class AffichagePoint extends Composition{
 				try {
 					
 					ArrayList<String> ret = new ArrayList<String>();
-					registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-					connect = (SondageInterface) registry.lookup("Sondage");
+					connect = new Connectable<SondageInterface>().connexion("Sondage");
 					System.out.println(this.selectedCheckBoxes);
 					for(CheckBox cb : this.selectedCheckBoxes) {
 						int index = Integer.parseInt(cb.getUserData().toString());
@@ -111,16 +103,8 @@ public class AffichagePoint extends Composition{
 					}
 					System.out.println(ret);
 					connect.updateSondage(user.getLogin(),so.getId(), ret);//sondageListToString(ret));
-				 
-				} catch(NullPointerException ex) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Error Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Veuillez selectionner une proposition ! ");
-				alert.showAndWait();
 			}catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Fenetre.creatAlert(AlertType.ERROR, "Error Dialog", "Veuillez selectionner une proposition ! ");
 			}
 		});
 		

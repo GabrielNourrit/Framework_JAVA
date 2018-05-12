@@ -90,7 +90,6 @@ public class CreerGroup extends Formulaire{
 						listLogin.add(u.getLogin());
 					}
 					try {
-						//GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");
 						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 						int idGr = connex.ajouterGroupe(text1.getText(), listLogin);
 						TchatInterface connex2 = new Connectable<TchatInterface>().connexion("Tchat");
@@ -155,7 +154,6 @@ public class CreerGroup extends Formulaire{
 	protected void refreshList() {
 		UtilisateursInterface connex;
 		try {
-            //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
 			connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lstUserInscrit = connex.getUsers();
 			olstUser = FXCollections.observableArrayList(lstUserInscrit);

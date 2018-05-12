@@ -3,9 +3,6 @@ package sondage;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javafx.scene.Node;
-import javafx.scene.Parent;
-
 public class SondageObj implements Serializable{
 	/**
 	 * 

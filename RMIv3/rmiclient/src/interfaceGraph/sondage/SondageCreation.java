@@ -1,8 +1,5 @@
 package interfaceGraph.sondage;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 
-import connexion.ConnexionInterface;
 import interfaceGraph.Composition;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -15,6 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sondage.SondageInterface;
+import util.Connectable;
+import util.Fenetre;
 import util.Utilisateur;
 
 public class SondageCreation extends Composition{
@@ -53,11 +52,7 @@ public class SondageCreation extends Composition{
 	}
 
 	private void prblm(String arg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error Dialog");
-		alert.setHeaderText(null);
-		alert.setContentText(arg);
-		alert.showAndWait();
+		Fenetre.creatAlert(AlertType.ERROR,"Error Dialog" ,arg );
 	}
 
 	private boolean tailleAcceptable(String t) {
@@ -96,8 +91,7 @@ public class SondageCreation extends Composition{
 						}else {
 							//--TRAITEMENT 3
 
-							Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-							SondageInterface s = (SondageInterface) registry.lookup("Sondage");
+							SondageInterface s = new Connectable<SondageInterface>().connexion("Sondage");
 
 							s.creerSondage(u.getLogin(),this.question.getText(), reponses, this.multiple.isChecked(), this.date.getValue().toString());
 
@@ -107,8 +101,7 @@ public class SondageCreation extends Composition{
 					}catch(NullPointerException e) {
 						prblm("Veuillez selectionner une date avec le calendrier.");
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						prblm("Erreur connexion serveur");
 					}
 				}
 
