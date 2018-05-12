@@ -48,6 +48,15 @@
 	-fx-background-radius: 10px;
 }
 
+#mail-msg {
+	-fx-background-color: white;
+	-fx-padding: 6 10 0 10;
+}
+
+#sondage {
+	-fx-background-color: white;
+}
+
 /*#tchat-list {
 -fx-background-color: linear-gradient(#04B45F, #81F79F);
 }*/

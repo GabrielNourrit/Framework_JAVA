@@ -3,10 +3,6 @@ package util;
 import java.io.Serializable;
 
 public class Droit implements Serializable{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5082621310223039635L;
 	private String libelle;
 	private String id;

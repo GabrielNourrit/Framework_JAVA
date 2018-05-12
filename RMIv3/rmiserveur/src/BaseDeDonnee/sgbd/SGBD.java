@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import BaseDeDonnee.connexion.ConnexionBase;
 import fichier.Fichier;
 import mail.MelCell;
+import sondage.SondageObj;
 import util.Droit;
 import util.Groupe;
 import util.Type;
@@ -239,7 +240,7 @@ public abstract class SGBD {
 	
 	public List<Type> getAllType()  throws RemoteException, ClassNotFoundException, SQLException { return null; }
 
-	public void ajouterType(String type) throws RemoteException, ClassNotFoundException, SQLException {
+	public void ajouterType(String type, List<Droit> l) throws RemoteException, ClassNotFoundException, SQLException {
 	}
 	
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException{
@@ -261,4 +262,15 @@ public abstract class SGBD {
 	}
 	public void modifEtatMail(int id, String newEtat) throws ClassNotFoundException, SQLException {
 	}
+	public int ajouterSondage(String owner, String question, String reponses,int multiple, String date) throws RemoteException, ClassNotFoundException, SQLException{
+		return -1;
+	}
+
+	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {}
+
+	public List<SondageObj> getSondage(Utilisateur owner, int fait) {return null;}
+	
+	public Map<Integer,String> getAllSondage() throws ClassNotFoundException, RemoteException, SQLException {return null;}
+	
+	public void modifierType(Type type, List<Droit> l) throws ClassNotFoundException, SQLException {}
 }

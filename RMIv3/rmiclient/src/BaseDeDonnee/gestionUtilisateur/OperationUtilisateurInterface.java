@@ -4,10 +4,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-import BaseDeDonnee.MethodeServeur;
 import util.Utilisateur;
 
 public interface OperationUtilisateurInterface extends Remote,MethodeServeur {
+public interface OperationUtilisateurInterface extends Remote {
 	public boolean ModifierUtilisateur(Utilisateur uOld, Utilisateur uNew) throws RemoteException, ClassNotFoundException, SQLException;
 	
 	public boolean SupprimerUtilisateur(String login) throws RemoteException, ClassNotFoundException, SQLException;

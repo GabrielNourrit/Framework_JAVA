@@ -5,9 +5,8 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
 import util.Utilisateur;
-import BaseDeDonnee.MethodeServeur;
 
-public interface MelInterface extends Remote, MethodeServeur{
+public interface MelInterface extends Remote{
 
 	public List<Utilisateur> getAllUsers() throws RemoteException, ClassNotFoundException, SQLException;
 	public void saveMessage(String u, String receveur, String message,String objet) throws RemoteException, ClassNotFoundException, SQLException;

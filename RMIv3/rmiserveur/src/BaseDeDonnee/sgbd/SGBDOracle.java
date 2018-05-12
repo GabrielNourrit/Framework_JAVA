@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -15,6 +17,7 @@ import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionOracle;
 import fichier.Fichier;
 import mail.MelCell;
+import sondage.SondageObj;
 import util.Droit;
 import util.Groupe;
 import util.Type;
@@ -23,6 +26,9 @@ import util.Utilisateur;
 
 public class SGBDOracle extends SGBD {
 
+	private int j = -1;
+	private int t = -1;
+	
 	public SGBDOracle() throws RemoteException {
 		super();
 		i = -1;
@@ -135,9 +141,10 @@ public class SGBDOracle extends SGBD {
 	}
 
 	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
-		if (i==-1) i = getNextvalMail(); 
+		if (i==-1) i = getNextvalMail();
+		i++;
 		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet +"')");
-		return i++;
+		return i;
 	}
 
 	public void supprMail(int id) throws ClassNotFoundException, SQLException {
@@ -225,11 +232,27 @@ public class SGBDOracle extends SGBD {
 	}
 
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
-		int i = -1;
+		int i = 0;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
 		if (rs.next()) i = rs.getInt(1);
 		closeReq(rs);
 		return i;
+	}
+	
+	public int getNextvalSondage() throws ClassNotFoundException, RemoteException, SQLException {
+		int j = 0;
+		ResultSet rs = executeSelect("select max(idson) from sondage");
+		if (rs.next()) j = rs.getInt(1);
+		closeReq(rs);
+		return j;
+	}
+	
+	public int getNextvalType() throws ClassNotFoundException, RemoteException, SQLException {
+		int t = 0;
+		ResultSet rs = executeSelect("select max(idtype) from types");
+		if (rs.next()) t = rs.getInt(1);
+		closeReq(rs);
+		return t;
 	}
 
 	public List<Groupe> getGroupes()  throws RemoteException, ClassNotFoundException, SQLException {
@@ -303,8 +326,23 @@ public class SGBDOracle extends SGBD {
 		return types; 
 	}
 
-	public void ajouterType(String type) throws RemoteException, ClassNotFoundException, SQLException {
+	public void ajouterType(String type, List<Droit> l) throws RemoteException, ClassNotFoundException, SQLException {
 		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
+		if (t == -1) t=getNextvalType();
+		t++;
+		for (Droit d : l) {
+			executeUpdate("insert into possede (idD,idType) values ('"+d.getId()+"','"+t+"')");
+		}
+		
+	}
+	
+	public void modifierType(Type type, List<Droit> l) throws ClassNotFoundException, SQLException {
+		executeUpdate("delete from possede where idType='"+type.getLibelle()+"'");
+		executeUpdate("update type set libelle='"+type.getLibelle()+"' where idType="+type.getIdType());
+		for (Droit d : l) {
+			executeUpdate("insert into possede (idD,idType) values ('"+d.getId()+"','"+type.getIdType()+"')");
+		}
+		
 	}
 
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
@@ -355,5 +393,50 @@ public class SGBDOracle extends SGBD {
 		}
 		closeReq(rs);
 		return droits; 
+	}
+	
+	public synchronized int ajouterSondage(String owner, String question, String reponses,int multiple, String date) throws RemoteException, ClassNotFoundException, SQLException{
+		if (j == -1) j = getNextvalSondage();
+		System.out.println("J REQUETE : " +j);
+		j++;
+		executeUpdate("insert into sondage(idSon,libelle,dateDebut,dateFin,resultat,login,multiple,total) values ( sondage_id.nextval,'"+question+"',SYSDATE,TO_DATE('"+date+"','yyyy-mm-dd'),'"+reponses+"','"+owner+"',"+multiple+",0)");
+		return j;
+	}
+	
+
+	public List<SondageObj> getSondage(Utilisateur owner, int fait) {
+		List<SondageObj> sf = new ArrayList<SondageObj>();
+		try {
+			ResultSet rs = null;
+			if(fait==1) {
+			   rs = executeSelect("select * from sondage where idSon in (select idSon from vote where login='"+owner.getLogin()+"')");
+			}else {
+			   rs = executeSelect("select * from sondage where idSon not in (select distinct idSon from vote where login='"+owner.getLogin()+"')");
+			}
+			while (rs.next()) {
+				boolean multiple;
+				if (rs.getInt("multiple")==1) {multiple = true;} else multiple=false; 
+				sf.add(new SondageObj(rs.getInt("idSon"), rs.getString("login"), rs.getString("libelle"), rs.getString("resultat"), multiple, rs.getDate("dateFin").toString(), rs.getInt("total")));
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return sf;
+		}
+	
+	public Map<Integer,String> getAllSondage() throws ClassNotFoundException, RemoteException, SQLException {
+		Map<Integer,String> sondage = new HashMap<>();
+		ResultSet rs = executeSelect("select idSon,resultat from sondage");
+		while (rs.next()) {
+			sondage.put(rs.getInt(1),rs.getString(2));
+		}		
+		return sondage;
+	}
+	
+	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("update sondage set resultat ='"+resultat+"' where idSon="+id);
+		executeUpdate("insert into vote values ("+id+",'"+actor+"',SYSDATE)");
 	}
 }

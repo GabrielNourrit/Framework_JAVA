@@ -15,6 +15,7 @@ import BaseDeDonnee.connexion.ConnexionBase;
 import BaseDeDonnee.connexion.ConnexionMySQL;
 import fichier.Fichier;
 import mail.MelCell;
+import sondage.SondageObj;
 import util.Droit;
 import util.Groupe;
 import util.Type;
@@ -331,5 +332,41 @@ public class SGBDMySQL extends SGBD {
 			droits.add(d);
 		}
 		return droits; 
+	}
+	
+	public int ajouterSondage(String owner, String question, String reponses,int multiple, String date) throws RemoteException, ClassNotFoundException, SQLException{
+		executeUpdate("insert into sondage(libelle,dateDebut,dateFin,resultat,login,multiple,fait,total) values ('"+question+"',SYSDATE,STR_TO_DATE('"+date+"','%y-%d-%Y'),'"+reponses+"','"+owner+"',"+multiple+",0,0)");
+		return 0;
+	}
+	
+
+	public List<SondageObj> getSondage(Utilisateur owner, int fait) {
+		List<SondageObj> sf = new ArrayList<SondageObj>();
+		try {
+			ResultSet rs = null;
+			if(fait==1) {
+			   rs = executeSelect("select * from sondage where idSon in (select distinct idSon from vote)");
+			}else {
+			   rs = executeSelect("select * from sondage where idSon not in (select distinct idSon from vote)");
+			}
+			while (rs.next()) {
+				boolean multiple;
+				System.out.println("CC");
+				if (rs.getInt("multiple")==1) {multiple = true;} else multiple=false; 
+				sf.add(new SondageObj(rs.getInt("idSon"), rs.getString("login"), rs.getString("libelle"), rs.getString("resultat"), multiple, rs.getDate("dateFin").toString(), rs.getInt("total")));
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return sf;
+		}
+	
+	
+	
+	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {
+		executeUpdate("update sondage set resultat ='"+resultat+"' where idSon="+id);
+		executeUpdate("insert into vote values ("+id+",'"+actor+"',SYSDATE)");
 	}
 }

@@ -82,8 +82,6 @@ public class AffichageMessage extends Composition{
 		this.sp = new ScrollPane();
 		this.repondre = new Button("Repondre");
 		this.comp = new VBox();
-
-
 	}
 
 	@Override
@@ -106,6 +104,7 @@ public class AffichageMessage extends Composition{
 	@Override
 	protected void layoutDefaultParametre() {
 		// TODO Auto-generated method stub
+		vb.setId("mail-msg");
 		sp.setMinSize(700, 700);
 		sp.setContent(vb);
 		sp.setMinSize(500, 400);

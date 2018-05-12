@@ -24,7 +24,7 @@ public class Types implements TypesInterface {
 
 	@Override
 	public void addType(String type) throws RemoteException, ClassNotFoundException, SQLException {
-		sgbd.ajouterType(type);
+		//sgbd.ajouterType(type);
 	}
 
 	@Override
