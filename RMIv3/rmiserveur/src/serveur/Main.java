@@ -35,6 +35,7 @@ import sondage.Sondage;
 import sondage.SondageInterface;
 import tchat.Tchat;
 import tchat.TchatInterface;
+import util.Groupe;
 
 public class Main {
 	

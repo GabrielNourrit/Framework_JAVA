@@ -41,7 +41,7 @@ public class Utilisateur implements Serializable {
 	 * @param _type de l'utilisateur
 	 * @throws RemoteException
 	 */
-	public Utilisateur(String _login, String _nom, String _prenom, Type _type) throws RemoteException {		
+			
 	public Utilisateur(String _login, String _nom, String _prenom, Type _type) {		
 		this.login = _login;
 		this.nom = _nom;

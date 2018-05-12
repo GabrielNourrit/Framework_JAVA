@@ -254,6 +254,9 @@ public class SGBDOracle extends SGBD {
 		int t = 0;
 		ResultSet rs = executeSelect("select max(idtype) from types");
 		if (rs.next()) t = rs.getInt(1);
+		rs.close();
+		return t;
+	}
 	public int getNextvalGroupe() throws ClassNotFoundException, RemoteException, SQLException {
 		int i = -1;
 		ResultSet rs = executeSelect("select max(idGr) from groupes");
@@ -431,8 +434,9 @@ public class SGBDOracle extends SGBD {
 				Droit d = new Droit(rs.getString(1), rs.getString(2));
 				droits.add(d);
 			}
+			closeReq(rs);
 		}
-		closeReq(rs);
+		
 		return droits; 
 	}
 	
