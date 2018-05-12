@@ -241,7 +241,7 @@ public abstract class SGBD {
 	
 	public List<Type> getAllType()  throws RemoteException, ClassNotFoundException, SQLException { return null; }
 
-	public void ajouterType(String type, List<Droit> l) throws RemoteException, ClassNotFoundException, SQLException {
+	public void ajouterType(String type, List<String> l) throws RemoteException, ClassNotFoundException, SQLException {
 	}
 	
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException{
@@ -267,11 +267,22 @@ public abstract class SGBD {
 		return -1;
 	}
 
+	public List<Droit> getAllDroitInType(int idType) throws RemoteException, ClassNotFoundException, SQLException {
+		return null;
+	}
+	
+	public List<Droit> getAllDroitNotInType(int idType) throws RemoteException, ClassNotFoundException, SQLException {
+		return null;
+	}
 	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {}
 
 	public List<SondageObj> getSondage(Utilisateur owner, int fait) {return null;}
 	
 	public Map<Integer,String> getAllSondage() throws ClassNotFoundException, RemoteException, SQLException {return null;}
 	
-	public void modifierType(Type type, List<Droit> l) throws ClassNotFoundException, SQLException {}
+	public void modifierType(Type type, List<String> l) throws ClassNotFoundException, SQLException {}
+	
+	public List<Droit> getAllDroit() throws ClassNotFoundException, SQLException, RemoteException {
+		return null;
+	}
 }

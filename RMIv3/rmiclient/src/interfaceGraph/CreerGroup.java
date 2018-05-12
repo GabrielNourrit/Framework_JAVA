@@ -44,15 +44,13 @@ public class CreerGroup extends Formulaire{
 	
 	
 	public CreerGroup() {
+		//GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 		genererSousComposant();
 		if (!(this instanceof ListUtilisateursGroupe)) {
 			refreshList();
 			ecouteurDefaultAction();
 		}
-		
-		
 		layoutDefaultParametre();
-		
 	}
 
 	protected void genererSousComposant() {
@@ -155,6 +153,7 @@ public class CreerGroup extends Formulaire{
             //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
 			connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lstUserInscrit = connex.getUsers();
+			System.out.println(lstUserInscrit);
 			olstUser = FXCollections.observableArrayList(lstUserInscrit);
 			
 			utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
@@ -180,8 +179,7 @@ public class CreerGroup extends Formulaire{
 	}
 
 	public void setPostAdd(EventHandler<ActionEvent> value) {
-		b_valider.addEventHandler(ActionEvent.ACTION, value);
-		
+		b_valider.addEventHandler(ActionEvent.ACTION, value);	
 	}
 	
 }

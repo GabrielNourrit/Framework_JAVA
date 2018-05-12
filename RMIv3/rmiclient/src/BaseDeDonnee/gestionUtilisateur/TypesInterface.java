@@ -8,7 +8,6 @@ import java.util.List;
 import util.Droit;
 import util.Type;
 
-public interface TypesInterface extends Remote,MethodeServeur {
 public interface TypesInterface extends Remote {
 
 	public List<Type> getAllTypes() throws RemoteException, ClassNotFoundException, SQLException;

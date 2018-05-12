@@ -4,12 +4,15 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
+import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
 import BaseDeDonnee.gestionUtilisateur.TypesInterface;
+import fichier.GestionFichierInterface;
 import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import util.Connectable;
 import util.Droit;
 import util.Type;
 import util.Utilisateur;
@@ -31,32 +34,26 @@ private Type type;
 	
 	@Override
 	protected void refreshList() {
-		TypesInterface connex;
+		GestionTypeInterface connex;
 		try {
 			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (TypesInterface) registry.lookup("Types");
-            List<String> lstStringDroitNotInscrit = connex.getAllLoginNotInType(type.getIdType());
-			List<Droit> lstDroitNonInscrit = new ArrayList<>();
-			for (String s: lstStringDroitNotInscrit) {
-				Droit d = new Droit(s,s);
-				lstDroitNonInscrit.add(d);
-			}
+            connex = (GestionTypeInterface) registry.lookup("Types");
+			lstDroitNonInscrit = connex.getAllDroitNotInType(type.getIdType());
+			lstDroitInscrit = connex.getAllDroitInType(type.getIdType());
+			
+			
 			olstDroit = FXCollections.observableArrayList(lstDroitNonInscrit);
 			droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
 			
-			List<String> lstStringUser = connex.getAllLogin(type.getIdType());
-			List<Utilisateur> lstUserInscrit = new ArrayList<>();
-			for (String s: lstStringUser) {
-				Utilisateur u = new Utilisateur(s);
-				lstUserInscrit.add(u);
-			}
-			olstDroitInscrit = FXCollections.observableArrayList(olstDroitInscrit);
+			//droitNonInscrit.setItems(FXCollections.observableArrayList(lstDroitNonInscrit));
+			
+			olstDroitInscrit = FXCollections.observableArrayList(lstDroitInscrit);
 			droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Impossible de ce connecter");
+			alert.setTitle("Impossible de se connecter");
 			alert.setHeaderText(null);
-			alert.setContentText("Impossible de ce connecter");
+			alert.setContentText("Impossible de se connecter");
 
 			alert.showAndWait();
 			e.printStackTrace();
@@ -75,9 +72,9 @@ private Type type;
 				
 				GroupesInterface connex;
 				try {
-					Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+					/*Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
 		            connex = (GroupesInterface) registry.lookup("Groupes");
-		            connex.ajouterUtilisateur(type.getIdType(), d.getLibelle());
+		            connex.ajouterUtilisateur(type.getIdType(), d.getLibelle());*/
 				} catch (Exception e) {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Impossible de ce connecter");
@@ -96,8 +93,8 @@ private Type type;
 				olstDroit.add(d);
 				olstDroitInscrit.remove(d);
 				droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
-				GroupesInterface connex;
-				try {
+				
+				/*try {
 					Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
 		            connex = (GroupesInterface) registry.lookup("Groupes");
 		            connex.supprimerUtilisateur(type.getIdType(), d.getLibelle());
@@ -109,9 +106,23 @@ private Type type;
 
 					alert.showAndWait();
 					e.printStackTrace();
-				}
+				}*/
 				
 			} 
+		});
+		b_valider.setOnAction(event->{
+			GestionTypeInterface connex;
+			List<String> l = new ArrayList<>();
+			for (Droit s : olstDroitInscrit) {
+				l.add(s.getId());
+			}
+			try {
+				connex = new Connectable<GestionTypeInterface>().connexion("Types");
+				connex.modifierType(type, l);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		});
 	}
 }

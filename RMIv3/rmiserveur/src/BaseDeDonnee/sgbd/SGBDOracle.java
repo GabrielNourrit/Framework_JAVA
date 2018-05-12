@@ -306,6 +306,26 @@ public class SGBDOracle extends SGBD {
 		closeReq(rs);
 		return utilisateurs;
 	}
+	
+	public List<Droit> getAllDroitNotInType(int idType) throws RemoteException, ClassNotFoundException, SQLException {
+		List<Droit> droit = new ArrayList<>();
+		ResultSet rs = executeSelect("select * from droits  where idd not in (select idd from possede where idtype="+idType+")");
+		while (rs.next()) {
+			droit.add(new Droit(rs.getString(1), rs.getString(2)));
+		}
+		closeReq(rs);
+		return droit;
+	}
+	
+	public List<Droit> getAllDroitInType(int idType) throws RemoteException, ClassNotFoundException, SQLException {
+		List<Droit> droit = new ArrayList<>();
+		ResultSet rs = executeSelect("select * from droits  where idd in (select idd from possede where idtype="+idType+")");
+		while (rs.next()) {
+			droit.add(new Droit(rs.getString(1), rs.getString(2)));
+		}
+		closeReq(rs);
+		return droit;
+	}
 
 	public void ajouterUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException {
 		executeUpdate("insert into faitPartieGroupe (login, idGr, dateEntree) VALUES ('"+login+"',"+idGr+",SYSDATE)");
@@ -326,29 +346,41 @@ public class SGBDOracle extends SGBD {
 		return types; 
 	}
 
-	public void ajouterType(String type, List<Droit> l) throws RemoteException, ClassNotFoundException, SQLException {
-		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
+	public void ajouterType(String type, List<String> l) throws RemoteException, ClassNotFoundException, SQLException {
 		if (t == -1) t=getNextvalType();
 		t++;
-		for (Droit d : l) {
-			executeUpdate("insert into possede (idD,idType) values ('"+d.getId()+"','"+t+"')");
+		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
+		System.out.println(type);
+		System.out.println(t);
+		for (String d : l) {
+			System.out.println(d);
+			executeUpdate("insert into possede (idD,idType) values ('"+d+"','"+t+"')");
 		}
 		
 	}
 	
-	public void modifierType(Type type, List<Droit> l) throws ClassNotFoundException, SQLException {
-		executeUpdate("delete from possede where idType='"+type.getLibelle()+"'");
-		executeUpdate("update type set libelle='"+type.getLibelle()+"' where idType="+type.getIdType());
-		for (Droit d : l) {
-			executeUpdate("insert into possede (idD,idType) values ('"+d.getId()+"','"+type.getIdType()+"')");
+	public void modifierType(Type type, List<String> l) throws ClassNotFoundException, SQLException {
+		executeUpdate("delete from possede where idType='"+type.getIdType()+"'");
+		executeUpdate("update types set libelle='"+type.getLibelle()+"' where idType="+type.getIdType());
+		for (String d : l) {
+			executeUpdate("insert into possede (idD,idType) values ('"+d+"','"+type.getIdType()+"')");
 		}
 		
+	}
+	
+	public List<Droit> getAllDroit() throws ClassNotFoundException, SQLException, RemoteException {
+		List<Droit> l = new ArrayList<Droit>();
+		ResultSet rs = executeSelect("select * from droits");
+		while (rs.next()) {
+			l.add(new Droit(rs.getString(1), rs.getString(2)));
+		}
+		return l;
 	}
 
 	public List<MelCell> chargerMails(String rec) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and etat='VAL' or etat='SUPEN'");
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginExpediteur,objet from mails where loginReceveur='"+rec+"' and (etat='VAL' or etat='SUPEN')");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);
@@ -361,7 +393,7 @@ public class SGBDOracle extends SGBD {
 	public List<MelCell> chargerMailsExp(String exp) throws ClassNotFoundException, RemoteException, SQLException {
 		List<MelCell> fs = new ArrayList<>();
 		MelCell m = null;
-		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginExpediteur='"+exp+"' and etat='VAL' or etat='SUPRE'");
+		ResultSet rs = executeSelect("select idMai,dateArrive,loginReceveur,objet from mails where loginExpediteur='"+exp+"' and (etat='VAL' or etat='SUPRE')");
 		while (rs.next()) {
 			m = new MelCell(rs.getInt(1),rs.getDate(2).toString(),rs.getString(3),rs.getString(4));
 			fs.add(m);

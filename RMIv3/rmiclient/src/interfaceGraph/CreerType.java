@@ -1,9 +1,10 @@
 package interfaceGraph;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import BaseDeDonnee.gestionUtilisateur.DroitsInterface;
+import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
 import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
@@ -29,6 +30,7 @@ public class CreerType extends Formulaire{
 	protected Button b_valider;
 	protected TextField text1;
 	protected List<Droit> lstDroitNonInscrit;
+	protected List<Droit> lstDroitInscrit;
 	protected ObservableList<Droit> olstDroit;
 	protected ObservableList<Droit> olstDroitInscrit;
 	protected ListView<Droit> droitNonInscrit;
@@ -72,7 +74,8 @@ public class CreerType extends Formulaire{
 		droitInscrit = new ListView<Droit>();
 		droitNonInscrit = new ListView<Droit>();
 		lstDroitNonInscrit = new ArrayList<>();
-		olstDroitInscrit = FXCollections.observableArrayList(lstDroitNonInscrit);
+		lstDroitInscrit = new ArrayList<>();
+		olstDroitInscrit = FXCollections.observableArrayList(lstDroitInscrit);
 		vBoxButtonInscription = new VBox(b_ajouter, b_retirer);
 		vBoxListNonInscrit = new VBox(label4, droitNonInscrit);
 		vBoxListInscrit = new VBox(label5, droitInscrit);
@@ -87,21 +90,21 @@ public class CreerType extends Formulaire{
 				if (!("".equals(text1.getText()))) {
 					List<String> listLogin = new ArrayList<>();
 					for (Droit t: olstDroitInscrit) {
-						listLogin.add(t.getLibelle());
+						listLogin.add(t.getId());
 					}
 					try {
-						//GroupesInterface connex = (GroupesInterface) registry.lookup("Groupes");
-						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Types");
-						connex.ajouterGroupe(text1.getText(), listLogin);
+						GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
+						connex.addType(text1.getText(), listLogin);
 						text1.setText("");
 						for (Droit t: olstDroitInscrit) {
 							olstDroit.add(t);
 						}
 						lstDroitNonInscrit.clear();
-						olstDroitInscrit = FXCollections.observableArrayList(lstDroitNonInscrit);
+						olstDroitInscrit = FXCollections.observableArrayList(lstDroitInscrit);
 						droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
 						droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
 					} catch (Exception e) {
+						e.printStackTrace();
 						Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Serveur chargement des types");
 					}
 				}
@@ -151,12 +154,12 @@ public class CreerType extends Formulaire{
 	}
 	
 	protected void refreshList() {
-		DroitsInterface connex;
+		GestionTypeInterface connex;
 		try {
             //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
-			connex = new Connectable<DroitsInterface>().connexion("Droits");
-			List<Droit> lstDroitInscrit = connex.getDroits();
-			olstDroit = FXCollections.observableArrayList(lstDroitInscrit);
+			connex = new Connectable<GestionTypeInterface>().connexion("Types");
+			lstDroitNonInscrit = connex.getAllDroit();
+			olstDroit = FXCollections.observableArrayList(lstDroitNonInscrit);
 			
 			droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
 		} catch (Exception e) {

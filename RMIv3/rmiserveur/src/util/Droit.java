@@ -48,7 +48,7 @@ public class Droit implements Serializable{
 	 * @param _libelle du droit
 	 * @param _id du droit
 	 */
-	public Droit(String _libelle, String _id) {
+	public Droit(String _id, String _libelle) {
 		libelle=_libelle;
 		id=_id;
 	}

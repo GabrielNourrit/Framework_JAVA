@@ -8,9 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import parametrage.PropertiesClient;
 
 public class Connectable<T extends Remote> {
-	/**
-	 * Creation d'une instance de Registry
-	 */
+	
 	private static Registry registry;
 	static {
 		try {
@@ -19,18 +17,11 @@ public class Connectable<T extends Remote> {
 			Fenetre.creatAlert(AlertType.ERROR, "Registry", "Annuaire du Registre non trouver");
 		}
 	}
-	/**
-	 * Constructeur
-	 */
+	
 	public Connectable(){		
 	}
 	
-	/**
-	 * Permet d'effectuer des demandes au Serveur
-	 * @param lookup : le nom de l'objet dans l'annuaire que l'on recherche
-	 * @return Une interface du objet demander au Serveur
-	 * @throws Exception
-	 */
+
 	@SuppressWarnings("unchecked")
 	public T connexion(String lookup) throws Exception {
 		try {

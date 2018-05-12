@@ -24,7 +24,7 @@ public class TestModificationUtilisation extends Application {
 			user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
 			user.addGroupe(new Groupe(2,"Groupe Projet A380"));
 			//VBox vb = new ModifierMotDePasse(user);
-			VBox vb = new Droits();
+			VBox vb = new Droits(user);
 			ScrollPane sp = new ScrollPane();
 			//VBox vb = new ModifierUtilisateur(new Utilisateur("metzgegu","Guillaume","metzger",null));
 			//VBox vb = new Inscription();

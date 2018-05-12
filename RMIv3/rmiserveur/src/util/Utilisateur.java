@@ -113,7 +113,7 @@ public class Utilisateur implements Serializable {
 		return connex.getGroupeLogin(login);
 	}
 	
-	 * Ajout dans un groupe un nouveau groupe
+	/** Ajout dans un groupe un nouveau groupe
 	 * @param _groupe de l'utilisateur
 	 */
 	public void addGroupe(Groupe _groupe) {

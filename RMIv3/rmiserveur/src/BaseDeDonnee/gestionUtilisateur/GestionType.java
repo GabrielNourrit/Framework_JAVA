@@ -21,15 +21,23 @@ public class GestionType implements GestionTypeInterface {
 		return sgbd.getAllType();
 	}
 	
-	public List<Droit> getAllDroitType(int idType) throws ClassNotFoundException, RemoteException, SQLException {
-		return sgbd.getDroits(idType);
+	public List<Droit> getAllDroitInType(int idType) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getAllDroitInType(idType);
 	}
 	
-	public void addType(String libelleType, List<Droit> l) throws RemoteException, ClassNotFoundException, SQLException {
+	public List<Droit> getAllDroitNotInType(int idType) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getAllDroitNotInType(idType);
+	}
+	
+	public void addType(String libelleType, List<String> l) throws RemoteException, ClassNotFoundException, SQLException {
 		sgbd.ajouterType(libelleType, l);
 	}
 	
-	public void modifierType(Type type, List<Droit> l) throws ClassNotFoundException, SQLException {
+	public void modifierType(Type type, List<String> l) throws RemoteException, ClassNotFoundException, SQLException {
 		sgbd.modifierType(type, l);
+	}
+	
+	public List<Droit> getAllDroit() throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getAllDroit();
 	}
 }

@@ -4,14 +4,14 @@ import java.rmi.NotBoundException;
 import java.sql.SQLException;
 
 import interfaceGraph.mail.GestionMail;
+import interfaceGraph.sondage.SondaGeneral;
+import interfaceGraph.sondage.SondageBouton;
 import util.Fenetre;
 import util.Groupe;
 import util.Type;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.Utilisateur;
@@ -24,18 +24,20 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		/*Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
+		
+		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
 		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
 		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
 		//VBox vb = new TelechargerFichier(user);
-		VBox vb = new TchatGraphique(user);
-		vb.setAlignment(Pos.CENTER);
-		Scene scene = new Scene(vb, 600, 600);
+		VBox vb2 = new VBox();
+		vb2.getChildren().addAll(new SondageBouton(user), new SondaGeneral(user));
+		//VBox vb = new SondaGeneral(user);
+		vb2.setAlignment(Pos.CENTER);
+		Scene scene = new Scene(vb2, 600, 600);
 		stage.setResizable(false);
 		stage.setTitle("ChatBox");
 		Fenetre.paramStage(stage,scene);
-		stage.show();*/
-		Fenetre.creatAlert(AlertType.INFORMATION, "test", "Il y a du style ?");
+		stage.show();		
 	}
 
 }

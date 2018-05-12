@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import BaseDeDonnee.MethodeServeur;
+import BaseDeDonnee.gestionUtilisateur.GestionType;
+import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateur;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import BaseDeDonnee.gestionUtilisateur.Types;
@@ -59,7 +61,7 @@ public class Main {
 		OperationUtilisateurInterface ou = new OperationUtilisateur(sgbd);
 		UtilisateursInterface ui = new Utilisateurs(sgbd);
 		GroupesInterface gi = new Groupes(sgbd);
-		TypesInterface ti = new Types(sgbd);
+		GestionTypeInterface ti = new GestionType(sgbd);
 		MelInterface m = new Mel(sgbd);
 		SondageInterface so = new Sondage(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();

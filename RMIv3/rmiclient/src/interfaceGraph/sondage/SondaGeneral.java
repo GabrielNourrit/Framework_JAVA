@@ -43,7 +43,7 @@ public class SondaGeneral extends Composition{
 		layoutDefaultParametre();
 		connect = new Connectable<SondageInterface>().connexion("Sondage");	
 		currentSondageFait = connect.getSondageFait(u);
-		
+		currentSondageNonFait = connect.getSondageNew(u);
 		int i = 0;
 		for(SondageObj s : 	currentSondageFait) {
 			indiceSondage.put(i,s.getId());
