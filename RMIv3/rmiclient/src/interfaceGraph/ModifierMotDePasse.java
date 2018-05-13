@@ -18,13 +18,10 @@ import util.Utilisateur;
 public class ModifierMotDePasse extends Formulaire {
 	
 	private Utilisateur utilisateur;
-	//private Label l_mdpOld;
 	private Label l_mdpNew1;
 	private Label l_mdpNew2;
-	//private PasswordField t_mdpOld;
 	private PasswordField t_mdpNew1;
 	private PasswordField t_mdpNew2;
-	
 	private Button b_valider;
 	private Button b_annuler;
 	private HBox hb_validerAnnuler;

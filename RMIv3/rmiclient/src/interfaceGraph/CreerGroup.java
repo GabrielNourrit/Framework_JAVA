@@ -42,24 +42,18 @@ public class CreerGroup extends Formulaire{
 	private VBox vBoxButtonInscription;
 	private VBox vBoxListInscrit;
 	private VBox vBoxListNonInscrit;
-	
-	
-	
+
 	public CreerGroup() {
 		genererSousComposant();
 		if (!(this instanceof ListUtilisateursGroupe)) {
 			refreshList();
 			ecouteurDefaultAction();
 		}
-		
-		
 		layoutDefaultParametre();
-		
 	}
 
+	@Override
 	protected void genererSousComposant() {
-		//VBox vb = new VBox();
-		
 		b_valider = new Button("ajouter");
 		text1 = new TextField();
 		label1 = new Label("Utilisateurs :");
@@ -78,51 +72,50 @@ public class CreerGroup extends Formulaire{
 		vBoxListNonInscrit = new VBox(label4, utilisateurNonInscrit);
 		vBoxListInscrit = new VBox(label5, utilisateurInscrit);
 		hBoxInscription = new HBox(vBoxListNonInscrit,vBoxButtonInscription,vBoxListInscrit);
-		
+
 	}
 
+	@Override
 	protected void ecouteurDefaultAction() {
-		// TODO Auto-generated method stub
-		
-			b_valider.addEventHandler(ActionEvent.ACTION, event -> {
-				if (!("".equals(text1.getText()))) {
-					List<String> listLogin = new ArrayList<>();
-					for (Utilisateur u: olstUserInscrit) {
-						listLogin.add(u.getLogin());
-					}
-					try {
-						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
-						int idGr = connex.ajouterGroupe(text1.getText(), listLogin);
-						TchatInterface connex2 = new Connectable<TchatInterface>().connexion("Tchat");
-						GestionFichierInterface c = new Connectable<GestionFichierInterface>().connexion("Fichier");
-						connex2.ajouterGroupeTchat(idGr);
-						c.ajouterGroupeFichier(idGr);
-						text1.setText("");
-						for (Utilisateur u: olstUserInscrit) {
-							olstUser.add(u);
-						}
-						lstUserNonInscrit.clear();
-						olstUserInscrit = FXCollections.observableArrayList(lstUserNonInscrit);
-						utilisateurInscrit.setItems((ObservableList<Utilisateur>) olstUserInscrit);
-						utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
-					} catch (Exception e) {
-						Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Serveur chargement des groupes");
-					}
+		b_valider.addEventHandler(ActionEvent.ACTION, event -> {
+			if (!("".equals(text1.getText()))) {
+				List<String> listLogin = new ArrayList<>();
+				for (Utilisateur u: olstUserInscrit) {
+					listLogin.add(u.getLogin());
 				}
-				
-			});
-		
-		
+				try {
+					GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
+					int idGr = connex.ajouterGroupe(text1.getText(), listLogin);
+					TchatInterface connex2 = new Connectable<TchatInterface>().connexion("Tchat");
+					GestionFichierInterface c = new Connectable<GestionFichierInterface>().connexion("Fichier");
+					connex2.ajouterGroupeTchat(idGr);
+					c.ajouterGroupeFichier(idGr);
+					text1.setText("");
+					for (Utilisateur u: olstUserInscrit) {
+						olstUser.add(u);
+					}
+					lstUserNonInscrit.clear();
+					olstUserInscrit = FXCollections.observableArrayList(lstUserNonInscrit);
+					utilisateurInscrit.setItems((ObservableList<Utilisateur>) olstUserInscrit);
+					utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
+				} catch (Exception e) {
+					Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Serveur chargement des groupes");
+				}
+			}
+
+		});
+
+
 		b_ajouter.setOnAction(event -> {
 			Utilisateur u = getUserNonInscritSelected();
 			if (u != null) {
 				olstUserInscrit.add(u);
 				olstUser.remove(u);
-				
+
 				utilisateurInscrit.setItems((ObservableList<Utilisateur>) olstUserInscrit);
 			} 
 		});
-		
+
 		b_retirer.setOnAction(event ->{
 			Utilisateur u = getUserInscritSelected();
 			if (u != null) {
@@ -133,8 +126,8 @@ public class CreerGroup extends Formulaire{
 		});
 	}
 
+	@Override
 	protected void layoutDefaultParametre() {
-		// TODO Auto-generated method stub
 		label1.setAlignment(Pos.CENTER);
 		label2.setAlignment(Pos.CENTER);
 		label3.setAlignment(Pos.CENTER);
@@ -147,13 +140,11 @@ public class CreerGroup extends Formulaire{
 		utilisateurNonInscrit.setMinWidth(300);
 		text1.setAlignment(Pos.CENTER);
 		form.getChildren().addAll(label2,text1,label1,hBoxInscription,b_valider);
-		//_vb.getChildren().add(button);
-		//_vb.setAlignment(Pos.CENTER);
 		form.setAlignment(Pos.CENTER);
 		text1.setMaxWidth(200);
 		this.getChildren().add(form);
 	}
-	
+
 	/**
 	 * rafraichit la liste des utilisateur inscrit
 	 */
@@ -163,13 +154,13 @@ public class CreerGroup extends Formulaire{
 			connex = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
 			List<Utilisateur> lstUserInscrit = connex.getUsers();
 			olstUser = FXCollections.observableArrayList(lstUserInscrit);
-			
+
 			utilisateurNonInscrit.setItems((ObservableList<Utilisateur>) olstUser);
 		} catch (Exception e) {
 			Fenetre.creatAlert(AlertType.WARNING, "Impossible de ce connecter", "Impossible de ce connecter");
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return l'ulisateur selectionner dans les inscrit
@@ -181,7 +172,7 @@ public class CreerGroup extends Formulaire{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return l'ulisateur selectionner dans les non inscrit
@@ -200,7 +191,7 @@ public class CreerGroup extends Formulaire{
 	 */
 	public void setPostAdd(EventHandler<ActionEvent> value) {
 		b_valider.addEventHandler(ActionEvent.ACTION, value);
-		
+
 	}
-	
+
 }

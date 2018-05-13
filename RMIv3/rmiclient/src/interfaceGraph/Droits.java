@@ -7,22 +7,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
-import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.Connectable;
 import util.Fenetre;
-import util.Groupe;
 import util.Type;
 import util.Utilisateur;
 
@@ -41,8 +37,7 @@ public class Droits extends Formulaire {
 		layoutDefaultParametre();
 	}
 
-
-
+	@Override
 	protected void layoutDefaultParametre() {
 		formCreate.getChildren().addAll(buttonCreate);
 		formCreate.setAlignment(Pos.CENTER);
@@ -53,11 +48,12 @@ public class Droits extends Formulaire {
 		this.getChildren().add(form);
 	}
 
+	
 	public VBox getStyleForm(){
 		return this.form;
-
 	}
 
+	@Override
 	protected void ecouteurDefaultAction() {
 		buttonCreate.setOnAction(event -> {
 			//apelle fonction cr�ation type
@@ -131,6 +127,9 @@ public class Droits extends Formulaire {
 		refreshChoiceBox();
 	}
 
+	/**
+	 * refresh la choice box 
+	 */
 	public void refreshChoiceBox() {
 		GestionTypeInterface connex;
 		Registry registry;
@@ -144,6 +143,9 @@ public class Droits extends Formulaire {
 		}
 	}
 	
+	/**
+	 * refresh la liste des types
+	 */
 	public void refreshList() {
 		try {
 			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");

@@ -2,7 +2,6 @@ package interfaceGraph.sondage;
 
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -12,7 +11,6 @@ import util.Fenetre;
 import util.Utilisateur;
 
 public class SondageBouton extends Composition{
-	//private ProgressBar p;
 	private Button creerSondage;
 	private Utilisateur u;
 	

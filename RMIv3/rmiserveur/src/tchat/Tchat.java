@@ -29,10 +29,12 @@ public class Tchat extends UnicastRemoteObject implements TchatInterface  {
 		}
 	}
 
+	@Override
 	public synchronized String getHistorique(Integer groupe) throws RemoteException {
 		return historique.get(groupe).toString();
 	}
 
+	@Override
 	public synchronized void envoyerMessage(String s, Integer groupe) throws RemoteException {
 		StringBuffer newvaleur = historique.get(groupe).append(s);
 		historique.put(groupe, newvaleur);
@@ -40,22 +42,30 @@ public class Tchat extends UnicastRemoteObject implements TchatInterface  {
 		notifyListeners(s,groupe);
 	}	
 
+	@Override
 	public synchronized void addTchatListener (TchatListener listener, Integer groupe) throws java.rmi.RemoteException {
 		Vector<TchatListener> newlistener = list.get(groupe);
 		newlistener.add(listener);
 		list.put(groupe,newlistener);
 	}
 
+	@Override
 	public synchronized void removeTchatListener (TchatListener listener, Integer groupe) throws java.rmi.RemoteException {
 		list.get(groupe).remove(listener);
 	}
 	
+	@Override
 	public void ajouterGroupeTchat(Integer idGr) throws java.rmi.RemoteException {
 		list.put(idGr, new Vector <TchatListener> ());
 		ManipulationFichier.sauverFichier(path+"/"+idGr, "");
 		historique.put(idGr, new StringBuffer(""));
 	}
 
+	/**
+	 * Methode de notification aux listener
+	 * @param message le nouveau message
+	 * @param groupe le groupe auquel le message est destine
+	 */
 	private void notifyListeners(String message, Integer groupe) {	
 		Vector <TchatListener> v = list.get(groupe);
 		for (Enumeration<TchatListener> e = v.elements(); e.hasMoreElements();) { 

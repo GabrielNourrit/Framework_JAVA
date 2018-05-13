@@ -39,17 +39,14 @@ public class Inscription extends Formulaire {
 	private ChoiceBox<Type> cb_type;
 	private Utilisateur utilisateur;
 	private HBox hb_validerAnnuler;
-	//private int choix;
 	
 	/**
 	 * @description : Cet objet est un formulaire d'inscription par defaut
 	 */
 	public Inscription() {
 		super();
-		//choix=-1;
 		genererSousComposant();
 		ecouteurDefaultAction();
-		//ecouteurChoixGroupe();
 		layoutDefaultParametre();
 		this.setAlignment(Pos.CENTER);
 	}
@@ -61,14 +58,7 @@ public class Inscription extends Formulaire {
 	 * @param Y l'axe en Y du formulaire dans la fenetre
 	 */
 	public Inscription(Group pere, int X, int Y) {
-		/*generation de notre formulaire*/
 		this();
-		/*mise en page form*/
-		/*this.getStyleForm().setLayoutX(X);
-		this.getStyleForm().setLayoutY(Y);*/
-		
-		/*Attachement de notre form a notre environnement test*/
-		//pere.getChildren().add(this.getStyleForm());
 	}
 	
 	/**
@@ -146,18 +136,6 @@ public class Inscription extends Formulaire {
 		this.b_valider.addEventHandler(ActionEvent.ACTION, value);
 	}
 	
-	
-	/**
-	 * Ecouteur d'evenement sur le choix du groupe
-	 */
-	/*private void ecouteurChoixGroupe() {
-		cb_groupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<Number>) (ov, value, new_value) -> {
-			System.out.println(value);	
-			System.out.println(new_value);
-			choix = (int) new_value;
-			System.out.println(ov.getClass());
-		});
-	}*/
 
 	/**
 	 * Applique les parametres par default du design du composant
@@ -172,7 +150,6 @@ public class Inscription extends Formulaire {
 		form.setAlignment(Pos.CENTER);
 		this.getChildren().add(form);	
 	}
-	
 	
 	/**
 	 * @return retourne le formulaire Graphique modifiable a la guise du client.

@@ -1,21 +1,13 @@
 package interfaceGraph.sondage;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -28,7 +20,6 @@ import util.Fenetre;
 import util.Utilisateur;
 
 public class AffichageChoixMulti extends Composition{
-
 
 	private Button bouttonVal;
 	private Text titre;
@@ -46,9 +37,10 @@ public class AffichageChoixMulti extends Composition{
 		ecouteurDefaultAction();
 	}
 
-
+	/**
+	 * recupere toutes les infos du sondage
+	 */
 	private void recupere() {
-
 		this.titre.setText(so.getQuestion());
 		this.titre.setFont(Font.font("Arial",FontWeight.BOLD,FontPosture.REGULAR, 20));
 		this.titre.setWrappingWidth(500);
@@ -66,10 +58,8 @@ public class AffichageChoixMulti extends Composition{
 				} else {
 					selectedCheckBoxes.remove(rb);
 				}
-
 			});
 		}
-
 	}
 
 	@Override
@@ -81,30 +71,16 @@ public class AffichageChoixMulti extends Composition{
 		this.titre= new Text();
 	}
 
-	private String sondageListToString(ArrayList<String> s) {
-		String ret ="";
-		for(String i : s) {
-			ret+=i+";";
-		}
-		return ret;
-	}
-
 	@Override
 	protected void ecouteurDefaultAction() {
 		this.bouttonVal.setOnAction(e->{
 			try {
 				ArrayList<String> ret = new ArrayList<String>();
 				SondageInterface connect = new Connectable<SondageInterface>().connexion("Sondage");
-				System.out.println(this.selectedCheckBoxes);
 				for(CheckBox cb : this.selectedCheckBoxes) {
 					int index = Integer.parseInt(cb.getUserData().toString());
 					ret.add(so.getReponses().get(index-1));
-					/*int index = Integer.parseInt(cb.getUserData().toString());
-					int value = Integer.parseInt(so.getReponses().get(index));
-					ret = so.getReponses();
-					ret.set(index, value+1+"");*/
 				}
-				System.out.println(ret);
 				connect.updateSondage(user.getLogin(),so.getId(), ret);//sondageListToString(ret));
 
 			} catch(Exception ex) {

@@ -18,18 +18,27 @@ public class BoutonChoix extends HBox{
 		layoutDefaultParametre();
 	}
 	
+	/**
+	 * genere tout les sous Composant
+	 */
 	protected void genererSousComposant(){
 		this.bool = new RadioButton();
 		this.compoBC = new HBox();
 		this.isTrue=false;
 	}
 	
+	/**
+	 * definit tout les Actions-Listeners du formulaire
+	 */
 	protected void ecouteurDefaultAction() {
 		this.bool.setOnAction(event ->{
 			this.isTrue = !(this.isTrue);
 		});
 	}
 	
+	/**
+	 * definit le style par defaut du formulaire
+	 */
 	protected void layoutDefaultParametre() {
 		compoBC.getChildren().addAll(nom,bool);
 		compoBC.setMaxSize(120, 100);
@@ -38,6 +47,10 @@ public class BoutonChoix extends HBox{
 		this.getChildren().add(compoBC);
 	}
 	
+	/**
+	 * retourne si le bouton est coche ou non
+	 * @return true si le bouton est coche false sinon
+	 */
 	public boolean isChecked() {
 		return isTrue;
 	}

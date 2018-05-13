@@ -31,7 +31,7 @@ public class WriteMessage extends Composition implements Alertable{
 	private String verif;
 
 	/**
-	 * Premier constructeur de l'�criture d'un mail ou on a besoin de l'utilisateur (qui on est)
+	 * Premier constructeur de l'ecriture d'un mail ou on a besoin de l'utilisateur (qui on est)
 	 * Utiliser pour cree un nouveau message vierge de toute information
 	 * @param u
 	 */
@@ -44,8 +44,8 @@ public class WriteMessage extends Composition implements Alertable{
 	}
 
 	/**
-	 * Second constructeur de l'�criture d'un mail ou on a besoin de l'utilisateur, l'adresse et l'objet
-	 * Utiliser pour repondre a un message que l'on a re�u
+	 * Second constructeur de l'ecriture d'un mail ou on a besoin de l'utilisateur, l'adresse et l'objet
+	 * Utiliser pour repondre a un message que l'on a reeu
 	 * @param u
 	 * @param adr
 	 * @param obj
@@ -103,7 +103,7 @@ public class WriteMessage extends Composition implements Alertable{
 	}
 
 	/**
-	 * Remplissage de la comboBox des utilisateurs inscrit dans la base de donn�es
+	 * Remplissage de la comboBox des utilisateurs inscrit dans la base de donnees
 	 * @throws Exception
 	 */
 	private void initialiserComboBox() throws Exception{
@@ -119,9 +119,9 @@ public class WriteMessage extends Composition implements Alertable{
 	}
 
 	/**
-	 * Enregistrement du message que l'on envoi dans la base de donn�es
-	 * Ainsi que la cr�ation du fichier dans la dossier "stockage"
-	 * Apr�s l'envoi du message on efface tout les zones de text
+	 * Enregistrement du message que l'on envoi dans la base de donnees
+	 * Ainsi que la creation du fichier dans la dossier "stockage"
+	 * Apres l'envoi du message on efface tout les zones de text
 	 */
 	private void envoyerMessage(){
 		String contenu = this.text.getText();

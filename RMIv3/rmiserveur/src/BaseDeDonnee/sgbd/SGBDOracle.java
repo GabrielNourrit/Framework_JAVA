@@ -151,7 +151,6 @@ public class SGBDOracle extends SGBD {
 	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
 		if (i==-1) i = getNextvalMail();
 		i++;
-		System.out.println("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet+"')");
 		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet +"')");
 		return i;
 	}
@@ -376,10 +375,7 @@ public class SGBDOracle extends SGBD {
 		if (t == -1) t=getNextvalType();
 		t++;
 		executeUpdate("insert into types (idType, libelle) values (types_id.NEXTVAL,'"+ type+"')");
-		System.out.println(type);
-		System.out.println(t);
 		for (String d : l) {
-			System.out.println(d);
 			executeUpdate("insert into possede (idD,idType) values ('"+d+"','"+t+"')");
 		}
 		
@@ -456,7 +452,6 @@ public class SGBDOracle extends SGBD {
 	
 	public synchronized int ajouterSondage(String owner, String question, String reponses,int multiple, String date) throws RemoteException, ClassNotFoundException, SQLException{
 		if (j == -1) j = getNextvalSondage();
-		System.out.println("J REQUETE : " +j);
 		j++;
 		executeUpdate("insert into sondage(idSon,libelle,dateDebut,dateFin,resultat,login,multiple,total) values ( sondage_id.nextval,'"+question+"',SYSDATE,TO_DATE('"+date+"','yyyy-mm-dd'),'"+reponses+"','"+owner+"',"+multiple+",0)");
 		return j;

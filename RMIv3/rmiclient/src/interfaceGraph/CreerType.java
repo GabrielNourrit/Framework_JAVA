@@ -1,12 +1,9 @@
 package interfaceGraph;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
-import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
-import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +19,6 @@ import javafx.scene.layout.VBox;
 import util.Connectable;
 import util.Droit;
 import util.Fenetre;
-import util.Type;
-import util.Utilisateur;
 
 public class CreerType extends Formulaire{
 
@@ -58,6 +53,7 @@ public class CreerType extends Formulaire{
 		layoutDefaultParametre();
 	}
 
+	@Override
 	protected void genererSousComposant() {	
 		b_valider = new Button("ajouter");
 		text1 = new TextField();
@@ -81,6 +77,7 @@ public class CreerType extends Formulaire{
 		
 	}
 
+	@Override
 	protected void ecouteurDefaultAction() {
 		
 			b_valider.addEventHandler(ActionEvent.ACTION, event -> {
@@ -129,6 +126,7 @@ public class CreerType extends Formulaire{
 		});
 	}
 
+	@Override
 	protected void layoutDefaultParametre() {
 		// TODO Auto-generated method stub
 		label1.setAlignment(Pos.CENTER);
@@ -150,10 +148,12 @@ public class CreerType extends Formulaire{
 		this.getChildren().add(form);
 	}
 	
+	/**
+	 * recupere les listes des droits
+	 */
 	protected void refreshList() {
 		GestionTypeInterface connex;
 		try {
-            //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
 			connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 			lstDroitNonInscrit = connex.getAllDroit();
 			olstDroit = FXCollections.observableArrayList(lstDroitNonInscrit);
@@ -180,6 +180,10 @@ public class CreerType extends Formulaire{
 		}
 	}
 
+	/**
+	 * permet d'ajouter un evenement après clic sur le bouton
+	 * @param value
+	 */
 	public void setPostAdd(EventHandler<ActionEvent> value) {
 		b_valider.addEventHandler(ActionEvent.ACTION, value);
 		

@@ -1,19 +1,12 @@
 package interfaceGraph.sondage;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import sondage.SondageInterface;
-import sondage.SondageListener;
 import sondage.SondageObj;
 import util.Utilisateur;
 
@@ -39,38 +32,42 @@ public class ResultatSondage extends Composition
 		layoutDefaultParametre();
 	}
 
+	/**
+	 * @return l'id du sondage
+	 */
 	public int idSondage() {
 		return s.getId();
 	}
 
+	/**
+	 * @return le sondageobj
+	 */
 	public SondageObj getSondageObj() {
 		return s;
 	}
 
+	/**
+	 * Modifie les résultats
+	 * @param resultat la string contenant les resultats
+	 */
 	public void modifResultat(String resultat) {
 		s.setReponses(resultat);
-		System.out.println("AV : " + s.getTotal());
 		s.totalPlusUn();
-		System.out.println("AP : " + s.getTotal());
 		l_item.getChildren().clear();
 		int max = s.getReponses().size();
 		//initialisation de notre liste d'item		
 		for(int j=0, i=1 ; j<max ; j+=2, i+=2){ 
 			l_item.getChildren().addAll(new Label(s.getReponses().get(j)+" : ["+s.getReponses().get(i)+"]"), new ProgressBar(Integer.parseInt(s.getReponses().get(i))/(double)s.getTotal()));
 		}
-
 		this.nbVote = new Label("votes total : "+s.getTotal());
 		this.jourRestant = new Label("date cloture : "+s.getDate());
 	}
 
 	@Override
 	protected void genererSousComposant() {
-
-
 		this.infos = new HBox();
 		this.comp = new VBox();
 		this.l_item= new VBox();
-
 		int max = s.getReponses().size();
 		//initialisation de notre liste d'item		
 		for(int j=0, i=1 ; j<max ; j+=2, i+=2){ 
@@ -98,9 +95,4 @@ public class ResultatSondage extends Composition
 		l_item.setAlignment(Pos.CENTER);
 		this.getChildren().add(this.comp);
 	}
-
-	private void ajouterVote(String resultat, int sondage) {
-		s.setReponses(resultat);
-	}
-
 }

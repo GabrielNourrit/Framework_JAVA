@@ -21,6 +21,7 @@ public class Groupes extends UnicastRemoteObject  implements GroupesInterface {
 		return sgbd.getGroupes();
 	}
 	
+	@Override
 	public List<Groupe> getGroupeLogin(String login) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.getGroupeUtilisateur(login);
 	}
@@ -58,7 +59,4 @@ public class Groupes extends UnicastRemoteObject  implements GroupesInterface {
 		sgbd.supprimerUtilisateur(idGr, login);
 		
 	}
-
-	
-
 }

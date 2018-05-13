@@ -40,7 +40,9 @@ public class PoseFichier extends VBox {
 		layoutDefaultParametre();
 	}
 
-
+	/**
+	 * genere tout les sous Composant
+	 */
 	protected void genererSousComposant() throws Exception {
 		button = new Button("upload");
 		label = new Label();
@@ -52,6 +54,9 @@ public class PoseFichier extends VBox {
 		form = new VBox();	
 	}
 
+	/**
+	 * definit tout les Actions-Listeners
+	 */
 	protected void ecouteurDefaultAction() {
 		button.setOnAction(event -> {
 			filechooser = new FileChooser();
@@ -78,6 +83,9 @@ public class PoseFichier extends VBox {
 		});
 	}
 
+	/**
+	 * definit le style par defaut
+	 */
 	protected void layoutDefaultParametre() {
 		cbgroupe.getSelectionModel().select(0);
 		this.form.getChildren().addAll(cbgroupe,button, label);

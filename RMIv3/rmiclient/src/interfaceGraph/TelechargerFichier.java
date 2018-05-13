@@ -55,6 +55,9 @@ public class TelechargerFichier extends VBox {
 		ecouteurDefaultAction();	
 	}
 
+	/**
+	 * genere tout les sous Composant
+	 */
 	protected void genererSousComposant() throws Exception {
 		button = new Button("Download");
 		label = new Label();
@@ -72,11 +75,12 @@ public class TelechargerFichier extends VBox {
 		}
 		cbgroupe.getSelectionModel().select(0);
 		groupe = cbgroupe.getSelectionModel().getSelectedItem().getidGr();
-		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 	}
 
-	
+	/**
+	 * ecouteur sur le choix du groupe
+	 */
 	private void ecouteurChoixGroupe() {
 		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
 			try {
@@ -91,6 +95,9 @@ public class TelechargerFichier extends VBox {
 		});
 	}
 	
+	/**
+	 * definit tout les Actions-Listeners
+	 */
 	protected void ecouteurDefaultAction() throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
 		button.setOnAction(event -> {
 			Fichier f = list.getSelectionModel().getSelectedItem();
@@ -108,12 +115,14 @@ public class TelechargerFichier extends VBox {
 					e.printStackTrace();
 					label.setText("Erreur lors du telechargement");
 				}
-			     System.out.println(selectedDirectory.getAbsolutePath());
 			}
 			
 		});
 	}
 
+	/**
+	 * definit le style par defaut 
+	 */
 	protected void layoutDefaultParametre() throws RemoteException, NotBoundException, ClassNotFoundException, SQLException {
 		items = FXCollections.observableArrayList (fs); 
 		list.setItems(items);
@@ -126,10 +135,16 @@ public class TelechargerFichier extends VBox {
 		this.getChildren().add(form);
 
 	}
+	
 	public HBox getStyleForm(){
 		return this.form;
 	}
 	
+	/**
+	 * Ajoute un fichier a la liste des fichiers
+	 * @param f le fichier a ajouter
+	 * @param g le groupe ou il faut ajouter le fichier
+	 */
 	private void ajouterFichier(Fichier f,Integer g) {
 		if (groupe == g) {
 			fs.add(f);
@@ -138,6 +153,9 @@ public class TelechargerFichier extends VBox {
 		}
 	}
 	
+	/**
+	 * sous classe implementant un Listener
+	 */
 	private class Listener extends UnicastRemoteObject implements FichierListener {
 
 		private static final long serialVersionUID = 1L;

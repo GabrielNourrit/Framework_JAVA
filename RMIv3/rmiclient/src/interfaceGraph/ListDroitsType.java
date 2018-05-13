@@ -5,24 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
-import BaseDeDonnee.gestionUtilisateur.TypesInterface;
-import fichier.GestionFichierInterface;
-import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import util.Connectable;
 import util.Droit;
 import util.Fenetre;
 import util.Type;
-import util.Utilisateur;
 
 public class ListDroitsType extends CreerType{
-private Type type;
-	
+	private Type type;
+
 	public ListDroitsType(Type _type) {
-		
 		super();
 		type= _type;
 		text1.setText(type.getLibelle());
@@ -32,30 +26,31 @@ private Type type;
 		label3.setText("Modification du groupe");
 		ecouteurDefaultAction();
 	}
-	
+
 	@Override
 	protected void refreshList() {
 		GestionTypeInterface connex;
 		try {
 			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-            connex = (GestionTypeInterface) registry.lookup("GestionTypes");
+			connex = (GestionTypeInterface) registry.lookup("GestionTypes");
 			lstDroitNonInscrit = connex.getAllDroitNotInType(type.getIdType());
 			lstDroitInscrit = connex.getAllDroitInType(type.getIdType());
-			
-			
+
+
 			olstDroit = FXCollections.observableArrayList(lstDroitNonInscrit);
 			droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
-			
+
 			//droitNonInscrit.setItems(FXCollections.observableArrayList(lstDroitNonInscrit));
-			
+
 			olstDroitInscrit = FXCollections.observableArrayList(lstDroitInscrit);
 			droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
 		} catch (Exception e) {
 			Fenetre.creatAlert(AlertType.WARNING, "Impossible de se connecter", "Impossible de se connecter");
 		}
-		
+
 	}
-	
+
+	@Override
 	protected void ecouteurDefaultAction() {
 		b_ajouter.setOnAction(event -> {
 			Droit d = getDroitNonInscritSelected();
@@ -65,7 +60,7 @@ private Type type;
 				droitInscrit.setItems((ObservableList<Droit>) olstDroitInscrit);
 			} 
 		});
-		
+
 		b_retirer.setOnAction(event ->{
 			Droit d = getDroitInscritSelected();
 			if (d != null) {
@@ -74,7 +69,7 @@ private Type type;
 				droitNonInscrit.setItems((ObservableList<Droit>) olstDroit);
 			} 
 		});
-		
+
 		b_valider.setOnAction(event->{
 			GestionTypeInterface connex;
 			List<String> l = new ArrayList<>();
@@ -87,7 +82,7 @@ private Type type;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		});
 	}
 }

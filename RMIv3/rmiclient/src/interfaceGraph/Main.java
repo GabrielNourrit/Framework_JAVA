@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parametrage.SettingClientJVM;
 import util.Utilisateur;
 
 public class Main extends Application {
@@ -37,7 +38,7 @@ public class Main extends Application {
 		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
 		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
 		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
-		//VBox vb = new TelechargerFichier(user);
+		VBox vb = new ModifierUtilisateur(user);
 		VBox vb2 = new VBox();
 		vb2.getChildren().addAll(new SondageBouton(user), new SondaGeneral(user));
 		//VBox vb = new SondaGeneral(user);

@@ -1,8 +1,20 @@
 package mail;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface MelListener extends Remote {
-	public void nouveauMailRecu(MelCell message);
-	public void nouveauMailEnvoye(MelCell message);
+	/**
+	 * Notification d'un nouveau mail recu
+	 * @param message le nouveau mail
+	 * @throws RemoteException
+	 */
+	public void nouveauMailRecu(MelCell message) throws RemoteException;
+	
+	/**
+	 * Notification d'un nouveau mail envoye
+	 * @param message le nouveau mail
+	 * @throws RemoteException
+	 */
+	public void nouveauMailEnvoye(MelCell message) throws RemoteException;
 }

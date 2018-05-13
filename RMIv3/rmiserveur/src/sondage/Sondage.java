@@ -32,7 +32,6 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 			list.put(t.getKey(), new Vector <SondageListener> ());
 	}
 
-	//int id, String owner, boolean fait, String question, String reponses,boolean multiple, String date, int total
 	@Override
 	public boolean creerSondage(String owner, String question, String reponses,boolean multiple, String date) throws RemoteException {
 		boolean ok = false;
@@ -43,7 +42,6 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 			ok = true;
 			resultat.put(i, reponses);
 			list.put(i, new Vector <SondageListener> ());
-			System.out.println(i);
 			notifyListenersNew(new SondageObj(i, owner,question,reponses,multiple,date,0));
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -52,10 +50,9 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 		return ok;
 	}
 
+	@Override
 	public synchronized boolean updateSondage(String actor,int id, ArrayList<String> ret) throws RemoteException {
-		System.out.println(id);
 		boolean ok = false;
-		System.out.println(resultat.get(id));
 		String[] str = resultat.get(id).split(";");
 		String res = "";
 		for (int i=0,j=1; j<=str.length;i+=2,j+=2) {
@@ -63,7 +60,6 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 			else  res+= str[i] + ";" + str[j] + ";";
 		}
 		try {
-			System.out.println(actor + " " + id);
 			sgbd.modifierVotes(actor,id,res);
 			resultat.put(id,res);
 			notifyListeners(res, id);
@@ -72,7 +68,6 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 			e.printStackTrace();
 		}
 		
-		System.out.println(res);
 		return ok;
 	}
 
@@ -91,7 +86,6 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 	@Override
 	public List<SondageObj> getSondageNew(Utilisateur owner) throws RemoteException {
 		try {
-			System.out.println( sgbd.getSondage(owner,0));
 			return sgbd.getSondage(owner,0);		
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -100,24 +94,33 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 		return null;
 	}
 
-	public synchronized void addTchatListener (SondageListener listener, Integer sondage) throws java.rmi.RemoteException {
+	@Override
+	public synchronized void addSondageListener (SondageListener listener, Integer sondage) throws java.rmi.RemoteException {
 		Vector<SondageListener> newlistener = list.get(sondage);
 		newlistener.add(listener);
 		list.put(sondage,newlistener);
 	}
 
-	public synchronized void removeTchatListener (SondageListener listener, Integer sondage) throws java.rmi.RemoteException {
+	@Override
+	public synchronized void removeSondageListener (SondageListener listener, Integer sondage) throws java.rmi.RemoteException {
 		list.get(sondage).remove(listener);
 	}
 	
-	public synchronized void addTchatListenerNewSondage (SondageListener listener) throws java.rmi.RemoteException {
+	@Override
+	public synchronized void addSondageListenerNewSondage (SondageListener listener) throws java.rmi.RemoteException {
 		listNew.add(listener);
 	}
 
-	public synchronized void removeTchatListenerNewSondage  (SondageListener listener) throws java.rmi.RemoteException {
+	@Override
+	public synchronized void removeSondageListenerNewSondage  (SondageListener listener) throws java.rmi.RemoteException {
 		listNew.remove(listener);
 	}
 
+	/**
+	 * Methode notification d'un nouveau vote
+	 * @param message le nouveau vote
+	 * @param sondage le numero du sondage
+	 */
 	private void notifyListeners(String message, Integer sondage) {	
 		Vector <SondageListener> v = list.get(sondage);
 		for (Enumeration<SondageListener> e = v.elements(); e.hasMoreElements();) { 
@@ -131,6 +134,10 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 		}
 	}
 	
+	/**
+	 * Methode de notification d'un nouveau sondage
+	 * @param s le nouveau sondage
+	 */
 	private void notifyListenersNew(SondageObj s) {
 		for (Enumeration<SondageListener> e = listNew.elements(); e.hasMoreElements();) { 
 			SondageListener listener = (SondageListener) e.nextElement();

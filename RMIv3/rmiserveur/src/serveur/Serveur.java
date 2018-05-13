@@ -1,8 +1,6 @@
 package serveur;
-import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
 import java.util.Map.Entry;
 

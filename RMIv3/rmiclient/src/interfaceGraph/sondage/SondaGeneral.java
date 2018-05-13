@@ -1,7 +1,6 @@
 package interfaceGraph.sondage;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,18 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.layout.VBox;
 import sondage.SondageInterface;
 import sondage.SondageListener;
 import sondage.SondageObj;
-import tchat.TchatInterface;
 import util.Connectable;
-import util.Groupe;
 import util.Utilisateur;
 
 public class SondaGeneral extends Composition{
@@ -52,11 +47,11 @@ public class SondaGeneral extends Composition{
 			sondageZone.getChildren().add(r);
 			Listener l = new Listener();
 			listener.put(s.getId(),l);
-			connect.addTchatListener(l,s.getId());
+			connect.addSondageListener(l,s.getId());
 			i++;
 		}
 		listenerNewS = new Listener();
-		connect.addTchatListenerNewSondage(listenerNewS);
+		connect.addSondageListenerNewSondage(listenerNewS);
 		cb.getSelectionModel().select(0);
 	}
 
@@ -119,7 +114,6 @@ public class SondaGeneral extends Composition{
 
 	private void ajouterVote(String resultat, int sondage) {
 		int i = 0;
-		System.out.println(resultat);
 		for (Node s : sondageZone.getChildren()) {
 			if (s instanceof ResultatSondage) {
 				if (((ResultatSondage) s).idSondage()==sondage) {
@@ -141,10 +135,10 @@ public class SondaGeneral extends Composition{
 		currentSondageNonFait.add(sondage);
 		Listener l = new Listener();
 		listener.put(sondage.getId(),l);
-		connect.addTchatListener(l,sondage.getId());
+		connect.addSondageListener(l,sondage.getId());
 	}
-	
-	
+
+
 	private class Listener extends UnicastRemoteObject implements SondageListener {
 
 		private static final long serialVersionUID = 1L;
@@ -173,7 +167,7 @@ public class SondaGeneral extends Composition{
 						}
 					}
 					);
-			
+
 		}
 
 	}

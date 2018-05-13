@@ -18,15 +18,13 @@ import javax.management.remote.rmi.RMIServer;
 
 import BaseDeDonnee.sgbd.SGBD;
 import parametrage.PropertiesServeur;
-import tchat.TchatListener;
 import util.Groupe;
-import util.ManipulationFichier;
 
 
 public class GestionFichier extends UnicastRemoteObject implements GestionFichierInterface {
-
+	private static final long serialVersionUID = 5481399837776043628L;
 	private SGBD sgbd;
-	private String chemin = PropertiesServeur.getStockageMail() +"/";
+	private String chemin = PropertiesServeur.getStockageFichiers() +"/";
 	private  Map<Integer ,Vector <FichierListener>> list = new HashMap<>();
 
 	public GestionFichier (SGBD sgbd) throws RemoteException, ClassNotFoundException, SQLException {  
@@ -37,6 +35,7 @@ public class GestionFichier extends UnicastRemoteObject implements GestionFichie
 		}
 	}
 
+	@Override
 	public boolean upload(String nom, byte[] contenu, String l, int id) throws RemoteException, ClassNotFoundException, SQLException {
 		int i = -1;
 		try{
@@ -50,6 +49,7 @@ public class GestionFichier extends UnicastRemoteObject implements GestionFichie
 		return true;
 	}
 
+	@Override
 	public byte[] download(int id) throws ClassNotFoundException, SQLException, IOException {
 		Fichier f = sgbd.getUrlFichier(id);
 		return Files.readAllBytes(Paths.get(f.getFileLink()+"/"+f.getNom())); 
@@ -65,24 +65,33 @@ public class GestionFichier extends UnicastRemoteObject implements GestionFichie
 		return sgbd.getFichiersGroupe(id);
 	}
 
+	@Override
 	public List<Groupe> recupererGroupe(String l) throws ClassNotFoundException, RemoteException, SQLException {
 		return sgbd.getGroupeUtilisateur(l);
 	}
 
+	@Override
 	public synchronized void addGroupListener (FichierListener listener, Integer groupe) throws java.rmi.RemoteException {
 		Vector<FichierListener> newlistener = list.get(groupe);
 		newlistener.add(listener);
 		list.put(groupe,newlistener);
 	}
 
+	@Override
 	public synchronized void removeGroupListener (FichierListener listener, Integer groupe) throws java.rmi.RemoteException {
 		list.get(groupe).remove(listener);
 	}
-
+	
+	@Override
 	public void ajouterGroupeFichier(Integer idGr) throws java.rmi.RemoteException {
 		list.put(idGr, new Vector <FichierListener> ());
 	}
 	
+	/**
+	 * Notifie les listeners d'un nouveau fichier
+	 * @param f le nouveau fichier
+	 * @param groupe le groupe auquel est destine le fichier
+	 */
 	private void notifyListeners(Fichier f, Integer groupe) {	
 		Vector <FichierListener> v = list.get(groupe);
 		for (Enumeration<FichierListener> e = v.elements(); e.hasMoreElements();) { 

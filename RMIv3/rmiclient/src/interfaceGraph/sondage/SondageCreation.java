@@ -1,12 +1,8 @@
 package interfaceGraph.sondage;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 
-import connexion.ConnexionInterface;
 import interfaceGraph.Composition;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;

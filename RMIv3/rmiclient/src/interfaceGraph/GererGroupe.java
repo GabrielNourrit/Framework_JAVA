@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -111,6 +110,9 @@ public class GererGroupe extends Formulaire {
 		});
 	}
 
+	/**
+	 * refresh la liste des groupes
+	 */
 	public void refreshList() {
 		try {
 

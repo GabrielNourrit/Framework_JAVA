@@ -1,7 +1,6 @@
 package applicationTest;
 
 import interfaceGraph.ConnexionStyle;
-import interfaceGraph.ConnexionStyle2;
 import interfaceGraph.Droits;
 import interfaceGraph.GererGroupe;
 import interfaceGraph.ListeUtilisateur;
@@ -22,7 +21,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import util.Droit;
 import util.Fenetre;
 import util.Utilisateur;
 
@@ -42,12 +40,10 @@ public class Main extends Application{
 	private TchatGraphique tchat;
 	private GestionMail gestionMail;
 	private PoseFichier poseFichier;
-	private GererGroupe gererGroupe;
 	private TelechargerFichier telechargerFichier;
 	private Button btnDroit;
 	private Button btnGroupe;
 	private Button btnUtilisateur;
-	private VBox vbButton;
 	private VBox vbSondage;
 	private SondageBouton sondageBouton;
 	private SondaGeneral sondageGeneral;

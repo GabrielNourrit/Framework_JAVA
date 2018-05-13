@@ -1,20 +1,13 @@
 package interfaceGraph.sondage;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -47,16 +40,14 @@ public class AffichagePoint extends Composition{
 		ecouteurDefaultAction();
 	}
 	
-	
+	/**
+	 * recupere les infos du sondage
+	 */
 	private void recupere() {
-		
 		this.titre.setText(so.getQuestion());
 		this.titre.setFont(Font.font("Arial",FontWeight.BOLD,FontPosture.REGULAR, 20));
 		this.titre.setWrappingWidth(500);
-
 		int max=so.getReponses().size();
-		
-		
 		for(int j=0; j<max ; j+=2){ 
 			CheckBox rb = new CheckBox(so.getReponses().get(j));
 			rb.setUserData(j+1);
@@ -67,10 +58,8 @@ public class AffichagePoint extends Composition{
 				} else {
 					selectedCheckBoxes.remove(rb);
 				}
-
 			});
-		}
-		
+		}	
 	}
 
 	@Override
@@ -100,16 +89,10 @@ public class AffichagePoint extends Composition{
 					
 					ArrayList<String> ret = new ArrayList<String>();
 					connect = new Connectable<SondageInterface>().connexion("Sondage");
-					System.out.println(this.selectedCheckBoxes);
 					for(CheckBox cb : this.selectedCheckBoxes) {
 						int index = Integer.parseInt(cb.getUserData().toString());
 						ret.add(so.getReponses().get(index-1));
-						/*int index = Integer.parseInt(cb.getUserData().toString());
-						int value = Integer.parseInt(so.getReponses().get(index));
-						ret = so.getReponses();
-						ret.set(index, value+1+"");*/
 					}
-					System.out.println(ret);
 					connect.updateSondage(user.getLogin(),so.getId(), ret);//sondageListToString(ret));
 			}catch (Exception e1) {
 				Fenetre.creatAlert(AlertType.ERROR, "Error Dialog", "Veuillez selectionner une proposition ! ");

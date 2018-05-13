@@ -235,6 +235,9 @@ public class GestionMail extends Composition{
 		objet.setCellValueFactory(new PropertyValueFactory<MelCell, String>("objet"));
 	}
 
+	/**
+	 * sous classe implementant un Listener
+	 */
 	private class MailListener extends UnicastRemoteObject implements MelListener {
 		private static final long serialVersionUID = 1L;
 		protected MailListener() throws RemoteException {

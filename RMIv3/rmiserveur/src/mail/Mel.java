@@ -2,6 +2,7 @@ package mail;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,8 +16,9 @@ import BaseDeDonnee.sgbd.SGBD;
 import parametrage.PropertiesServeur;
 import util.ManipulationFichier;
 
-public class Mel implements MelInterface{
+public class Mel extends UnicastRemoteObject implements MelInterface{
 
+	private static final long serialVersionUID = -1388677820018450837L;
 	private SGBD sgbd;
 	private String chemin = PropertiesServeur.getStockageMail() +"/";
 	private Map<String ,MelListener> listRecu = new HashMap<>();
@@ -138,7 +140,7 @@ public class Mel implements MelInterface{
 		try {
 			listEnvoye.get(login).nouveauMailEnvoye(message);
 		} catch(Exception re) {
-			re.printStackTrace();
+			//re.printStackTrace();
 			listEnvoye.remove(login); 
 		} 
 	}
@@ -147,9 +149,7 @@ public class Mel implements MelInterface{
 		try {
 			listRecu.get(login).nouveauMailRecu(message);
 		} catch(Exception re) {
-			re.printStackTrace();
-			//System.out.println("removing listener -"+login);
-			//listRecu.remove(login); 
+			//re.printStackTrace();
 		} 
 	}
 		

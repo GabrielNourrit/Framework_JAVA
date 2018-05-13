@@ -49,7 +49,13 @@ public class TchatGraphique extends VBox {
 	private boolean droit;
 	
 
+	/**
+	 * Fonction appeler après appuie sur le bouton envoyer
+	 * @param tchat
+	 * @throws RemoteException
+	 */
 	private void execute(TchatInterface tchat) throws RemoteException{ 
+		sp.vvalueProperty().bind((ObservableValue<? extends Number>) sp.heightProperty());
 		if (!ZoneText.getText().trim().isEmpty()) {
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			Date date = new Date();
@@ -84,6 +90,9 @@ public class TchatGraphique extends VBox {
 		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr()));		
 	}
 
+	/**
+	 * genere tout les sous Composant
+	 */
 	private void genererSousComposant() throws Exception {
 		ZoneText= new LimitedTextArea(256);
 		BouttonEnv= new Button("Envoyer");
@@ -98,37 +107,30 @@ public class TchatGraphique extends VBox {
 		cbgroupe.getSelectionModel().select(0);
 	}
 
+	/**
+	 * definit le style par defaut
+	 */
 	private void layoutDefaultParametre() {
 		ZoneText.setMinSize(535, 70);
 		ZoneText.setWrapText(true);
 		vboxTextTchat.setSpacing(5);
 		vboxTextTchat.setId("tchat-list");
-		//vboxTextTchat.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-		//vboxTextTchat.getChildren().addAll(vboxInfo,vboxContenu);
 		sp.setContent(vboxTextTchat);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		sp.setMinSize(500, 400);
 		sp.setFitToWidth(true);
 		sp.setFitToHeight(true);
-		sp.vvalueProperty().bind((ObservableValue<? extends Number>) sp.heightProperty());
 		if (droit) hbTextFButton.getChildren().addAll(ZoneText,BouttonEnv);
 		this.setSpacing(3);
 		this.setPadding(new Insets(3, 3, 3, 3));
 		this.getChildren().addAll(sp,hbTextFButton,cbgroupe);
 	}
 
+	/**
+	 * definit tout les Actions-Listeners
+	 */
 	private void ecouteurDefaultAction() {
-		/*ZoneText.setOnAction(event-> {
-			try {
-				execute(connex);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-			ZoneText.setText("");
-		});*/
-
 		BouttonEnv.setOnAction(event ->{
-			/*Traitement de l'appli*/
 			try {
 				execute(connex);
 			} catch (RemoteException e) {
@@ -138,6 +140,9 @@ public class TchatGraphique extends VBox {
 		});
 	}
 	
+	/**
+	 * ecouteur sur la choice box du choix du groupe
+	 */
 	private void ecouteurChoixGroupe() {
 		cbgroupe.getSelectionModel().selectedIndexProperty().addListener((ChangeListener<? super Number>) (ov, value, new_value) -> {
 			try {
@@ -150,7 +155,11 @@ public class TchatGraphique extends VBox {
 		});
 	}
 
-	public void ajouterMessage(String message) {
+	/**
+	 * ajoute un message au tchat
+	 * @param message le messsage a ajouter
+	 */
+	private void ajouterMessage(String message) {
 		String[] str = message.split(Pattern.quote("|"));	
 		String[] s;
 		for (String u : str) {
@@ -161,6 +170,13 @@ public class TchatGraphique extends VBox {
 		}
 	}
 	
+	/**
+	 * Creer un message
+	 * @param heure l'heure du message
+	 * @param nomATest l'expediteur
+	 * @param msg le contenu du message
+	 * @return
+	 */
 	private HBox creatMessageTchat(String heure,String nomATest,String msg){
 		VBox v=new VBox();
 		String nom;
@@ -186,11 +202,13 @@ public class TchatGraphique extends VBox {
 		
 		v.getChildren().addAll(t1,textMsg);
 		h.getChildren().add(v);
-		//v.getStyleClass().add("tchat-contenu");
 		v.setMaxWidth(300);
 		return h;
 	}
 
+	/**
+	 * sous classe implementant un listener
+	 */
 	private class Tchat extends UnicastRemoteObject implements TchatListener {
 
 		private static final long serialVersionUID = 1L;

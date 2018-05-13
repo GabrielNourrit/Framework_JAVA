@@ -8,7 +8,7 @@ import java.io.FileWriter;
 public class ManipulationFichier {
 
 	/**
-	 * charge la liste des index dans listeIndexTuple
+	 * charge un fichier
 	 * @param fichier l'url du fichier a charger
 	 */
 	public static StringBuffer chargerFichierTchat(String fichier) {
@@ -27,7 +27,7 @@ public class ManipulationFichier {
 	}
 
 	/**
-	 * sauve la liste des index en format texte
+	 * sauve un fihcier
 	 * @param fichier l'url du fichier de sauvegarde
 	 */
 	public static void sauverFichier(String fichier, String texte) {
