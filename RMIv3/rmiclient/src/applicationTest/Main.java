@@ -74,7 +74,7 @@ public class Main extends Application{
 			connexion = new ConnexionStyle();
 			connexion.setAlignment(Pos.BOTTOM_CENTER);
 			spConnexion = new ScrollPane();
-			deconnexion =  new Button("se déconnecter");
+			deconnexion =  new Button("se dÃ©connecter");
 			deconnexion.setMinWidth(180);
 			deconnexion.setOnAction(event -> {
 				utilisateur = null;
