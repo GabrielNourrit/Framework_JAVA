@@ -1,16 +1,19 @@
 package applicationTest;
 
 import interfaceGraph.ConnexionStyle;
+import interfaceGraph.ConnexionStyle2;
+import interfaceGraph.Droits;
 import interfaceGraph.GererGroupe;
 import interfaceGraph.ListeUtilisateur;
 import interfaceGraph.PoseFichier;
 import interfaceGraph.TchatGraphique;
 import interfaceGraph.TelechargerFichier;
 import interfaceGraph.mail.GestionMail;
+import interfaceGraph.sondage.SondaGeneral;
+import interfaceGraph.sondage.SondageBouton;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,6 +22,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.Droit;
 import util.Fenetre;
 import util.Utilisateur;
 
@@ -33,15 +37,21 @@ public class Main extends Application{
 	private Tab mailTab;
 	private Tab ficPosTab;
 	private Tab ficDlTab;
+	private Tab ficSoTab;
 	
 	private TchatGraphique tchat;
 	private GestionMail gestionMail;
 	private PoseFichier poseFichier;
 	private GererGroupe gererGroupe;
 	private TelechargerFichier telechargerFichier;
+	private Button btnDroit;
 	private Button btnGroupe;
 	private Button btnUtilisateur;
 	private VBox vbButton;
+	private VBox vbSondage;
+	private SondageBouton sondageBouton;
+	private SondaGeneral sondageGeneral;
+	
 	private Scene scene;
 	
 	private ConnexionStyle connexion; 
@@ -64,7 +74,7 @@ public class Main extends Application{
 			connexion = new ConnexionStyle();
 			connexion.setAlignment(Pos.BOTTOM_CENTER);
 			spConnexion = new ScrollPane();
-			deconnexion =  new Button("se dÃ©connecter");
+			deconnexion =  new Button("se déconnecter");
 			deconnexion.setMinWidth(180);
 			deconnexion.setOnAction(event -> {
 				utilisateur = null;
@@ -93,6 +103,7 @@ public class Main extends Application{
 			mailTab = new Tab("Mail");
 			ficPosTab = new Tab("Pose Fichiers");
 			ficDlTab = new Tab("Telecharger Fichiers");
+			ficSoTab = new Tab("Sondages");
 			
 			//tab.getTabs().add(tchatTab);
 			
@@ -121,7 +132,7 @@ public class Main extends Application{
 			primaryStage.show();
 			
 		} catch(Exception e) {
-			Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Impossible de ce connecter");
+			e.printStackTrace();
 		}
 	}
 	
@@ -157,7 +168,38 @@ public class Main extends Application{
 					tab.getTabs().add(ficPosTab);
 				}
 				
+				if (utilisateur.hasRight("DVS")) {
+					vbSondage = new VBox();
+					sondageBouton = new SondageBouton(utilisateur);
+					sondageGeneral = new SondaGeneral(utilisateur);
+					vbSondage.getChildren().addAll(sondageBouton,sondageGeneral);
+					ficSoTab.setContent(vbSondage);
+					tab.getTabs().add(ficSoTab);
+				}
+				vbConnexion = new VBox();
+				vbConnexion.getChildren().addAll(titreConnexion, deconnexion);
+				
 				modifierUtil = false;
+				if (utilisateur.hasRight("DMT")) {
+					btnDroit = new Button("Modifier Types");
+					btnDroit.setStyle("-fx-padding: 10; -fx-margin: 10;");
+					btnDroit.setMinWidth(180);
+					btnDroit.setOnAction(e -> {
+						Stage windowModifier = new Stage();
+						Droits gererDroits = new Droits(utilisateur);
+						ScrollPane spListUtilisateur = new ScrollPane();
+						spListUtilisateur.setContent(gererDroits);
+						gererDroits.setAlignment(Pos.CENTER);
+						spListUtilisateur.setFitToWidth(true);
+						spListUtilisateur.setFitToHeight(true);
+						Scene scene = new Scene(spListUtilisateur, 400, 400);
+						windowModifier.setTitle("Modification");
+						windowModifier.setScene(scene);
+						windowModifier.show();
+						
+					});
+					vbConnexion.getChildren().add(btnDroit);
+				}
 				if (utilisateur.hasRight("DMG")) {
 					btnGroupe = new Button("Modifier Groupes");
 					btnGroupe.setStyle("-fx-padding: 10; -fx-margin: 10;");
@@ -172,11 +214,11 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						Fenetre.paramStage(windowModifier, scene);
+						windowModifier.setScene(scene);
 						windowModifier.show();
 						
 					});
-					modifierUtil = true;
+					vbConnexion.getChildren().add(btnGroupe);
 				}
 				if (utilisateur.hasRight("DMU")) {
 					btnUtilisateur = new Button("Modifier utilisateur");
@@ -192,18 +234,13 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						Fenetre.paramStage(windowModifier, scene);
+						windowModifier.setScene(scene);
 						windowModifier.show();
 						
 					});
-					if (modifierUtil) {
-						vbConnexion = new VBox(titreConnexion, deconnexion,btnUtilisateur, btnGroupe);
-					} else {
-						vbConnexion = new VBox(titreConnexion, deconnexion,btnUtilisateur);
-					}
-				} else {
-					vbConnexion = new VBox(titreConnexion, deconnexion);
-				}
+					vbConnexion.getChildren().add(btnUtilisateur);
+					
+				} 
 				//vbConnexion.setStyle("-fx-background-color: #00ea36;");
 				vbConnexion.setAlignment(Pos.CENTER);
 				spConnexion.setContent(vbConnexion);
@@ -212,7 +249,8 @@ public class Main extends Application{
 				
 				titreConnexion.setText("Bonjour "+utilisateur.getLogin());
 			} catch ( Exception e) {
-				Fenetre.creatAlert(AlertType.ERROR, "Erreur", "Impossible de ce connecter");
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}

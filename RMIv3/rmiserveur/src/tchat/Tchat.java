@@ -1,6 +1,8 @@
 package tchat;
 
+import java.io.File;
 import java.rmi.*;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,7 @@ import parametrage.PropertiesServeur;
 import util.Groupe;
 import util.ManipulationFichier;
 
-public class Tchat implements TchatInterface  {
+public class Tchat extends UnicastRemoteObject implements TchatInterface  {
 	static final long serialVersionUID = 42L;
 	private  Map<Integer ,Vector <TchatListener>> list = new HashMap<>();
 	private  Map<Integer ,StringBuffer> historique = new HashMap<>();
@@ -28,6 +30,7 @@ public class Tchat implements TchatInterface  {
 	}
 
 	public synchronized String getHistorique(Integer groupe) throws RemoteException {
+		System.out.println("CONNEXION CLIENT");
 		return historique.get(groupe).toString();
 	}
 

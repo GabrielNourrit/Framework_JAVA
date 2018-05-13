@@ -1,19 +1,28 @@
 package interfaceGraph;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.sql.SQLException;
 import java.util.List;
+
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
+import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import util.Connectable;
 import util.Fenetre;
+import util.Groupe;
 import util.Type;
 import util.Utilisateur;
 
@@ -119,10 +128,23 @@ public class Droits extends Formulaire {
 		formCreate = new HBox();
 		formSelect = new HBox();
 		typeComboBox = new ListView<>();
-		refreshList();
+		refreshChoiceBox();
+	}
+
+	public void refreshChoiceBox() {
+		GestionTypeInterface connex;
+		Registry registry;
+		try {
+			registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+			connex = (GestionTypeInterface) registry.lookup("Types");
+			List<Type> lesTypes = connex.getAllType();
+			typeComboBox.setItems(FXCollections.observableArrayList(lesTypes));
+		} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private void refreshList() {
+	public void refreshList() {
 		try {
 			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
 			List<Type> type = connex.getAllType();

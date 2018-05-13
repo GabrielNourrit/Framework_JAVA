@@ -1,11 +1,19 @@
 package interfaceGraph.sondage;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import sondage.SondageInterface;
+import sondage.SondageListener;
 import sondage.SondageObj;
 import util.Utilisateur;
 
@@ -18,6 +26,7 @@ public class ResultatSondage extends Composition
 	private Label nbVote;
 	private Label jourRestant;
 	//other
+	Registry registry=null;	
 	private Utilisateur user;
 	SondageObj s;
 

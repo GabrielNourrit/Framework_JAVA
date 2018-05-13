@@ -1,16 +1,17 @@
 package BaseDeDonnee.gestionUtilisateur;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 
 import BaseDeDonnee.sgbd.SGBD;
 import util.Utilisateur;
 
-public class OperationUtilisateur implements OperationUtilisateurInterface {
+public class OperationUtilisateur extends UnicastRemoteObject  implements OperationUtilisateurInterface {
 
 	private SGBD sgbd;
 	
-	public OperationUtilisateur(SGBD _sgbd) {
+	public OperationUtilisateur(SGBD _sgbd) throws RemoteException {
 		super();
 		sgbd = _sgbd;
 	}

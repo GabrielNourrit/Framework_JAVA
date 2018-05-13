@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
+import fichier.GestionFichierInterface;
 import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -93,7 +94,9 @@ public class CreerGroup extends Formulaire{
 						GroupesInterface connex = new Connectable<GroupesInterface>().connexion("Groupes");
 						int idGr = connex.ajouterGroupe(text1.getText(), listLogin);
 						TchatInterface connex2 = new Connectable<TchatInterface>().connexion("Tchat");
+						GestionFichierInterface c = new Connectable<GestionFichierInterface>().connexion("Fichier");
 						connex2.ajouterGroupeTchat(idGr);
+						c.ajouterGroupeFichier(idGr);
 						text1.setText("");
 						for (Utilisateur u: olstUserInscrit) {
 							olstUser.add(u);

@@ -1,5 +1,6 @@
 package util;
 
+import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -25,7 +26,7 @@ public class Connectable<T extends Remote> {
 	@SuppressWarnings("unchecked")
 	public T connexion(String lookup) throws Exception {
 		try {
-			return (T) registry.lookup(lookup);
+			return (T) Naming.lookup("rmi://"+PropertiesClient.getAdresseServeur()+"/" +lookup);
 		} catch (Exception e) {
 			//Fenetre.creatAlert(AlertType.ERROR,"Registry","Recherche Introuvable : '"+ lookup+"'");
 			throw new Exception("Recherche Introuvable : '"+lookup+"'");

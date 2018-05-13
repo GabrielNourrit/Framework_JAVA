@@ -18,6 +18,7 @@ import util.Groupe;
 import util.LimitedTextArea;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -109,6 +110,7 @@ public class TchatGraphique extends VBox {
 		sp.setMinSize(500, 400);
 		sp.setFitToWidth(true);
 		sp.setFitToHeight(true);
+		sp.vvalueProperty().bind((ObservableValue<? extends Number>) sp.heightProperty());
 		if (droit) hbTextFButton.getChildren().addAll(ZoneText,BouttonEnv);
 		this.setSpacing(3);
 		this.setPadding(new Insets(3, 3, 3, 3));

@@ -1,9 +1,12 @@
 package interfaceGraph;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
+import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
+import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +22,8 @@ import javafx.scene.layout.VBox;
 import util.Connectable;
 import util.Droit;
 import util.Fenetre;
+import util.Type;
+import util.Utilisateur;
 
 public class CreerType extends Formulaire{
 

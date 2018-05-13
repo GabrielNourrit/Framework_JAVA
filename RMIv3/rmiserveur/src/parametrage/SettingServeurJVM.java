@@ -29,6 +29,7 @@ public class SettingServeurJVM {
 	public static void configureProperty(){
 		System.setProperty("java.security.policy",SECURITY_POLICY);
 		System.setProperty("java.rmi.server.codebase",RMI_SEVEUR_CODEBASE);
+		System.setProperty("java.rmi.server.hostname","127.0.0.1");
 	}
 	
 	/**

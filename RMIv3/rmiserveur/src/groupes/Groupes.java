@@ -1,16 +1,17 @@
 package groupes;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
 import BaseDeDonnee.sgbd.SGBD;
 import util.Groupe;
 
-public class Groupes implements GroupesInterface {
+public class Groupes extends UnicastRemoteObject  implements GroupesInterface {
 
 	private SGBD sgbd;
 	
-	public Groupes(SGBD _sgbd) {
+	public Groupes(SGBD _sgbd) throws RemoteException {
 		super();
 		sgbd = _sgbd;
 	}

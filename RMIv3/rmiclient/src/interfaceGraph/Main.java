@@ -19,7 +19,16 @@ import util.Utilisateur;
 public class Main extends Application {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, NotBoundException {
-		launch(args);
+		try {
+			SettingClientJVM.configureProperty();
+			SettingClientJVM.useSecurityManager();
+
+			launch(args);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("HelloClient exception: " + e);
+		}
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package BaseDeDonnee.gestionUtilisateur;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import BaseDeDonnee.sgbd.SGBD;
 import util.Droit;
 import util.Type;
 
-public class Types implements TypesInterface {
+public class Types extends UnicastRemoteObject implements TypesInterface {
 
 	private SGBD sgbd;
 	

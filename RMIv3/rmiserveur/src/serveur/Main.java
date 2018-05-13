@@ -4,11 +4,14 @@ import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import BaseDeDonnee.MethodeServeur;
+import BaseDeDonnee.gestionUtilisateur.GestionType;
+import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateur;
 import BaseDeDonnee.gestionUtilisateur.OperationUtilisateurInterface;
 import BaseDeDonnee.gestionUtilisateur.Types;
@@ -59,7 +62,6 @@ public class Main {
 		SGBD sgbd = SGBD.determine(PropertiesServeur.getTypeSGBD());
 		
 		List<Groupe> s = sgbd.getGroupes();
-		
 		
 		
 		SondageInterface so = new Sondage(sgbd);

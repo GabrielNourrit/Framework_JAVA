@@ -29,11 +29,13 @@ public class SGBDOracle extends SGBD {
 	private int j = -1;
 	private int t = -1;
 	private int idGr;
+	private int f;
 	
 	public SGBDOracle() throws RemoteException {
 		super();
 		i = -1;
 		idGr= -1;
+		f = -1;
 	}
 
 	private static final String LINK_SETTING_ORACLE = "ressources/bdd/BDOracle.properties";
@@ -139,13 +141,17 @@ public class SGBDOracle extends SGBD {
 		executeUpdate("update utilisateurs set etat ='SUPPR' where login ='"+user+"'");
 	}
 
-	public void ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException {
-		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources','"+l+"',"+id+")");
+	public int ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException, RemoteException {
+		if (f==-1) f = getNextvalFichier();
+		f++;
+		executeUpdate("insert into Fichiers (idFic,nom,dateArrive,url,loginExpediteur,idReceveur) values (fichiers_id.nextval,'"+n+"',sysdate,'ressources/stockage/fichier','"+l+"',"+id+")");
+		return f;
 	}
 
 	public synchronized int ajouterMail(String path, String expediteur, String receveur, String objet) throws ClassNotFoundException, SQLException, RemoteException {
 		if (i==-1) i = getNextvalMail();
 		i++;
+		System.out.println("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet+"')");
 		executeUpdate("insert into Mails(idMai,dateArrive,url,etat,loginExpediteur,loginReceveur,objet) values (mails_id.nextval,sysdate,'"+path+"','VAL','"+expediteur+"','"+receveur+"','"+objet +"')");
 		return i;
 	}
@@ -237,6 +243,14 @@ public class SGBDOracle extends SGBD {
 	public int getNextvalMail() throws ClassNotFoundException, RemoteException, SQLException {
 		int i = 0;
 		ResultSet rs = executeSelect("select max(idmai) from mails");
+		if (rs.next()) i = rs.getInt(1);
+		closeReq(rs);
+		return i;
+	}
+	
+	public int getNextvalFichier() throws ClassNotFoundException, RemoteException, SQLException {
+		int i = 0;
+		ResultSet rs = executeSelect("select max(idfic) from fichiers");
 		if (rs.next()) i = rs.getInt(1);
 		closeReq(rs);
 		return i;

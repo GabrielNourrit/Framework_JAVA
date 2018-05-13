@@ -1,12 +1,13 @@
 package connexion;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 
 import BaseDeDonnee.sgbd.SGBD;
 import util.Utilisateur;
 
-public class Connexion implements ConnexionInterface{
+public class Connexion extends UnicastRemoteObject implements ConnexionInterface{
 	
 	protected String utilisateur;
 	protected String motdepasse;

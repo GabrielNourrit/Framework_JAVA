@@ -71,7 +71,8 @@ public abstract class SGBD {
 	}
 	
 	
-	public void ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException {
+	public int ajouterFichier(String n,String l,int id) throws ClassNotFoundException, SQLException, RemoteException {
+		return -1;
 	}
 	
 	public static SGBD determine(String baseDeDonnees) throws RemoteException{

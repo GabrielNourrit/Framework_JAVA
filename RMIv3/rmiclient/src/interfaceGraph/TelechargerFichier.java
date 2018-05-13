@@ -3,14 +3,17 @@ package interfaceGraph;
 import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
 
 import fichier.Fichier;
+import fichier.FichierListener;
 import fichier.GestionFichierInterface;
 import util.Connectable;
 import util.Fenetre;
 import util.Groupe;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +44,7 @@ public class TelechargerFichier extends VBox {
 	private List<Fichier> fs;
 	private ObservableList<Fichier> items;
 	protected DirectoryChooser directorychooser;
+	private int groupe;
 
 	public TelechargerFichier(Utilisateur utilisateur) throws Exception {
 		this.u=utilisateur;
@@ -58,12 +62,16 @@ public class TelechargerFichier extends VBox {
 		vb1 = new VBox();
 		vb2 = new VBox();
 		list = new ListView<Fichier>();
-		try {
-			cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(u.getGroupe()));
-		} catch (RemoteException | ClassNotFoundException | NotBoundException | SQLException e) {
-			e.printStackTrace();
+		List<Groupe> groups = u.getGroupe();
+		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(groups));
+		
+		for (Groupe g : groups) {
+			Listener l = new Listener();
+			int gr = g.getidGr();
+			connex.addGroupListener(l,gr);
 		}
 		cbgroupe.getSelectionModel().select(0);
+		groupe = cbgroupe.getSelectionModel().getSelectedItem().getidGr();
 		System.out.println(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 		fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 	}
@@ -76,7 +84,7 @@ public class TelechargerFichier extends VBox {
 				cbgroupe.getSelectionModel().select((int) new_value);
 				fs = connex.recupererFichierGroupe(cbgroupe.getSelectionModel().getSelectedItem().getidGr());
 				items.addAll(fs);
-				System.out.println(fs);
+				groupe = cbgroupe.getSelectionModel().getSelectedItem().getidGr();
 			} catch (Exception e) {
 				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog", "Erreur");
 			}
@@ -120,5 +128,32 @@ public class TelechargerFichier extends VBox {
 	}
 	public HBox getStyleForm(){
 		return this.form;
+	}
+	
+	private void ajouterFichier(Fichier f,Integer g) {
+		if (groupe == g) {
+			fs.add(f);
+			items.clear();
+			items.addAll(fs);
+		}
+	}
+	
+	private class Listener extends UnicastRemoteObject implements FichierListener {
+
+		private static final long serialVersionUID = 1L;
+
+		protected Listener() throws RemoteException {
+			super();
+		}
+		
+		@Override
+		public void nouveauFichier(Fichier f,Integer g) throws RemoteException {
+			Platform.runLater(
+					() -> {
+						ajouterFichier(f,g);
+					}
+			);
+		}
+		
 	}
 }

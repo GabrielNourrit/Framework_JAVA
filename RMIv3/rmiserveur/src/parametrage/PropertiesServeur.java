@@ -18,7 +18,7 @@ public class PropertiesServeur {
 	private static String stockageTchat;
 	private static String stockageFichiers;
 	private static String stockageMail;
-	
+	private static String adresseServeur;
 	
 	/**
 	 * Constructeur local
@@ -43,6 +43,7 @@ public class PropertiesServeur {
 		stockageTchat = prop.getProperty("stockage.tchat");
 		stockageFichiers = prop.getProperty("stockage.fichiers");
 		stockageMail = prop.getProperty("stockage.mail");
+		adresseServeur = prop.getProperty("adresse.serveur");
 	}
 	
 	/**
@@ -98,6 +99,15 @@ public class PropertiesServeur {
 	public static int getPortServeur() throws NumberFormatException{
 		initialiseProperties();
 		return Integer.parseInt(portServeur);
+	}
+	
+	/**
+	 * L'adresse du serveur
+	 * @return String
+	 */
+	public static String getAdresseServeur() throws NumberFormatException{
+		initialiseProperties();
+		return adresseServeur;
 	}
 	
 	/**

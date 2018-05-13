@@ -1,6 +1,9 @@
 package interfaceGraph.mail;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
+
+import BaseDeDonnee.gestionUtilisateur.UtilisateursInterface;
 import interfaceGraph.Composition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -96,8 +99,20 @@ public class AffichageMessage extends Composition{
 	@Override
 	protected void ecouteurDefaultAction() {
 		this.repondre.setOnAction(event ->{
+			String contact ="";
+			UtilisateursInterface ui = null;
+			try {
+				ui = new Connectable<UtilisateursInterface>().connexion("Utilisateurs");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			try {
+				contact = ui.getUser(this.e.getText()).contact();
+			} catch (ClassNotFoundException | RemoteException | SQLException e) {
+				e.printStackTrace();
+			}
 			ScrollPane sp = new ScrollPane();
-			VBox reponse= new WriteMessage(this.u,this.e.getText(), this.o.getText());
+			VBox reponse= new WriteMessage(this.u,contact, this.o.getText());
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			sp.setContent(reponse);
 			reponse.setAlignment(Pos.CENTER);
