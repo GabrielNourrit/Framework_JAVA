@@ -35,17 +35,17 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		Utilisateur user = new Utilisateur("metzgegu", "Guillaume","metzger", new Type(1,"Admin"));
-		user.addGroupe(new Groupe(1,"Groupe Projet MORAT"));
-		user.addGroupe(new Groupe(2,"Groupe Projet A380"));
-		VBox vb = new ModifierUtilisateur(user);
+		Utilisateur user = new Utilisateur("polo", "polo","polo", new Type(1,"Admin"));
+		user.addGroupe(new Groupe(1,"Groupe General"));
+		//user.addGroupe(new Groupe(2,"Groupe Projet A380"));
+		//VBox vb = new ModifierUtilisateur(user);
 		VBox vb2 = new VBox();
 		vb2.getChildren().addAll(new SondageBouton(user), new SondaGeneral(user));
-		//VBox vb = new SondaGeneral(user);
+		VBox vb = new PoseFichier(user);
 		vb2.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(vb2, 600, 600);
 		stage.setResizable(false);
-		stage.setTitle("ChatBox");
+		stage.setTitle("Telechargement");
 		Fenetre.paramStage(stage,scene);
 		stage.show();		
 	}

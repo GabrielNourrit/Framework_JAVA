@@ -56,7 +56,6 @@ public class GestionMail extends Composition{
 	 */
 	public GestionMail(Utilisateur u) throws Exception{
 		this.moi = u;
-		//this.mel = (MelInterface) registry.lookup("Mel");
 		this.mel = new Connectable<MelInterface>().connexion("Mel");
 		listeMailRecu = mel.chargerMails(moi.getLogin());
 		listeMailEnvoye = mel.chargerMailsExp(moi.getLogin());
@@ -172,16 +171,16 @@ public class GestionMail extends Composition{
 
 		sup.setOnAction(e->{
 			try {
-				if (action.equals("recu")) mel.supprMailRec(selected.getId());
-				else mel.supprMailExp(selected.getId());
 				for (MelCell m : t.getSelectionModel().getSelectedItems()) {
 					if (action.equals("recu")) {
 						listeMailRecu.remove(m);
 						list = FXCollections.observableArrayList(listeMailRecu); 
+						mel.supprMailRec(m.getId());
 					}
 					else {
 						listeMailEnvoye.remove(m);
 						list = FXCollections.observableArrayList(listeMailEnvoye);
+						mel.supprMailExp(m.getId());
 					}
 				}		
 				t.setItems(list);

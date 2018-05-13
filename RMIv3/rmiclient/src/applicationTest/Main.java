@@ -70,7 +70,7 @@ public class Main extends Application{
 			connexion = new ConnexionStyle();
 			connexion.setAlignment(Pos.BOTTOM_CENTER);
 			spConnexion = new ScrollPane();
-			deconnexion =  new Button("se déconnecter");
+			deconnexion =  new Button("se deconnecter");
 			deconnexion.setMinWidth(180);
 			deconnexion.setOnAction(event -> {
 				utilisateur = null;
@@ -190,7 +190,7 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						windowModifier.setScene(scene);
+						Fenetre.paramStage(windowModifier,scene);
 						windowModifier.show();
 						
 					});
@@ -210,9 +210,8 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						windowModifier.setScene(scene);
+						Fenetre.paramStage(windowModifier,scene);
 						windowModifier.show();
-						
 					});
 					vbConnexion.getChildren().add(btnGroupe);
 				}
@@ -230,14 +229,13 @@ public class Main extends Application{
 						spListUtilisateur.setFitToHeight(true);
 						Scene scene = new Scene(spListUtilisateur, 400, 400);
 						windowModifier.setTitle("Modification");
-						windowModifier.setScene(scene);
+						Fenetre.paramStage(windowModifier,scene);
 						windowModifier.show();
 						
 					});
 					vbConnexion.getChildren().add(btnUtilisateur);
 					
 				} 
-				//vbConnexion.setStyle("-fx-background-color: #00ea36;");
 				vbConnexion.setAlignment(Pos.CENTER);
 				spConnexion.setContent(vbConnexion);
 				

@@ -80,13 +80,6 @@ public class ListeUtilisateur extends Formulaire {
 		lst_user = new ListView<>();
 		
 		refreshList();
-		/*lst_user.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-
-			@Override
-			public ListCell<String> call(ListView<String> param) {
-				return new UtilisateurRow();
-			}
-		});*/
 		
 	}
 

@@ -1,5 +1,7 @@
 package interfaceGraph.sondage;
 
+import java.time.LocalDate;
+
 import interfaceGraph.Composition;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -83,16 +85,19 @@ public class SondageCreation extends Composition{
 							reponses+=((TextField) reponse).getText()+";0;";
 						}
 					}
-
 					try {
 						if(!tailleAcceptable(this.date.getValue().toString())) { 
-							prblm("Veuillez ecrire une question ! ");
-						}else {
+							prblm("Veuillez rentrer une date ! ");
+						}
+						else if (this.date.getValue().isBefore(LocalDate.now())) {
+							prblm("Veuillez rentrer une date superieur a la date du jour ! ");
+						}
+						else {
 							//--TRAITEMENT 3
 
 							SondageInterface s = new Connectable<SondageInterface>().connexion("Sondage");
 
-							s.creerSondage(u.getLogin(),this.question.getText(), reponses, this.multiple.isChecked(), this.date.getValue().toString());
+							s.creerSondage(u.getLogin(),this.question.getText(), reponses, true, this.date.getValue().toString());
 
 							Stage st = (Stage) getScene().getWindow();
 							st.close();
@@ -113,8 +118,7 @@ public class SondageCreation extends Composition{
 		this.question.setLayoutX(70);
 		this.titre1.setLayoutY(4);
 		questionC.getChildren().addAll(titre1,question);
-
-		comp.getChildren().addAll(questionC,titre2,choix,nouveau,multiple,titre3,date,ok);
+		comp.getChildren().addAll(questionC,titre2,choix,nouveau,titre3,date,ok);
 		comp.setMaxSize(120, 100);
 		comp.setSpacing(5);
 		this.getChildren().add(comp);	

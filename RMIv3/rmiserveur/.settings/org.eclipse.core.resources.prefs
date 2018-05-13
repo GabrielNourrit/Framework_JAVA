@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
-encoding//ressources/stockage/tchat/1=UTF-8
+encoding//ressources/stockage/tchat/1=ISO-8859-1
 encoding//ressources/stockage/tchat/2=UTF-8
+encoding//src/BaseDeDonnee/sgbd/SGBD.java=UTF-8

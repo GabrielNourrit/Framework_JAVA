@@ -4,9 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="ressources/jar/serveur.jar"/>
 	<classpathentry kind="lib" path="ressources/jar/jBCrypt-0.4.jar"/>
-	<classpathentry kind="lib" path="ressources/jar/junit.jar"/>
-	<classpathentry kind="lib" path="ressources/jar/mockito-all-1.9.5.jar"/>
-	<classpathentry kind="lib" path="ressources/jar/mysql-connector-java-5.0.5-bin.jar"/>
 	<classpathentry kind="lib" path="ressources/jar/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

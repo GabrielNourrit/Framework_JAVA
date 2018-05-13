@@ -54,7 +54,6 @@ public class AffichageMessage extends Composition{
 	public AffichageMessage(Utilisateur u, MelCell mc, String t) throws Exception {
 		this.u=u;
 		type=t;
-		//mailInterface = (MelInterface) registry.lookup("Mel");
 		mailInterface = new Connectable<MelInterface>().connexion("Mel");
 		genererSousComposant();
 		lecture(mc);

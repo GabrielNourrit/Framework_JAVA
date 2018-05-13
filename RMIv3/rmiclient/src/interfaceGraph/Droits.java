@@ -1,9 +1,6 @@
 package interfaceGraph;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.sql.SQLException;
+
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
@@ -132,13 +129,11 @@ public class Droits extends Formulaire {
 	 */
 	public void refreshChoiceBox() {
 		GestionTypeInterface connex;
-		Registry registry;
 		try {
-			registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			connex = (GestionTypeInterface) registry.lookup("GestionTypes");
+			connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 			List<Type> lesTypes = connex.getAllType();
 			typeComboBox.setItems(FXCollections.observableArrayList(lesTypes));
-		} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

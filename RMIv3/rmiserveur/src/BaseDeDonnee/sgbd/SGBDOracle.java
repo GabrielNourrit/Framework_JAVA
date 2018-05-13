@@ -424,6 +424,10 @@ public class SGBDOracle extends SGBD {
 		return fs;
 	}
 	
+	public void majMail(int id, String etat) throws ClassNotFoundException, SQLException {
+		executeUpdate("update mails set etat='"+etat+"' where idMai="+id);
+	}
+	
 	public String etatMail(int id) throws ClassNotFoundException, RemoteException, SQLException {
 		String etat="";
 		ResultSet rs = executeSelect("select etat from mails where idmai="+id);
@@ -463,9 +467,9 @@ public class SGBDOracle extends SGBD {
 		try {
 			ResultSet rs = null;
 			if(fait==1) {
-			   rs = executeSelect("select * from sondage where idSon in (select idSon from vote where login='"+owner.getLogin()+"')");
+			   rs = executeSelect("select * from sondage where datefin>sysdate and idSon in (select idSon from vote where login='"+owner.getLogin()+"')");
 			}else {
-			   rs = executeSelect("select * from sondage where idSon not in (select distinct idSon from vote where login='"+owner.getLogin()+"')");
+			   rs = executeSelect("select * from sondage where datefin>sysdate and idSon not in (select distinct idSon from vote where login='"+owner.getLogin()+"')");
 			}
 			while (rs.next()) {
 				boolean multiple;

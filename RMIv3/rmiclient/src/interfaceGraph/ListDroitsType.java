@@ -1,6 +1,5 @@
 package interfaceGraph;
 
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +30,7 @@ public class ListDroitsType extends CreerType{
 	protected void refreshList() {
 		GestionTypeInterface connex;
 		try {
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			connex = (GestionTypeInterface) registry.lookup("GestionTypes");
+			connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 			lstDroitNonInscrit = connex.getAllDroitNotInType(type.getIdType());
 			lstDroitInscrit = connex.getAllDroitInType(type.getIdType());
 

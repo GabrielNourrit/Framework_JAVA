@@ -44,6 +44,7 @@ public class BoutonChoix extends HBox{
 		compoBC.setMaxSize(120, 100);
 		compoBC.setSpacing(3);
 		compoBC.setAlignment(Pos.CENTER);
+		bool.setSelected(true);
 		this.getChildren().add(compoBC);
 	}
 	

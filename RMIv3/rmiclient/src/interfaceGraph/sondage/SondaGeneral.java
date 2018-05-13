@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import sondage.SondageInterface;
 import sondage.SondageListener;
@@ -21,6 +22,7 @@ import util.Utilisateur;
 public class SondaGeneral extends Composition{
 	private Utilisateur u;
 	private ChoiceBox<String> cb;
+	private ScrollPane sp;
 	private VBox sondageZone;
 	private boolean fait;
 	private List<SondageObj> currentSondageFait;
@@ -62,6 +64,7 @@ public class SondaGeneral extends Composition{
 		sondageZone = new VBox();
 		cb = new ChoiceBox<String>();
 		cb.getItems().addAll("fait","non fait");
+		sp = new ScrollPane();
 	}
 
 	@Override
@@ -107,8 +110,12 @@ public class SondaGeneral extends Composition{
 	protected void layoutDefaultParametre() {
 		comp.getChildren().addAll(cb,sondageZone);
 		comp.setSpacing(50);
+		sondageZone.setSpacing(20);
 		comp.setAlignment(Pos.CENTER);
-		this.getChildren().add(this.comp);
+		sp.setContent(comp);
+		sp.setFitToWidth(true);
+		sp.setFitToHeight(true);
+		this.getChildren().add(sp);
 	}
 
 

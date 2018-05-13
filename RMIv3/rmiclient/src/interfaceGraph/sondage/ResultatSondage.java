@@ -1,6 +1,5 @@
 package interfaceGraph.sondage;
 
-import java.rmi.registry.Registry;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -19,7 +18,6 @@ public class ResultatSondage extends Composition
 	private Label nbVote;
 	private Label jourRestant;
 	//other
-	Registry registry=null;	
 	private Utilisateur user;
 	SondageObj s;
 

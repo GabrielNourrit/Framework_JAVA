@@ -47,7 +47,6 @@ public class AffichageChoixMulti extends Composition{
 
 		int max=so.getReponses().size();
 
-
 		for(int j=0; j<max ; j+=2){ 
 			CheckBox rb = new CheckBox(so.getReponses().get(j));
 			rb.setUserData(j+1);
@@ -82,10 +81,11 @@ public class AffichageChoixMulti extends Composition{
 					ret.add(so.getReponses().get(index-1));
 				}
 				connect.updateSondage(user.getLogin(),so.getId(), ret);//sondageListToString(ret));
-
+				this.getChildren().clear();
 			} catch(Exception ex) {
 				Fenetre.creatAlert(AlertType.ERROR,"Error Dialog" , "Veuillez selectionner une proposition ! ");
 			}
+			
 		});
 
 	}
@@ -99,5 +99,6 @@ public class AffichageChoixMulti extends Composition{
 		comp.setAlignment(Pos.CENTER);
 		this.getChildren().add(this.comp);
 	}
+	
 
 }
