@@ -154,6 +154,9 @@ public class CreerGroup extends Formulaire{
 		this.getChildren().add(form);
 	}
 	
+	/**
+	 * rafraichit la liste des utilisateur inscrit
+	 */
 	protected void refreshList() {
 		UtilisateursInterface connex;
 		try {
@@ -167,6 +170,10 @@ public class CreerGroup extends Formulaire{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return l'ulisateur selectionner dans les inscrit
+	 */
 	public Utilisateur getUserInscritSelected() {
 		if (utilisateurInscrit.getSelectionModel() != null) {
 			return utilisateurInscrit.getSelectionModel().getSelectedItem();
@@ -175,6 +182,10 @@ public class CreerGroup extends Formulaire{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return l'ulisateur selectionner dans les non inscrit
+	 */
 	public Utilisateur getUserNonInscritSelected() {
 		if (utilisateurNonInscrit.getSelectionModel() != null) {
 			return utilisateurNonInscrit.getSelectionModel().getSelectedItem();
@@ -183,6 +194,10 @@ public class CreerGroup extends Formulaire{
 		}
 	}
 
+	/**
+	 * set un evenement apres l'ajout du groupe 
+	 * @param value
+	 */
 	public void setPostAdd(EventHandler<ActionEvent> value) {
 		b_valider.addEventHandler(ActionEvent.ACTION, value);
 		

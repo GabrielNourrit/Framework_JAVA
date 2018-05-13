@@ -52,5 +52,6 @@ public class Droit implements Serializable{
 	
 	public String toString() {
 		return id;
+		return id+libelle;
 	}
 }

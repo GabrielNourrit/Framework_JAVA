@@ -1,16 +1,22 @@
 package interfaceGraph;
 
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
 import BaseDeDonnee.gestionUtilisateur.GestionTypeInterface;
+import BaseDeDonnee.gestionUtilisateur.TypesInterface;
+import fichier.GestionFichierInterface;
+import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import util.Connectable;
 import util.Droit;
 import util.Fenetre;
 import util.Type;
+import util.Utilisateur;
 
 public class ListDroitsType extends CreerType{
 private Type type;
@@ -29,8 +35,10 @@ private Type type;
 	
 	@Override
 	protected void refreshList() {
+		GestionTypeInterface connex;
 		try {
-			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
+			Registry registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
+            connex = (GestionTypeInterface) registry.lookup("GestionTypes");
 			lstDroitNonInscrit = connex.getAllDroitNotInType(type.getIdType());
 			lstDroitInscrit = connex.getAllDroitInType(type.getIdType());
 			

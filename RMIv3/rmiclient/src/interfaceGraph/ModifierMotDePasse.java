@@ -80,10 +80,18 @@ public class ModifierMotDePasse extends Formulaire {
 		
 	}
 	
+	/**
+	 * Ajout d'un evenement apres la modification du mot de passe
+	 * @param value
+	 */
 	public void setPostValidEvent(EventHandler<ActionEvent> value) {
 		this.b_valider.addEventHandler(ActionEvent.ACTION, value);
 	}
 	
+	/**
+	 * set un evenement quqnd l'utilisateur clique sur annuler
+	 * @param value
+	 */
 	public void setAnnulerEvent(EventHandler<ActionEvent> value) {
 		b_annuler.addEventHandler(ActionEvent.ACTION, value);
 	}

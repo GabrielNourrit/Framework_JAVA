@@ -30,7 +30,6 @@ public class Tchat extends UnicastRemoteObject implements TchatInterface  {
 	}
 
 	public synchronized String getHistorique(Integer groupe) throws RemoteException {
-		System.out.println("CONNEXION CLIENT");
 		return historique.get(groupe).toString();
 	}
 

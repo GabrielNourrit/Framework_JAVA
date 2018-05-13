@@ -77,6 +77,10 @@ public class ConnexionStyle extends Formulaire{
 		});		
 	}
 	
+	/**
+	 * set un evenement apres la connection
+	 * @param value
+	 */
 	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
 		this.mdp.addEventHandler(ActionEvent.ACTION, value);
 	}
@@ -91,6 +95,10 @@ public class ConnexionStyle extends Formulaire{
 		this.getChildren().add(form);
 	}
 
+	/**
+	 * a appeler dans l'evenement de setPostConnectEvent()
+	 * @return l'utilisateur connecter
+	 */
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
 	}

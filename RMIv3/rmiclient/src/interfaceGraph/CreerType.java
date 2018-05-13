@@ -90,7 +90,7 @@ public class CreerType extends Formulaire{
 						listLogin.add(t.getId());
 					}
 					try {
-						GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
+						GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 						connex.addType(text1.getText(), listLogin);
 						text1.setText("");
 						for (Droit t: olstDroitInscrit) {
@@ -154,7 +154,7 @@ public class CreerType extends Formulaire{
 		GestionTypeInterface connex;
 		try {
             //connex = (UtilisateursInterface) registry.lookup("Utilisateurs");
-			connex = new Connectable<GestionTypeInterface>().connexion("Types");
+			connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 			lstDroitNonInscrit = connex.getAllDroit();
 			olstDroit = FXCollections.observableArrayList(lstDroitNonInscrit);
 			

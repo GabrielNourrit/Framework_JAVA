@@ -1,11 +1,13 @@
 package interfaceGraph;
 
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
 import groupes.GroupesInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import util.Connectable;
 import util.Fenetre;

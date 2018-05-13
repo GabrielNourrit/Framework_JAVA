@@ -77,6 +77,10 @@ public class ConnexionStyle2 extends ConnexionStyle{
 		});
 	}
 	
+	/**
+	 * set un evenement apres la connection
+	 * @param value
+	 */
 	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
 		this.boutonOk.addEventHandler(ActionEvent.ACTION, value);
 	}

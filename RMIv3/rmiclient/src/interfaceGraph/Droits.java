@@ -136,7 +136,7 @@ public class Droits extends Formulaire {
 		Registry registry;
 		try {
 			registry = java.rmi.registry.LocateRegistry.getRegistry(1099);
-			connex = (GestionTypeInterface) registry.lookup("Types");
+			connex = (GestionTypeInterface) registry.lookup("GestionTypes");
 			List<Type> lesTypes = connex.getAllType();
 			typeComboBox.setItems(FXCollections.observableArrayList(lesTypes));
 		} catch (RemoteException | NotBoundException | ClassNotFoundException | SQLException e) {
@@ -146,7 +146,7 @@ public class Droits extends Formulaire {
 	
 	public void refreshList() {
 		try {
-			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("Types");
+			GestionTypeInterface connex = new Connectable<GestionTypeInterface>().connexion("GestionTypes");
 			List<Type> type = connex.getAllType();
 			typeComboBox.setItems(FXCollections.observableArrayList(type));
 		} catch (Exception e) {

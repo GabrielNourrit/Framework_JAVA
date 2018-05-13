@@ -48,6 +48,7 @@ public class Main {
 	private static GroupesInterface gi;
 	private static TypesInterface ti;
 	private static MelInterface m;
+	private static GestionTypeInterface gti;
 	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, AlreadyBoundException, ClassNotFoundException, SQLException {
 		SettingServeurJVM.configureProperty();
@@ -73,6 +74,7 @@ public class Main {
 		gi = new Groupes(sgbd);
 		ti = new Types(sgbd);
 		m = new Mel(sgbd);
+		gti = new GestionType(sgbd);
 		Map<String ,MethodeServeur> listBind = new HashMap<>();
 		listBind.put("Tchat", tchat);
 		listBind.put("Fichier", fichier);
@@ -83,6 +85,7 @@ public class Main {
 		listBind.put("Types", ti);
 		listBind.put("Mel", m);
 		listBind.put("Sondage", so);
+		listBind.put("GestionTypes", gti);
 		//Creation du serveur
 		try{	
 			new Serveur(listBind);

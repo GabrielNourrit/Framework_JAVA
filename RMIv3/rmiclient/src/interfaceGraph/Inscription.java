@@ -138,6 +138,10 @@ public class Inscription extends Formulaire {
 		});	
 	}
 	
+	/**
+	 * ajoute un evenement apres l'inscription 
+	 * @param value
+	 */
 	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
 		this.b_valider.addEventHandler(ActionEvent.ACTION, value);
 	}
