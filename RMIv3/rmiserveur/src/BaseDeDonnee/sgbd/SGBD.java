@@ -539,7 +539,7 @@ public abstract class SGBD {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {}
+	public void modifierVotes(String actor, int id, String resultat, int nbVote) throws RemoteException, ClassNotFoundException, SQLException {}
 
 	/**
 	 * Renvoie la liste des sondage de l'utilisateur

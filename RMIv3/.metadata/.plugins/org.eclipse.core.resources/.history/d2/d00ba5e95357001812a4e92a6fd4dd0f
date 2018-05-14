@@ -1,0 +1,15 @@
+################################################
+# Serveur properties
+################################################
+# type SGBD (MySQL, Oracle, ... )
+type.sgbd.serveur = Oracle
+# port Serveur
+numero.port = 1099
+#adresse serveur
+adresse.serveur = 152.77.82.238 
+# Localisation stockage tchat
+stockage.tchat = ressources/stockage/tchat
+# Localisation stockage fichier
+stockage.fichiers = ressources/stockage/fichier
+# Localisation stockage mail
+stockage.mail = ressources/stockage/mail

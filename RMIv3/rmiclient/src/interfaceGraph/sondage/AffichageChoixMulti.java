@@ -79,6 +79,9 @@ public class AffichageChoixMulti extends Composition{
 				for(CheckBox cb : this.selectedCheckBoxes) {
 					int index = Integer.parseInt(cb.getUserData().toString());
 					ret.add(so.getReponses().get(index-1));
+					//connect.updateSondage(user.getLogin(),so.getId(), ret);
+					//ret.clear();
+					//ret.add(so.getReponses().get(index-1));
 				}
 				connect.updateSondage(user.getLogin(),so.getId(), ret);//sondageListToString(ret));
 				this.getChildren().clear();

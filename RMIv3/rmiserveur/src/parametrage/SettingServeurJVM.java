@@ -2,17 +2,17 @@ package parametrage;
 
 import java.rmi.RMISecurityManager;
 /**
- * Classe de paramètrage de la Java Virtial Machine du Serveur
- * @info utilisation de RMISecurityManager qui est dépréciée.
+ * Classe de paramï¿½trage de la Java Virtial Machine du Serveur
+ * @info utilisation de RMISecurityManager qui est dï¿½prï¿½ciï¿½e.
  */
 @SuppressWarnings("deprecation")
 public class SettingServeurJVM {
 	/**
-	 * Localisation des propriétés de sécurité définit
+	 * Localisation des propriï¿½tï¿½s de sï¿½curitï¿½ dï¿½finit
 	 */
 	private final static String SECURITY_POLICY = "ressources/parametre_Serveur/security.policy";
 	/**
-	 * Localisation des points classes utilisée pour l'annuaire
+	 * Localisation des points classes utilisï¿½e pour l'annuaire
 	 */
 	private final static String RMI_SEVEUR_CODEBASE = "file:${workspace_loc}/rmiserveur/bin/" ;
 	
@@ -22,14 +22,14 @@ public class SettingServeurJVM {
 	private SettingServeurJVM(){}
 	
 	/**
-	 * Définition des propriétés utiles à la JVM
+	 * Dï¿½finition des propriï¿½tï¿½s utiles ï¿½ la JVM
 	 * @use java.security.policy
 	 * @use java.rmi.server.codebase
 	 */
 	public static void configureProperty(){
 		System.setProperty("java.security.policy",SECURITY_POLICY);
 		System.setProperty("java.rmi.server.codebase",RMI_SEVEUR_CODEBASE);
-		System.setProperty("java.rmi.server.hostname","127.0.0.1");
+		//System.setProperty("java.rmi.server.hostname","127.0.0.1");
 	}
 	
 	/**

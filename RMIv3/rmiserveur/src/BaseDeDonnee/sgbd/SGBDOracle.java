@@ -493,8 +493,8 @@ public class SGBDOracle extends SGBD {
 		return sondage;
 	}
 	
-	public void modifierVotes(String actor, int id, String resultat) throws RemoteException, ClassNotFoundException, SQLException {
+	public void modifierVotes(String actor, int id, String resultat,int nbVote) throws RemoteException, ClassNotFoundException, SQLException {
 		executeUpdate("update sondage set resultat ='"+resultat+"' where idSon="+id);
-		executeUpdate("insert into vote values ("+id+",'"+actor+"',SYSDATE)");
+		executeUpdate("insert into vote values ("+id+",'"+actor+"',"+nbVote+",SYSDATE)");
 	}
 }

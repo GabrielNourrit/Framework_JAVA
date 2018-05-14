@@ -60,7 +60,7 @@ public class Sondage extends UnicastRemoteObject  implements SondageInterface{
 			else  res+= str[i] + ";" + str[j] + ";";
 		}
 		try {
-			sgbd.modifierVotes(actor,id,res);
+			sgbd.modifierVotes(actor,id,res,ret.size());
 			resultat.put(id,res);
 			notifyListeners(res, id);
 			ok = true;			
