@@ -1,0 +1,5 @@
+package groupes;
+
+public interface GroupeListener {
+
+}

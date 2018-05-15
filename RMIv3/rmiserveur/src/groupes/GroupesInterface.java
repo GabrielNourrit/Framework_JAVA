@@ -94,4 +94,10 @@ public interface GroupesInterface  extends Remote,MethodeServeur  {
 	 * @throws SQLException
 	 */
 	public void supprimerUtilisateur(int idGr, String login) throws RemoteException, ClassNotFoundException, SQLException;
+
+
+	void addGroupeListener(String login, GroupeListener listener) throws RemoteException;
+
+
+	void removeGroupeListener(String login, GroupeListener listener) throws RemoteException;
 }

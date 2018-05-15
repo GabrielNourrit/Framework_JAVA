@@ -18,7 +18,7 @@ public class ConnexionStyle extends Formulaire{
 	protected Label l_mdp;
 	protected TextField id;
 	protected PasswordField mdp;
-	private Utilisateur utilisateur;
+	protected Utilisateur utilisateur;
 	
 	/**
 	 * Cet objet est un formulaire de connexion par defaut
@@ -50,18 +50,6 @@ public class ConnexionStyle extends Formulaire{
 				ConnexionInterface connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
-					
-					/*ScrollPane sp = new ScrollPane();
-					Inscription i = new Inscription();
-					Stage nouveauStage;
-					nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-					sp.setContent(i);
-					i.setAlignment(Pos.CENTER);
-					sp.setFitToWidth(true);
-					sp.setFitToHeight(true);
-					Scene scene = new Scene(sp, 200, 250);
-					Fenetre.paramStage(nouveauStage);
-					nouveauStage.setScene(scene);*/
 				}
 				else {
 					Fenetre.creatAlert(AlertType.INFORMATION, "Information Dialog","Login ou mot de passe incorrect");
@@ -83,6 +71,7 @@ public class ConnexionStyle extends Formulaire{
 	 */
 	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
 		this.mdp.addEventHandler(ActionEvent.ACTION, value);
+		utilisateur=null;
 	}
 
 	@Override

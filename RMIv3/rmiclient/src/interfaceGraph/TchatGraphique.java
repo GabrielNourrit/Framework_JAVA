@@ -9,10 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import fichier.GestionFichierInterface;
+import groupes.GroupeListener;
+import groupes.GroupesInterface;
 import util.Connectable;
 import util.Groupe;
 import util.LimitedTextArea;
@@ -43,11 +46,13 @@ public class TchatGraphique extends VBox {
 	protected ScrollPane sp;
 	private TchatInterface connex;
 	private GestionFichierInterface connexG;
+	private GroupesInterface connexGroup;
 	private ChoiceBox<Groupe> cbgroupe;
+	private List<Groupe> g;
 	private Map<Integer ,Tchat> listener = new HashMap<>();
 	private Utilisateur util;
 	private boolean droit;
-	
+
 
 	/**
 	 * Fonction appeler après appuie sur le bouton envoyer
@@ -76,6 +81,8 @@ public class TchatGraphique extends VBox {
 		else droit=false;
 		connex = new Connectable<TchatInterface>().connexion("Tchat");	
 		connexG = new Connectable<GestionFichierInterface>().connexion("Fichier");
+		connexGroup = new Connectable<GroupesInterface>().connexion("Groupes");
+		g = new ArrayList<>();
 		
 		genererSousComposant();
 		layoutDefaultParametre();
@@ -86,7 +93,9 @@ public class TchatGraphique extends VBox {
 			int gr = g.getidGr();
 			listener.put(gr,l);
 			connex.addTchatListener(l,gr);
+			this.g.add(g);
 		}
+		connexGroup.addGroupeListener(util.getLogin(),(GroupeListener) new GroupeList());
 		ajouterMessage(connex.getHistorique(cbgroupe.getSelectionModel().getSelectedItem().getidGr()));		
 	}
 
@@ -139,7 +148,7 @@ public class TchatGraphique extends VBox {
 			ZoneText.setText("");
 		});
 	}
-	
+
 	/**
 	 * ecouteur sur la choice box du choix du groupe
 	 */
@@ -170,6 +179,15 @@ public class TchatGraphique extends VBox {
 		}
 	}
 	
+	private void ajouterGroupe(Groupe g) {
+		this.g.add(g);
+		this.getChildren().remove(cbgroupe);
+		cbgroupe = new ChoiceBox<Groupe>(FXCollections.observableArrayList(this.g));
+		this.getChildren().add(cbgroupe);
+		cbgroupe.getSelectionModel().select(0);
+		ecouteurChoixGroupe();
+	}
+
 	/**
 	 * Creer un message
 	 * @param heure l'heure du message
@@ -191,15 +209,15 @@ public class TchatGraphique extends VBox {
 			nom = nomATest;
 			h.setAlignment(Pos.BASELINE_LEFT);
 		}
-		
+
 		Label t1 = new Label("["+ heure + "] "+ nom + " : ");
 		t1.setId("tchat-nom");
-		
+
 		Text textMsg = new Text(msg);
 		textMsg.getStyleClass().clear();
 		textMsg.setId("tchat-msg");
 		textMsg.setWrappingWidth(300);
-		
+
 		v.getChildren().addAll(t1,textMsg);
 		h.getChildren().add(v);
 		v.setMaxWidth(300);
@@ -224,8 +242,29 @@ public class TchatGraphique extends VBox {
 						() -> {
 							ajouterMessage(message);
 						}
-				);
+						);
 			}			
+		}
+	}
+
+	/**
+	 * sous classe implementant un listener
+	 */
+	private class GroupeList extends UnicastRemoteObject implements GroupeListener {
+
+		private static final long serialVersionUID = 1L;
+
+		protected GroupeList() throws RemoteException {
+			super();
+		}
+
+		@Override
+		public void nouveauGroupe(Groupe g) {
+			Platform.runLater(
+					() -> {
+						ajouterGroupe(g);
+					}
+					);			
 		}
 	}
 }

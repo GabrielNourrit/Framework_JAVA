@@ -1,0 +1,7 @@
+package groupes;
+
+import java.rmi.RemoteException;
+
+public interface GroupeListener {
+	public void nouveauGroupe(Groupe g) throws RemoteException;	
+}

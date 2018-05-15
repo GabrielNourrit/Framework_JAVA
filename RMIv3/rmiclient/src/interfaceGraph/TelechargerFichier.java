@@ -5,11 +5,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fichier.Fichier;
 import fichier.FichierListener;
 import fichier.GestionFichierInterface;
+import groupes.GroupeListener;
+import groupes.GroupesInterface;
 import util.Connectable;
 import util.Fenetre;
 import util.Groupe;

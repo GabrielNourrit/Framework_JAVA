@@ -2,18 +2,15 @@ package interfaceGraph;
 
 import connexion.ConnexionInterface;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import util.Connectable;
 import util.Fenetre;
-import util.Utilisateur;
 
 public class ConnexionStyle2 extends ConnexionStyle{
 	protected Button boutonOk;	
 	private ConnexionInterface connex;
-	private Utilisateur utilisateur;
 
 	/**
 	 * Cet objet est un formulaire de connexion par defaut + bouton valider
@@ -22,7 +19,7 @@ public class ConnexionStyle2 extends ConnexionStyle{
 		super();
 		genererBouton();
 		listenerButtonValider();
-		utilisateur = null;
+		//utilisateur = null;
 		
 	}
 	
@@ -43,7 +40,6 @@ public class ConnexionStyle2 extends ConnexionStyle{
 		this.boutonOk.addEventHandler(ActionEvent.ACTION, event ->{
 			/*Traitement de l'appli*/
 			try {
-	            //connex = (ConnexionInterface) registry.lookup("Connexion");
 				connex = new Connectable<ConnexionInterface>().connexion("Connexion");
 				if(connex.verifierMdp(id.getText(),mdp.getText())) {
 					utilisateur = connex.getUse(id.getText());
@@ -57,14 +53,6 @@ public class ConnexionStyle2 extends ConnexionStyle{
 				Fenetre.creatAlert(AlertType.ERROR, "Information Dialog","Erreur");
 			}			
 		});
-	}
-	
-	/**
-	 * set un evenement apres la connection
-	 * @param value
-	 */
-	public void setPostConnectEvent(EventHandler<ActionEvent> value) {
-		this.boutonOk.addEventHandler(ActionEvent.ACTION, value);
 	}
 }
 

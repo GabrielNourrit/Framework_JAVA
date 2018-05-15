@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="java.rmi.Remote"/>
+<fullyQualifiedTypeName name="util.Groupe"/>
+<fullyQualifiedTypeName name="groupes.GroupeListener"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="groupes.GroupesInterface"/>
+<fullyQualifiedTypeName name="javafx.scene.control.TabPane.TabClosingPolicy"/>
+</qualifiedTypeNameHistroy>

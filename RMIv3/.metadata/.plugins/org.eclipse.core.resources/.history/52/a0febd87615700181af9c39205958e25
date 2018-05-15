@@ -1,0 +1,96 @@
+package groupes;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
+
+import BaseDeDonnee.sgbd.SGBD;
+import util.Groupe;
+
+public class Groupes extends UnicastRemoteObject  implements GroupesInterface {
+
+	private SGBD sgbd;
+	private Vector<GroupeListener> listeners = new Vector<>();
+	
+	public Groupes(SGBD _sgbd) throws RemoteException {
+		super();
+		sgbd = _sgbd;
+	}
+	
+	@Override
+	public List<Groupe> getAllGroupes() throws RemoteException, ClassNotFoundException, SQLException {
+		return sgbd.getGroupes();
+	}
+	
+	@Override
+	public List<Groupe> getGroupeLogin(String login) throws ClassNotFoundException, RemoteException, SQLException {
+		return sgbd.getGroupeUtilisateur(login);
+	}
+
+	@Override
+	public void suprimerGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		sgbd.suprimerGroupe(idGr);
+	}
+
+	@Override
+	public int ajouterGroupe(String groupe, List<String> lstUser) throws RemoteException, ClassNotFoundException, SQLException {
+		int idGr = sgbd.ajouterGroupe(groupe, lstUser);
+		notifyListeners(new Groupe(idGr,groupe));
+		return idGr;
+	}
+
+	@Override
+	public List<String> getAllLogin(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		return sgbd.getAllLoginGroupe(idGr);
+	}
+
+	@Override
+	public List<String> getAllLoginNotInGroupe(int idGr) throws RemoteException, ClassNotFoundException, SQLException {
+		return sgbd.getAllLoginNotInGroupe(idGr);
+	}
+
+	@Override
+	public void ajouterUtilisateur(int idGr, String login)
+			throws RemoteException, ClassNotFoundException, SQLException {
+		sgbd.ajouterUtilisateur(idGr, login);
+	}
+
+	@Override
+	public void supprimerUtilisateur(int idGr, String login)
+			throws RemoteException, ClassNotFoundException, SQLException {
+		sgbd.supprimerUtilisateur(idGr, login);
+		
+	}
+	
+	@Override
+	public synchronized void addGroupeListener (GroupeListener listener) throws java.rmi.RemoteException {
+		listeners.add(listener);
+		System.out.println("NOUVEAU LISTENER");
+	}
+
+	@Override
+	public synchronized void removeGroupeListener (GroupeListener listener) throws java.rmi.RemoteException {
+		listeners.remove(listener);
+	}
+	
+	/**
+	 * Methode de notification aux listener
+	 * @param message le nouveau message
+	 * @param groupe le groupe auquel le message est destine
+	 */
+	private void notifyListeners(Groupe groupe) {	
+		for (Enumeration<GroupeListener> e = listeners.elements(); e.hasMoreElements();) { 
+			GroupeListener listener = (GroupeListener) e.nextElement();
+			try {
+				listener.nouveauGroupe(groupe);
+			} catch(Exception re) {
+				re.printStackTrace();
+				listeners.remove(listener); 
+			} 
+		} 
+	}
+
+}

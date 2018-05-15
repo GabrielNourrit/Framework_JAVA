@@ -1,0 +1,6 @@
+package groupes;
+
+public interface GroupeListener {
+	public void addGroupeListener (GroupeListener listener, Integer groupe) throws java.rmi.RemoteException;
+	
+}

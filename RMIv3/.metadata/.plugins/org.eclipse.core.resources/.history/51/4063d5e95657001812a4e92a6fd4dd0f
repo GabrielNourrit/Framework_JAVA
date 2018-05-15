@@ -1,0 +1,16 @@
+################################################
+# Client properties
+################################################
+#Adresse du serveur
+adresse.serveur.defaut = 127.0.0.1
+# Port utiliser
+port.utilise = 1099
+# Le logo de l'application
+#   Exemple -> https://cdn2.iconfinder.com/data/icons/metro-ui-dock/128/Java.png4
+#           -> file:ressources/stylesheets/Java.png
+#           -> file:///C:/Users/{nameUser}/Documents/GitHub/Framework_JAVA/RMIv3/rmiclient/stylesheets/Java.png
+logo.application = file:ressources/stylesheets/Java.png
+# Le CSS de l'application par defaut
+default.css = application.css
+# Localisation du dossier css
+localisation.css.dossiers = ressources/stylesheets/

@@ -5,8 +5,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fichier.GestionFichierInterface;
+import groupes.GroupesInterface;
 import util.Connectable;
 import util.Fenetre;
 import util.Groupe;
@@ -96,4 +98,5 @@ public class PoseFichier extends VBox {
 	public VBox getStyleForm(){
 		return this.form;
 	}
+	
 }

@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -94,6 +95,7 @@ public class Main extends Application{
 			VBox vbleft = new VBox(spConnexion);
 			
 			tab= new TabPane();
+			tab.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 			tchatTab = new Tab("Tchat");
 			mailTab = new Tab("Mail");
 			ficPosTab = new Tab("Pose Fichiers");
