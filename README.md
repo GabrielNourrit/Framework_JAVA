@@ -1,1 +1,1 @@
-voir groupe11_PdL_V1_03_05.pdf pour plus de détails
+voir groupe11_CDC_V2_03_05.pdf pour plus de détails
