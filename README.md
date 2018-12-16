@@ -1,2 +1,1 @@
-# Framework_JAVA
-Framework pour deployer des applications de communications.
+voir groupe11_PdL_V1_03_05.pdf pour plus de détails
